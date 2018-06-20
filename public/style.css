@@ -1,0 +1,22 @@
+.controls {
+  height: 100px;
+}
+
+.audioControls > * {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 80px;
+  height: 80px;
+  stroke: #555;
+  fill: #555; 
+  opacity: 0.8;
+}
+
+.audioOn {
+  display: block;  
+}
+
+.audioOff {
+  display: none;
+}
