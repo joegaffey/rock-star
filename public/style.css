@@ -1,22 +1,18 @@
 .controls {
-  height: 100px;
+  padding: 10px;
 }
 
-.audioControls > * {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 80px;
-  height: 80px;
-  stroke: #555;
-  fill: #555; 
-  opacity: 0.8;
-}
-
-.audioOn {
-  display: block;  
-}
-
-.audioOff {
+.audioControls {
   display: none;
+}
+
+.audioControls > img {
+  opacity: 0.6;
+  width: 30px;
+  height: 30px;
+}  
+
+.instruments > * {
+  padding-right: 15px; 
+  padding-bottom: 15px; 
 }

@@ -3,6 +3,46 @@
     "id": "1",
     "title": "Nothing Else Matters",
     "artist": "Metallica",
-    "url": "s1.json"
+    "tracks": [
+      {
+        "id": "2",
+        "instrument": "guitar"
+      },
+      {
+        "id": "8",
+        "instrument": "guitar"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Enter Sandman",
+    "artist": "Metallica",
+    "tracks": [
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "guitar"
+      },
+      {
+        "id": "4",
+        "instrument": "guitar"
+      },
+      {
+        "id": "5",
+        "instrument": "guitar"
+      },
+      {
+        "id": "6",
+        "instrument": "bass"
+      },
+      {
+        "id": "7",
+        "instrument": "drums"
+      }
+    ]
   }
 ]
