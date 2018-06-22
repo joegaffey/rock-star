@@ -2,6 +2,10 @@
   padding: 10px;
 }
 
+.songs > button {
+  margin-right: 4px;
+}
+
 .audioControls {
   display: none;
 }

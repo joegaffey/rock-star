@@ -1,4 +1,5 @@
-// import Guitar from 'guitar.js';
+import Guitar from './guitar.js';
+import Drums from './drums.js';
 
 function animate() {
   if(audioOn) {    
@@ -51,28 +52,62 @@ function initSong(song) {
     .then(function(data) {
       midi = data;
       song.tracks.forEach((track) => {
-        let instrument = {};
-        if(track.instrument === 'guitar')
+        let instrument = null;
+        if(track.instrument === 'guitar' || track.instrument === 'bass')
           instrument = new Guitar(instrumentsEl);
-        instrument.mNotes = midi.tracks[track.id].notes;
-        instruments.push(instrument);
-        console.log(track.instrument + 
-                    ' track: ' + track.id + ' - ' + 
-                    instrument.mNotes.length + ' notes');
+        else if(track.instrument === 'drums')
+          instrument = new Drums(instrumentsEl);
+        if(instrument) {
+          instrument.mNotes = midi.tracks[track.id].notes;
+          instruments.push(instrument);
+          console.log(track.instrument + 
+                      ' track: ' + track.id + ' - ' + 
+                      instrument.mNotes.length + ' notes');
+        }
       });
   });
 }
 
+let audioOn = false;
 let audioInit = false;
 function initAudio() {
   Tone.context = new AudioContext();
-  const synth = new Tone.PolySynth(8).toMaster();
   Tone.Transport.bpm.value = midi.header.bpm;
   instruments.forEach((inst) => {
+    inst.initSynth();
     let midiPart = new Tone.Part(function(time, note) {
-      synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
-    }, inst.mNotes).start(+2);
+      note.ready = true; // TBD add player mechabnism to make note ready
+      if(note.ready) {
+        inst.play(note);
+        inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+      }
+    }, inst.mNotes).start(+2.5);
   });
+  Tone.Transport.start('2.5', '0'); 
   audioInit = true;
+  audioOn = true;
+  img.src = './audioOff.svg';
 }
 
+const audioControlsEl = document.querySelector('.audioControls');
+let img = audioControlsEl.children[0];
+
+audioControlsEl.onclick = (event) => {
+  if(!audioInit) 
+    initAudio();
+  else 
+    toggleAudio();
+};
+
+function toggleAudio() {
+    if(audioOn) {
+    audioOn = false;
+    Tone.Transport.pause();
+    img.src = './audioOn.svg';
+  }
+  else {
+    audioOn = true;
+    Tone.Transport.start(); 
+    img.src = './audioOff.svg';
+  }
+}

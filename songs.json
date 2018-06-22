@@ -10,7 +10,11 @@
       },
       {
         "id": "8",
-        "instrument": "guitar"
+        "instrument": "drums"
+      },
+      {
+        "id": "9",
+        "instrument": "bass"
       }
     ]
   },
@@ -41,6 +45,134 @@
       },
       {
         "id": "7",
+        "instrument": "drums"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Paranoid",
+    "artist": "Black Sabbath",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "drums"
+      },
+      {
+        "id": "4",
+        "instrument": "bass"
+      },
+      {
+        "id": "5",
+        "instrument": "guitar"
+      },
+      {
+        "id": "6",
+        "instrument": "guitar"
+      },
+      {
+        "id": "7",
+        "instrument": "guitar"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Iron Man",
+    "artist": "Black Sabbath",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "bass"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "guitar"
+      },
+      {
+        "id": "4",
+        "instrument": "guitar"
+      },
+      {
+        "id": "6",
+        "instrument": "drums"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Ace of Spades",
+    "artist": "Motorhead",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "bass"
+      },
+      {
+        "id":"3",
+        "instrument": "drums"
+      },
+      {
+        "id": "4",
+        "instrument": "guitar"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Freebird",
+    "artist": "Lynyrd Skynyrd",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "drums"
+      },
+      {
+        "id":"2",
+        "instrument": "piano"
+      },
+      {
+        "id":"3",
+        "instrument": "pipe"
+      },
+      {
+        "id": "4",
+        "instrument": "guitar"
+      },
+      {
+        "id":"5",
+        "instrument": "piano"
+      },
+      {
+        "id":"6",
+        "instrument": "piano"
+      },
+      {
+        "id":"7",
+        "instrument": "pipe"
+      },
+      {
+        "id": "8",
+        "instrument": "guitar"
+      },
+      {
+        "id": "9",
+        "instrument": "bass"
+      },
+      {
+        "id": "10",
         "instrument": "drums"
       }
     ]
