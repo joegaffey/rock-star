@@ -16,12 +16,12 @@ guitarTemplate.innerHTML = `
   </defs>
   <g>
     <rect fill="#333" height="100%" width="100%" y="0" x="0" />
-    <line y2="400" x2="33" y1="0" x1="33" stroke-width="4" stroke="#bbb" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="66" y1="0" x1="66" stroke-width="3.5" stroke="#bbb" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="99" y1="0" x1="99" stroke-width="3" stroke="#bbb" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="132" y1="0" x1="132" stroke-width="2.5" stroke="#bbb" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="165" y1="0" x1="165" stroke-width="2" stroke="#bbb" />
-    <line y2="325" x2="200" y1="325" x1="0" stroke-width="2" stroke="#bbb" />
+    <line y2="400" x2="33" y1="0" x1="33" stroke-width="4" stroke="#aaa" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="66" y1="0" x1="66" stroke-width="3.5" stroke="#aaa" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="99" y1="0" x1="99" stroke-width="3" stroke="#aaa" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="132" y1="0" x1="132" stroke-width="2.5" stroke="#aaa" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="165" y1="0" x1="165" stroke-width="2" stroke="#aaa" />
+    <line y2="325" x2="200" y1="325" x1="0" stroke-width="2" stroke="#eee" />
   </g>
 </svg>
 `;
@@ -34,7 +34,7 @@ export default class Guitar extends Instrument {
     parent.appendChild(container);  
     this.graphics = container.querySelector('g');
     
-    this.colors = ['red', 'green', 'blue', 'yellow', 'orange', 'brown'];
+    this.colors = ['green', 'red', 'yellow', 'blue', 'orange'];
     
     this.windowSize = 2; // Time window in seconds
     this.scale = 50; // Used map note time to graphics - to be tweaked
@@ -103,7 +103,7 @@ export default class Guitar extends Instrument {
     gNote.setAttribute('stroke-linecap', 'round');
     gNote.setAttribute('stroke-width', '30');
     gNote.setAttribute('opacity', 0.1);
-    // gNote.setAttribute('filter', 'url(#glow)');
+    // gNote.setAttribute('style', 'filter: url(#glow);');
     gNote._y1 = y;
     gNote._y2 = y + length;
     gNote.length = length;
