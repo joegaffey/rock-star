@@ -14,7 +14,11 @@ app.get("/songs/latest", function (request, response) {
   response.sendFile(__dirname + '/s1.json');
 });
 
-app.get("/songs/", function (request, response) {
+app.get("/songs/:id", function (request, response) {
+  response.sendFile(__dirname + '/s' +  request.params.id + '.json');
+});
+
+app.get("/songs", function (request, response) {
   response.sendFile(__dirname + '/songs.json');
 });
 
