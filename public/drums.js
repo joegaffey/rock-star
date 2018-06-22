@@ -2,17 +2,15 @@ import Instrument from './instrument.js';
 
 const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
-<svg class="drums" width="220" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg class="drums" width="200" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#333" height="100%" width="100%" y="0" x="0" />
-    <circle cx="60" cy="50" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="160" cy="50" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="60" cy="150" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="160" cy="150" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="60" cy="250" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="160" cy="250" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="60" cy="350" r="40" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="160" cy="350" r="40" stroke="#555" stroke-width="3" fill="white" />
+    <circle cx="50" cy="100" r="45" stroke="#555" stroke-width="3" fill="white"/>
+    <circle cx="150" cy="100" r="45" stroke="#555" stroke-width="3" fill="white" />
+    <circle cx="50" cy="200" r="45" stroke="#555" stroke-width="3" fill="white" />
+    <circle cx="150" cy="200" r="45" stroke="#555" stroke-width="3" fill="white" />
+    <circle cx="50" cy="300" r="45" stroke="#555" stroke-width="3" fill="white" />
+    <circle cx="150" cy="300" r="45" stroke="#555" stroke-width="3" fill="white" />
   </g>
 </svg>
 `;
@@ -25,6 +23,7 @@ export default class Drums extends Instrument{
     parent.appendChild(container);  
     this.graphics = container.querySelector('g');
     this.noteToDrumMap = { A:0, B:1, C:2, D:3, E:4, F:5, G:5 };   
+    this.colors = ['green', 'red', 'yellow', 'blue', 'orange', 'pink'];
   }
 
   initSynth() {
@@ -43,9 +42,9 @@ export default class Drums extends Instrument{
   }
   
   play(note) {
-    let drumId = this.noteToDrumMap[note.name.substring(0,1)] + 1;
-    let drum = this.graphics.children[drumId];
-    drum.setAttribute('fill', 'red');
+    let drumId = this.noteToDrumMap[note.name.substring(0,1)];
+    let drum = this.graphics.children[drumId + 1];
+    drum.setAttribute('fill', this.colors[drumId]);
     setTimeout(() => {
       drum.setAttribute('fill', 'white');
     }, 50);
