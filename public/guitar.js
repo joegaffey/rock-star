@@ -46,7 +46,7 @@ export default class Guitar extends Instrument {
     this.mNoteIndex = 0; // Current position in track
     this.offset = 75;
     
-    this.noteToStringMap = { A:0, B:1, C:2, D:2, E:3, F:3, G:4 };   
+    this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = this.graphics.querySelectorAll('.control');
   }
   

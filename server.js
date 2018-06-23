@@ -2,6 +2,9 @@
 var express = require('express');
 var app = express();
 
+var assets = require("./assets");
+app.use("/assets", assets);
+
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
