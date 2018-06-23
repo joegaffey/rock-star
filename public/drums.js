@@ -2,15 +2,15 @@ import Instrument from './instrument.js';
 
 const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
-<svg class="drums" width="200" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect fill="#555" height="100%" width="100%" y="0" x="0" />
-    <circle cx="50" cy="100" r="45" stroke="#555" stroke-width="3" fill="white"/>
-    <circle cx="150" cy="100" r="45" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="50" cy="200" r="45" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="150" cy="200" r="45" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="50" cy="300" r="45" stroke="#555" stroke-width="3" fill="white" />
-    <circle cx="150" cy="300" r="45" stroke="#555" stroke-width="3" fill="white" />
+    <rect fill="#aaa" height="100%" width="100%" y="0" x="0" />
+    <circle cx="25%" cy="25%" r="45" fill="white"/>
+    <circle cx="75%" cy="25%" r="45" fill="white" />
+    <circle cx="25%" cy="50%" r="45" fill="white" />
+    <circle cx="75%" cy="50%" r="45" fill="white" />
+    <circle cx="25%" cy="75%" r="45" fill="white" />
+    <circle cx="75%" cy="75%" r="45" fill="white" />
   </g>
 </svg>
 `;

@@ -2,7 +2,7 @@ import Instrument from './instrument.js';
 
 const guitarTemplate = document.createElement('template');
 guitarTemplate.innerHTML = `
-<svg class="guitar" width="200" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg class="guitar" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="glow">
       <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
@@ -15,19 +15,18 @@ guitarTemplate.innerHTML = `
     </filter>
   </defs>
   <g>
-    <rect fill="#555" height="325" width="166" y="0" x="17.5" />
-    <rect fill="#555" height="400" width="17.5" y="0" x="0" />
-    <rect fill="#555" height="400" width="17.5" y="0" x="182.5" />
-    <line y2="400" x2="33" y1="0" x1="33" stroke-width="4" stroke="#aaa" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="66" y1="0" x1="66" stroke-width="3.5" stroke="#aaa" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="99" y1="0" x1="99" stroke-width="3" stroke="#aaa" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="132" y1="0" x1="132" stroke-width="2.5" stroke="#aaa" stroke-dasharray="4 0.5" />
-    <line y2="400" x2="165" y1="0" x1="165" stroke-width="2" stroke="#aaa" />
-    <rect class="control" fill="green" height="75" width="33" y="325" x="17.5" style="fill-opacity: .25;" />
-    <rect class="control" fill="red" height="75" width="33" y="325" x="50.5" style="fill-opacity: .25;" />
-    <rect class="control" fill="yellow" height="75" width="33" y="325" x="83.5" style="fill-opacity: .25;" />
-    <rect class="control" fill="blue" height="75" width="33" y="325" x="117" style="fill-opacity: .25;" />
-    <rect class="control" fill="orange" height="75" width="33" y="325" x="150.5" style="fill-opacity: .25;" />
+    <rect fill="#aaa" height="325" width="250" y="0" x="0" />
+    <rect fill="#fff" height="75" width="250" y="325" x="0" />    
+    <line y2="400" x2="25" y1="0" x1="25" stroke-width="4" stroke="#888" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="75" y1="0" x1="75" stroke-width="3.5" stroke="#888" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="125" y1="0" x1="125" stroke-width="3" stroke="#888" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="175" y1="0" x1="175" stroke-width="2.5" stroke="#888" stroke-dasharray="4 0.5" />
+    <line y2="400" x2="225" y1="0" x1="225" stroke-width="2" stroke="#888" />
+    <rect class="control" fill="green" height="75" width="50" y="325" x="0" style="fill-opacity: .5;" />
+    <rect class="control" fill="red" height="75" width="50" y="325" x="50" style="fill-opacity: .5;" />
+    <rect class="control" fill="yellow" height="75" width="50" y="325" x="100" style="fill-opacity: .5;" />
+    <rect class="control" fill="blue" height="75" width="50" y="325" x="150" style="fill-opacity: .5;" />
+    <rect class="control" fill="orange" height="75" width="50" y="325" x="200" style="fill-opacity: .5;" />
   </g>
 </svg>
 `;
@@ -52,18 +51,19 @@ export default class Guitar extends Instrument {
   }
   
   initSynth() {    
-    // this.synth = new Tone.Sampler({
-    // 			'A2' : 'Open_A2.[mp3|ogg]',
-    // 			'B3' : 'Open_B3.[mp3|ogg]',
-    // 			'D3' : 'Open_D3.[mp3|ogg]',
-    // 			'E2' : 'Open_E2.[mp3|ogg]',
-    // 			'E4' : 'Open_E4.[mp3|ogg]',
-    // 			'G3' : 'Open_G3.[mp3|ogg]'
-    // 		}, {
-    // 			'release' : 1,
-    // 			'baseUrl' : './audio/'
-    // 		}).toMaster();
-    this.synth = new Tone.PolySynth(8).toMaster(); // Temporary
+    var dist = new Tone.Distortion(0.8).toMaster();
+    this.synth = new Tone.Sampler({
+    			'A2' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_A2.mp3?1529785372303',
+    			'B3' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_B3.mp3?1529785369046',
+    			'D3' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_D3.mp3?1529785364968',
+    			'E2' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_E2.mp3?1529785369821',
+    			'E4' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_E4.mp3?1529785366528',
+    			'G3' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_G3.mp3?1529785361509'
+    		}, {
+    			'release' : 1,
+    			'baseUrl' : 'https://cdn.glitch.com/'
+    		}).toMaster().connect(dist);
+    // this.synth = new Tone.PolySynth(8).toMaster(); // alt synth for testing
   }
 
   update(now) {
@@ -90,7 +90,7 @@ export default class Guitar extends Instrument {
       if(mNote.time > now && mNote.time < now + this.windowSize && mNote.duration > 0) {
         let string = this.noteToStringMap[mNote.name.substring(0,1)]; // First charter of note only
         if(mNote.time > 0 && !mNote.added) {
-          this.addNote(string * 33 + 33, -1000, mNote.duration * this.scale, this.colors[string], mNote);
+          this.addNote(string * 50 + 25, -1000, mNote.duration * this.scale, this.colors[string], mNote);
           mNote.added = true; // Only add notes once
         }
         this.mNoteIndex = i;
@@ -109,7 +109,7 @@ export default class Guitar extends Instrument {
     gNote.setAttribute('stroke', color);
     gNote.setAttribute('stroke-linecap', 'round');
     gNote.setAttribute('stroke-width', '30');
-    gNote.setAttribute('opacity', 0.1);
+    gNote.setAttribute('opacity', 0.3);
     // gNote.setAttribute('style', 'filter: url(#glow);');
     gNote._y1 = y;
     gNote._y2 = y + length;
@@ -137,7 +137,7 @@ export default class Guitar extends Instrument {
   input(input) {
     this.controls[input].setAttribute('style', 'opacity: 0.75;');
     setTimeout(() => {
-      this.controls[input].setAttribute('style', 'opacity: 0.25;');
+      this.controls[input].setAttribute('style', 'opacity: 0.5;');
     }, 200);
   }
 }
