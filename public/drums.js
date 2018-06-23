@@ -18,7 +18,7 @@ drumsTemplate.innerHTML = `
 export default class Drums extends Instrument{    
   constructor(parent) {
     super(parent);
-    let container = document.createElement('span');
+    let container = document.createElement('div');
     container.appendChild(drumsTemplate.content.cloneNode(true));  
     parent.appendChild(container);  
     this.graphics = container.querySelector('g');

@@ -2,7 +2,7 @@ import Instrument from './instrument.js';
 
 const guitarTemplate = document.createElement('template');
 guitarTemplate.innerHTML = `
-<svg class="neck" width="200" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg class="guitar" width="200" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="glow">
       <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
@@ -35,7 +35,7 @@ guitarTemplate.innerHTML = `
 export default class Guitar extends Instrument {
   constructor(parent) {
     super(parent)
-    let container = document.createElement('span');
+    let container = document.createElement('div');
     container.appendChild(guitarTemplate.content.cloneNode(true));  
     parent.appendChild(container);  
     this.graphics = container.querySelector('g');
