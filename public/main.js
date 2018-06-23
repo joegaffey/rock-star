@@ -24,6 +24,13 @@ function updateInstruments(now) {
   });                      
 }
 
+function inputInstruments(input) {
+  instruments.forEach((inst) => {
+    if(inst.input)
+       inst.input(input);
+  });                      
+}
+
 fetch('/songs')
   .then(function(response) {
     return response.json();
@@ -111,3 +118,21 @@ function toggleAudio() {
     img.src = './audioOff.svg';
   }
 }
+
+window.addEventListener('keydown', function (e) {
+  if(e.keyCode === 81) {
+    inputInstruments(0);
+  }
+  else if(e.keyCode === 87) {
+    inputInstruments(1);
+  }
+  else if(e.keyCode === 69) {
+    inputInstruments(2);
+  }
+  else if(e.keyCode === 82) {
+    inputInstruments(3);
+  }
+  else if(e.keyCode === 84) {
+    inputInstruments(4);
+  }
+});
