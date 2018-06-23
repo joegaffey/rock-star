@@ -15,13 +15,19 @@ guitarTemplate.innerHTML = `
     </filter>
   </defs>
   <g>
-    <rect fill="#333" height="100%" width="100%" y="0" x="0" />
+    <rect fill="#555" height="325" width="166" y="0" x="17.5" />
+    <rect fill="#555" height="400" width="17.5" y="0" x="0" />
+    <rect fill="#555" height="400" width="17.5" y="0" x="182.5" />
     <line y2="400" x2="33" y1="0" x1="33" stroke-width="4" stroke="#aaa" stroke-dasharray="4 0.5" />
     <line y2="400" x2="66" y1="0" x1="66" stroke-width="3.5" stroke="#aaa" stroke-dasharray="4 0.5" />
     <line y2="400" x2="99" y1="0" x1="99" stroke-width="3" stroke="#aaa" stroke-dasharray="4 0.5" />
     <line y2="400" x2="132" y1="0" x1="132" stroke-width="2.5" stroke="#aaa" stroke-dasharray="4 0.5" />
     <line y2="400" x2="165" y1="0" x1="165" stroke-width="2" stroke="#aaa" />
-    <line y2="325" x2="200" y1="325" x1="0" stroke-width="2" stroke="#eee" />
+    <rect class="control" fill="green" height="75" width="33" y="325" x="17.5" style="fill-opacity: .25;" />
+    <rect class="control" fill="red" height="75" width="33" y="325" x="50.5" style="fill-opacity: .25;" />
+    <rect class="control" fill="yellow" height="75" width="33" y="325" x="83.5" style="fill-opacity: .25;" />
+    <rect class="control" fill="blue" height="75" width="33" y="325" x="117" style="fill-opacity: .25;" />
+    <rect class="control" fill="orange" height="75" width="33" y="325" x="150.5" style="fill-opacity: .25;" />
   </g>
 </svg>
 `;
@@ -42,6 +48,7 @@ export default class Guitar extends Instrument {
     this.offset = 75;
     
     this.noteToStringMap = { A:0, B:1, C:2, D:2, E:3, F:3, G:4 };   
+    this.controls = this.graphics.querySelectorAll('.control');
   }
   
   initSynth() {    
@@ -125,5 +132,12 @@ export default class Guitar extends Instrument {
   play(note) {
     if(note.gNote)
       note.gNote.setAttribute('opacity', '0.6');
+  }
+  
+  input(input) {
+    this.controls[input].setAttribute('style', 'opacity: 0.75;');
+    setTimeout(() => {
+      this.controls[input].setAttribute('style', 'opacity: 0.25;');
+    }, 200);
   }
 }

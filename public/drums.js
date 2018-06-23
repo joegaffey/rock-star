@@ -4,7 +4,7 @@ const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
 <svg class="drums" width="200" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect fill="#333" height="100%" width="100%" y="0" x="0" />
+    <rect fill="#555" height="100%" width="100%" y="0" x="0" />
     <circle cx="50" cy="100" r="45" stroke="#555" stroke-width="3" fill="white"/>
     <circle cx="150" cy="100" r="45" stroke="#555" stroke-width="3" fill="white" />
     <circle cx="50" cy="200" r="45" stroke="#555" stroke-width="3" fill="white" />
@@ -52,5 +52,9 @@ export default class Drums extends Instrument{
   
   update(now) {
     //TBD
+  }
+  
+  input(input) {
+    // TBD
   }
 }
