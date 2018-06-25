@@ -51,19 +51,51 @@ export default class Guitar extends Instrument {
   }
   
   initSynth() {    
-    var dist = new Tone.Distortion(0.8).toMaster();
+    this.sound = presets.rock;      
+    
+    this.gainIn = new Tone.Gain();
+    this.distortion = new Tone.Distortion();
+    this.feedbackDelay = new Tone.FeedbackDelay();
+    this.tremolo = new Tone.Tremolo().start();
+    this.reverb = new Tone.JCReverb();
+    this.chorus = new Tone.Chorus();
+    
+    this.gainIn.gain.value = this.sound.gainIn;
+    this.distortion.wet.value = this.sound.distWet;
+    this.distortion.distortion = this.sound.distDirt;
+    this.feedbackDelay.wet.value = this.sound.delayWet;
+    this.feedbackDelay.delayTime.value = this.sound.delayTime;
+    this.feedbackDelay.feedback.value = this.sound.delayFeedback;
+    this.tremolo.wet.value = this.sound.tremWet;
+    this.tremolo.frequency.value = this.sound.tremFreq * 10;
+    this.tremolo.depth.value = this.sound.tremDepth;
+    this.reverb.wet.value = this.sound.verbWet;
+    this.reverb.roomSize.value = this.sound.verbRoom;
+    this.chorus.wet.value = this.sound.chorusWet;
+    this.chorus.frequency.value = this.sound.chorusFreq * 5;
+    this.chorus.depth = this.sound.chorusDepth;
+    
     this.synth = new Tone.Sampler({
-    			'A2' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_A2.mp3?1529785372303',
-    			'B3' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_B3.mp3?1529785369046',
-    			'D3' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_D3.mp3?1529785364968',
-    			'E2' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_E2.mp3?1529785369821',
-    			'E4' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_E4.mp3?1529785366528',
-    			'G3' : '43fbe471-8cab-46e5-9cd2-71eff7d8132c%2FOpen_G3.mp3?1529785361509'
+    			'A2' : 'Open_A2.mp3',
+    			'B3' : 'Open_B3.mp3',
+    			'D3' : 'Open_D3.mp3',
+    			'E2' : 'Open_E2.mp3',
+    			'E4' : 'Open_E4.mp3',
+    			'G3' : 'Open_G3.mp3'
     		}, {
     			'release' : 1,
-    			'baseUrl' : 'https://cdn.glitch.com/'
-    		}).toMaster().connect(dist);
-    // this.synth = new Tone.PolySynth(8).toMaster(); // alt synth for testing
+    			'baseUrl' : './assets/'
+    		}).chain(
+      this.gainIn,
+      this.distortion,
+      this.tremolo,
+      this.chorus,
+      this.feedbackDelay,
+      this.reverb,
+      Tone.Master
+    );
+    
+    // this.synth = new Tone.PolySynth(8).toMaster(); // test synth
   }
 
   update(now) {
@@ -139,5 +171,90 @@ export default class Guitar extends Instrument {
     setTimeout(() => {
       this.controls[input].setAttribute('style', 'opacity: 0.5;');
     }, 200);
+  }
+}
+
+
+// Copied from TonePen - https://codepen.io/iamjoshellis/pen/ZOAzrN
+const presets = {
+  'delay': {
+    gainIn: 1,
+    distWet: 0,
+    distDirt: 0,
+    delayWet: 0.4,
+    delayTime: 0.3,
+    delayFeedback: 0.5,
+    tremWet: 0,
+    tremFreq: 0,
+    tremDepth: 0,
+    verbWet: 0,
+    verbRoom: 0,
+    chorusWet: 0,
+    chorusFreq: 0,
+    chorusDepth: 0,
+  },
+  'rock': {
+    gainIn: 1,
+    distWet: 1,
+    distDirt: 1,
+    delayWet: 0,
+    delayTime: 0,
+    delayFeedback: 0,
+    tremWet: 0,
+    tremFreq: 0,
+    tremDepth: 0,
+    verbWet: 0.1,
+    verbRoom: 0.1,
+    chorusWet: 0,
+    chorusFreq: 0,
+    chorusDepth: 0,
+  },
+  'clean': {
+    gainIn: 1,
+    distWet: 0,
+    distDirt: 0,
+    delayWet: 0.2,
+    delayTime: 0.4,
+    delayFeedback: 0.4,
+    tremWet: 0,
+    tremFreq: 0,
+    tremDepth: 0,
+    verbWet: 0.3,
+    verbRoom: 0.3,
+    chorusWet: 0.7,
+    chorusFreq: 0.1,
+    chorusDepth: 0.5,
+  },
+  'blues': {
+    gainIn: 1,
+    distWet: 0.4,
+    distDirt: 0.3,
+    delayWet: 0,
+    delayTime: 0,
+    delayFeedback: 0,
+    tremWet: 0.7,
+    tremFreq: 0.6,
+    tremDepth: 0.9,
+    verbWet: 0.3,
+    verbRoom: 0.3,
+    chorusWet: 0,
+    chorusFreq: 0,
+    chorusDepth: 0,
+  },
+  'billTed': {
+    gainIn: 1,
+    distWet: 1,
+    distDirt: 1,
+    delayWet: 1,
+    delayTime: 1,
+    delayFeedback: 1,
+    tremWet: 1,
+    tremFreq: 1,
+    tremDepth: 1,
+    verbWet: 1,
+    verbRoom: 1,
+    chorusWet: 1,
+    chorusFreq: 1,
+    chorusDepth: 1,
   }
 }
