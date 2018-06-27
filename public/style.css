@@ -1,6 +1,10 @@
 body {
   background-color: #222;  
+  font-family: arial;
+  color: #ccc;
 }
+
+/******************** controls ************************/
 
 .controls {
   padding: 10px;
@@ -20,11 +24,75 @@ body {
   height: 30px;
 }  
 
+/******************** Settings ************************/
+
+.settings {
+  position: relative;
+  height: 50px;
+  background-color: #333;  
+  text-align: center;
+  line-height: 50px; 
+  vertical-align: middle;
+}
+
+input { 
+  display: none; 
+}
+
+input:disabled + .slider > line { 
+  stroke: grey;
+}
+
+input:checked + .slider > circle { 
+  cx: 35; 
+}
+
+.slider {
+  height: 20px;
+}
+
+.slider > * { 
+  transition: all .3s ease; 
+}
+
+input:checked + .slider > line { 
+  stroke: green; 
+}
+
+input:not(:checked) + .slider > line { 
+  stroke: crimson; 
+}
+
+
+/******************** Instruments ************************/
+
 .instruments > * {
   background-color: #fff;  
   float: left;
   border: 10px solid #444;
   border-radius: 10px;  
   margin: 5px;
-  height: 400px;
+  height: 450px;
+}
+
+@keyframes notePulse {
+  0%   { r: 3; }
+  100% { r: 20; }
+}
+
+.gNoteCircle
+{
+  opacity: 0.3;
+  animation: notePulse 1s infinite;
+  stroke-width: 2;
+  fill: none; 
+  r: 14;
+}
+
+.gNoteLine
+{
+  stroke-linecap: round;
+  stroke-width: 30;
+/*   filter: blur(4px); */
+/*   filter: url(filters.svg#glow); */
 }

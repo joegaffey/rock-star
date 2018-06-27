@@ -1,4 +1,5 @@
 import Guitar from './guitar.js';
+// import Guitar from './guitar-beta.js';
 import Drums from './drums.js';
 
 function animate() {
@@ -24,10 +25,10 @@ function updateInstruments(now) {
   });                      
 }
 
-function inputInstruments(input) {
+function inputInstruments(input, state) {
   instruments.forEach((inst) => {
     if(inst.input)
-       inst.input(input);
+       inst.input(input, state);
   });                      
 }
 
@@ -83,7 +84,9 @@ function initAudio() {
   instruments.forEach((inst) => {
     inst.initSynth();
     let midiPart = new Tone.Part(function(time, note) {
-      note.ready = true; // TBD add player mechabnism to make note ready
+      note.ready = true;
+      if(note.gNote && note.gNote.isPlayerNote)
+        note.ready = inst.playCheck(note.gNote);
       if(note.ready) {
         inst.play(note);
         inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
@@ -121,18 +124,36 @@ function toggleAudio() {
 
 window.addEventListener('keydown', function (e) {
   if(e.keyCode === 81) {
-    inputInstruments(0);
+    inputInstruments(0, true);
   }
   else if(e.keyCode === 87) {
-    inputInstruments(1);
+    inputInstruments(1, true);
   }
   else if(e.keyCode === 69) {
-    inputInstruments(2);
+    inputInstruments(2, true);
   }
   else if(e.keyCode === 82) {
-    inputInstruments(3);
+    inputInstruments(3, true);
   }
   else if(e.keyCode === 84) {
-    inputInstruments(4);
+    inputInstruments(4, true);
+  }
+});
+
+window.addEventListener('keyup', function (e) {
+  if(e.keyCode === 81) {
+    inputInstruments(0, false);
+  }
+  else if(e.keyCode === 87) {
+    inputInstruments(1, false);
+  }
+  else if(e.keyCode === 69) {
+    inputInstruments(2, false);
+  }
+  else if(e.keyCode === 82) {
+    inputInstruments(3, false);
+  }
+  else if(e.keyCode === 84) {
+    inputInstruments(4, false);
   }
 });
