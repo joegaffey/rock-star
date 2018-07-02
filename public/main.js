@@ -24,10 +24,10 @@ function updateInstruments(now) {
   });                      
 }
 
-function inputInstruments(input) {
+function inputInstruments(input, state) {
   instruments.forEach((inst) => {
     if(inst.input)
-       inst.input(input);
+       inst.input(input, state);
   });                      
 }
 
@@ -43,8 +43,7 @@ fetch('/songs')
       button.onclick = () => {
         initSong(song);        
         songsEl.style.display = 'none';
-        // document.querySelector('.audioControls').style.visibility = 'visible';
-        document.querySelector('.audioControls').style.display = 'block';
+        document.querySelector('.audioControl').style.display = 'block';
       };
       songsEl.appendChild(button);
     });
@@ -75,6 +74,8 @@ function initSong(song) {
   });
 }
 
+const audioControlsEl = document.querySelector('.audioControl');
+
 let audioOn = false;
 let audioInit = false;
 function initAudio() {
@@ -83,7 +84,9 @@ function initAudio() {
   instruments.forEach((inst) => {
     inst.initSynth();
     let midiPart = new Tone.Part(function(time, note) {
-      note.ready = true; // TBD add player mechabnism to make note ready
+      note.ready = true;
+      if(note.gNote && note.gNote.isPlayerNote)
+        note.ready = inst.playCheck(note.gNote);
       if(note.ready) {
         inst.play(note);
         inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
@@ -93,11 +96,8 @@ function initAudio() {
   Tone.Transport.start('2.5', '0'); 
   audioInit = true;
   audioOn = true;
-  img.src = './audioOff.svg';
+  audioControlsEl.src = './audioOff.svg';
 }
-
-const audioControlsEl = document.querySelector('.audioControls');
-let img = audioControlsEl.children[0];
 
 audioControlsEl.onclick = (event) => {
   if(!audioInit) 
@@ -107,32 +107,64 @@ audioControlsEl.onclick = (event) => {
 };
 
 function toggleAudio() {
-    if(audioOn) {
+  if(audioOn) {
     audioOn = false;
     Tone.Transport.pause();
-    img.src = './audioOn.svg';
+    audioControlsEl.src = './audioOn.svg';
   }
   else {
     audioOn = true;
     Tone.Transport.start(); 
-    img.src = './audioOff.svg';
+    audioControlsEl.src = './audioOff.svg';
   }
 }
 
 window.addEventListener('keydown', function (e) {
   if(e.keyCode === 81) {
-    inputInstruments(0);
+    inputInstruments(0, true);
   }
   else if(e.keyCode === 87) {
-    inputInstruments(1);
+    inputInstruments(1, true);
   }
   else if(e.keyCode === 69) {
-    inputInstruments(2);
+    inputInstruments(2, true);
   }
   else if(e.keyCode === 82) {
-    inputInstruments(3);
+    inputInstruments(3, true);
   }
   else if(e.keyCode === 84) {
-    inputInstruments(4);
+    inputInstruments(4, true);
   }
 });
+
+window.addEventListener('keyup', function (e) {
+  if(e.keyCode === 81) {
+    inputInstruments(0, false);
+  }
+  else if(e.keyCode === 87) {
+    inputInstruments(1, false);
+  }
+  else if(e.keyCode === 69) {
+    inputInstruments(2, false);
+  }
+  else if(e.keyCode === 82) {
+    inputInstruments(3, false);
+  }
+  else if(e.keyCode === 84) {
+    inputInstruments(4, false);
+  }
+});
+
+const helpIconEl = document.querySelector('.helpIcon');
+var helpModalEl = document.querySelector('.helpModal');
+var helpOnScreen = false;
+helpIconEl.onclick = helpModalEl.onclick = () => {
+  if(helpOnScreen) {
+    helpModalEl.style.display='none';
+    helpOnScreen = false;
+  }
+  else {
+    helpModalEl.style.display='flex';
+    helpOnScreen = true;
+  }  
+}

@@ -2,16 +2,20 @@ import Instrument from './instrument.js';
 
 const guitarTemplate = document.createElement('template');
 guitarTemplate.innerHTML = `
+<div class="settings">Auto
+  <label class="playerToggle">
+    <input type="checkbox" checked> 
+      <svg class="slider" width="50" height="30" viewbox="0 0 50 30" xmlns="http://www.w3.org/2000/svg">
+        <line y2="15" x2="35" y1="15" x1="15" stroke-width="30" stroke="slateblue" stroke-linecap="round"/>
+        <circle r=10 cx=15 cy=15 fill="#fff"/>
+      </svg>
+    </input>
+  </label>
+</div>
 <svg class="guitar" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="glow">
-      <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
-      <femerge>
-        <femergenode in="coloredBlur"></femergenode>
-        <femergenode in="coloredBlur"></femergenode>
-        <femergenode in="coloredBlur"></femergenode>
-        <femergenode in="SourceGraphic"></femergenode>
-      </femerge>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5"/>
     </filter>
   </defs>
   <g>
@@ -48,9 +52,16 @@ export default class Guitar extends Instrument {
     
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = this.graphics.querySelectorAll('.control');
+    
+    this.playerControl = false;
+    let playerToggleEl = container.querySelector('.playerToggle > input');
+    playerToggleEl.onclick = () => {
+      this.playerControl = !playerToggleEl.checked;
+    };     
   }
-  
+   
   initSynth() {    
+    this.errorSynth = new Tone.MembraneSynth().toMaster();
     this.sound = presets.rock;      
     
     this.gainIn = new Tone.Gain();
@@ -100,18 +111,22 @@ export default class Guitar extends Instrument {
 
   update(now) {
     // Update existing notes
-    this.gNotes.forEach((note, i) => {
+    this.gNotes.forEach((gNote, i) => {
       // Move notes
-      let y = (now - note.mNote.time) * this.scale;// * note.mNote.velocity;
-      note.setAttribute('y1', note._y1 = y + this.offset);
-      note.setAttribute('y2', note._y2 = y + this.offset - note.length);
-      note.gNoteCentre.setAttribute('cy', y + this.offset);
+      let y = (now - gNote.mNote.time) * this.scale;
+      gNote.gNoteLine.setAttribute('y1', y + this.offset);
+      gNote.gNoteLine.setAttribute('y2', y + this.offset - gNote.length);
+      gNote.gNoteCentre.setAttribute('cy', y + this.offset);
+      if(gNote.gNoteCircle)
+        gNote.gNoteCircle.setAttribute('cy', y + this.offset);
       
       // Remove notes outside the render area
-      if(note._y1 - note.length > 420) {
+      if(y - gNote.length > 420) {
         this.gNotes.splice(i, 1);
-        this.graphics.removeChild(note);
-        this.graphics.removeChild(note.gNoteCentre);
+        this.graphics.removeChild(gNote.gNoteLine);
+        this.graphics.removeChild(gNote.gNoteCentre);
+        if(gNote.gNoteCircle)
+          this.graphics.removeChild(gNote.gNoteCircle);
       }
     });
     
@@ -119,10 +134,10 @@ export default class Guitar extends Instrument {
     let futureNotes = this.mNotes.slice(this.mNoteIndex);
     
     futureNotes.forEach((mNote, i) => {
-      if(mNote.time > now && mNote.time < now + this.windowSize && mNote.duration > 0) {
+      if(mNote.time >= now && mNote.time < now + this.windowSize && mNote.duration > 0) {
         let string = this.noteToStringMap[mNote.name.substring(0,1)]; // First charter of note only
         if(mNote.time > 0 && !mNote.added) {
-          this.addNote(string * 50 + 25, -1000, mNote.duration * this.scale, this.colors[string], mNote);
+          this.addNote(string, -1000, mNote.duration * this.scale, this.colors[string], mNote);
           mNote.added = true; // Only add notes once
         }
         this.mNoteIndex = i;
@@ -132,22 +147,24 @@ export default class Guitar extends Instrument {
     });
   }
 
-  addNote(x, y, length, color, mNote) {
-    let gNote = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    gNote.setAttribute('x1', x);
-    gNote.setAttribute('y1', y);
-    gNote.setAttribute('x2', x);
-    gNote.setAttribute('y2', y - length);
-    gNote.setAttribute('stroke', color);
-    gNote.setAttribute('stroke-linecap', 'round');
-    gNote.setAttribute('stroke-width', '30');
-    gNote.setAttribute('opacity', 0.3);
-    // gNote.setAttribute('style', 'filter: url(#glow);');
-    gNote._y1 = y;
-    gNote._y2 = y + length;
+  addNote(string, y, length, color, mNote) {
+    let x = string * 50 + 25;
+    let gNote = {};
     gNote.length = length;
+    gNote.string = string;
     gNote.mNote = mNote;
-    mNote.gNote = gNote;
+    gNote.isPlayerNote = false;
+    mNote.gNote = gNote;     
+    
+    let gNoteLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    gNoteLine.setAttribute('x1', x);
+    gNoteLine.setAttribute('y1', y);
+    gNoteLine.setAttribute('x2', x);
+    gNoteLine.setAttribute('y2', y - length);
+    gNoteLine.setAttribute('opacity', '0.3');
+    gNoteLine.setAttribute('stroke', color);
+    gNoteLine.setAttribute('class', 'gNoteLine');
+    gNote.gNoteLine = gNoteLine;
     
     let gNoteCentre = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     gNoteCentre.setAttribute('cx', x);
@@ -155,25 +172,59 @@ export default class Guitar extends Instrument {
     gNoteCentre.setAttribute('r', '3');
     gNoteCentre.setAttribute('fill', color); 
     gNote.gNoteCentre = gNoteCentre;
+    
+    if(this.playerControl && Math.random() > 0.8) {
+      gNote.isPlayerNote = true;
+      let gNoteCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      gNoteCircle.setAttribute('cx', x);
+      gNoteCircle.setAttribute('cy', y);
+      gNoteCircle.setAttribute('stroke', color); 
+      gNoteCircle.setAttribute('class', 'gNoteCircle'); 
+      gNote.gNoteCircle = gNoteCircle;
+    }
         
     this.gNotes.push(gNote);
-    this.graphics.appendChild(gNote);
-    this.graphics.appendChild(gNoteCentre);        
+    
+    this.graphics.appendChild(gNote.gNoteLine);
+    this.graphics.appendChild(gNote.gNoteCentre);   
+    if(gNote.gNoteCircle)
+      this.graphics.appendChild(gNote.gNoteCircle);        
   }
   
-  play(note) {
-    if(note.gNote)
-      note.gNote.setAttribute('opacity', '0.6');
+  playCheck(gNote) {
+    if(!this.playerControl)
+      return true; 
+    if(this.controls[gNote.string].on)
+      return true;
+    else {
+      this.errorNote(gNote)
+      return false;
+    }
   }
   
-  input(input) {
-    this.controls[input].setAttribute('style', 'opacity: 0.75;');
-    setTimeout(() => {
+  errorNote(gNote) {
+    gNote.gNoteLine.setAttribute('stroke', 'grey');
+    gNote.gNoteLine.setAttribute('opacity', '1');
+    this.errorSynth.triggerAttackRelease('E4', gNote.mNote.duration);    
+  }
+  
+  play(mNote) {
+    if(mNote.gNote)
+      mNote.gNote.gNoteLine.setAttribute('opacity', '0.6');
+    else {
+      console.log('No note graphics...');
+      console.log(mNote);
+    } 
+  }
+  
+  input(input, state) {
+    if(state)
+      this.controls[input].setAttribute('style', 'opacity: 0.75;');
+    else
       this.controls[input].setAttribute('style', 'opacity: 0.5;');
-    }, 200);
+    this.controls[input].on = state;
   }
 }
-
 
 // Copied from TonePen - https://codepen.io/iamjoshellis/pen/ZOAzrN
 const presets = {
