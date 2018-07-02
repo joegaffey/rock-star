@@ -1,5 +1,4 @@
 import Guitar from './guitar.js';
-// import Guitar from './guitar-beta.js';
 import Drums from './drums.js';
 
 function animate() {
@@ -44,8 +43,7 @@ fetch('/songs')
       button.onclick = () => {
         initSong(song);        
         songsEl.style.display = 'none';
-        // document.querySelector('.audioControls').style.visibility = 'visible';
-        document.querySelector('.audioControls').style.display = 'block';
+        document.querySelector('.audioControl').style.display = 'block';
       };
       songsEl.appendChild(button);
     });
@@ -76,6 +74,8 @@ function initSong(song) {
   });
 }
 
+const audioControlsEl = document.querySelector('.audioControl');
+
 let audioOn = false;
 let audioInit = false;
 function initAudio() {
@@ -96,11 +96,8 @@ function initAudio() {
   Tone.Transport.start('2.5', '0'); 
   audioInit = true;
   audioOn = true;
-  img.src = './audioOff.svg';
+  audioControlsEl.src = './audioOff.svg';
 }
-
-const audioControlsEl = document.querySelector('.audioControls');
-let img = audioControlsEl.children[0];
 
 audioControlsEl.onclick = (event) => {
   if(!audioInit) 
@@ -110,15 +107,15 @@ audioControlsEl.onclick = (event) => {
 };
 
 function toggleAudio() {
-    if(audioOn) {
+  if(audioOn) {
     audioOn = false;
     Tone.Transport.pause();
-    img.src = './audioOn.svg';
+    audioControlsEl.src = './audioOn.svg';
   }
   else {
     audioOn = true;
     Tone.Transport.start(); 
-    img.src = './audioOff.svg';
+    audioControlsEl.src = './audioOff.svg';
   }
 }
 
@@ -157,3 +154,17 @@ window.addEventListener('keyup', function (e) {
     inputInstruments(4, false);
   }
 });
+
+const helpIconEl = document.querySelector('.helpIcon');
+var helpModalEl = document.querySelector('.helpModal');
+var helpOnScreen = false;
+helpIconEl.onclick = helpModalEl.onclick = () => {
+  if(helpOnScreen) {
+    helpModalEl.style.display='none';
+    helpOnScreen = false;
+  }
+  else {
+    helpModalEl.style.display='flex';
+    helpOnScreen = true;
+  }  
+}

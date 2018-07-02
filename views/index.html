@@ -10,14 +10,18 @@
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
+    <div class="modal helpModal">
+      <div class="dialog">Select a song and click the speaker icon to play it. 
+        Turn off auto mode using the "Auto" toggle switch. 
+        Then use keys Q-W-E-R-T to play along by hitting the right key to catch the pulsing notes.</div>
+    </div>
+    <div class="songs"></div>
     <div class="controls">
-      <div class="audioControls">  
-        <img src="./audioOn.svg">
-      </div>  
-      <div class="songs"></div>
+      <img class="icon helpIcon" src="./help.svg">
+      <img class="icon audioControl" src="./audioOn.svg">
     </div>
-    <div class="instruments">      
-    </div>
+    <br/>
+    <div class="instruments"></div>
     <script src="https://tonejs.github.io/build/Tone.min.js"></script>
     <script type="module" src="/main.js"></script>
   </body>
