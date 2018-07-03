@@ -2,10 +2,8 @@ import Guitar from './guitar.js';
 import Drums from './drums.js';
 
 function animate() {
-  if(audioOn) {    
-    let now = Tone.now();
-    updateInstruments(now);
-  }
+  if(audioOn)
+    updateInstruments(Tone.now());
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
@@ -106,6 +104,8 @@ const audioControlsEl = document.querySelector('.audioControl');
 let audioOn = false;
 let audioInit = false;
 function initAudio() {
+  showLoader();
+  audioOn = true;    
   Tone.context = new AudioContext();
   Tone.Transport.bpm.value = midi.header.bpm;
   instruments.forEach((inst) => {
@@ -120,15 +120,17 @@ function initAudio() {
       }
     }, inst.mNotes).start(+2.5);
   });
+  Tone.Transport.on('start', () => {
+    audioControlsEl.src = './icons/pause.svg';
+    hideLoader();
+  });
   Tone.Transport.start('2.5', '0'); 
   audioInit = true;
 }
 
 audioControlsEl.onclick = (event) => {
   if(!audioInit) {
-    audioControlsEl.src = './icons/pause.svg';
-    initAudio();
-    audioOn = true;    
+    initAudio();    
   }
   else 
     audioOn ? pause() : play();

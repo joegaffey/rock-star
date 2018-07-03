@@ -1,5 +1,7 @@
 body {
   background-color: #222;  
+  background: url('./assets/fire_bg.jpg') no-repeat center center fixed; 
+  background-size: cover;
   font-family: arial;
   color: #ccc;
 }
@@ -14,6 +16,7 @@ li {
   padding-top: 8px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .controls > * {
@@ -21,7 +24,7 @@ li {
 }
 
 .icon {
-  opacity: 0.6;
+  opacity: 0.8;
   width: 30px;
   height: 30px;
 }  
@@ -36,9 +39,9 @@ li {
   position: relative;
   height: 50px;
   background-color: #333;  
-  text-align: center;
-  line-height: 50px; 
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 input { 
