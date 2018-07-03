@@ -1,0 +1,11 @@
+{
+  "name": "Rockstar",
+  "short_name": "Rockstar",
+  "description": "Rock on!",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "fullscreen",
+  "Scope": "/",
+  "start_url": "/",
+  "splash_pages": null
+}
