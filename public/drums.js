@@ -15,10 +15,10 @@ drumsTemplate.innerHTML = `
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#aaa" height="100%" width="100%" y="0" x="0" />
-    <circle cx="25%" cy="33%" r="50" fill="white"/>
-    <circle cx="75%" cy="33%" r="50" fill="white" />
-    <circle cx="25%" cy="66%" r="50" fill="white" />
-    <circle cx="75%" cy="66%" r="50" fill="white" />
+    <circle cx="25%" cy="33%" r="50" fill="green"/>
+    <circle cx="75%" cy="33%" r="50" fill="red" />
+    <circle cx="25%" cy="66%" r="50" fill="yellow" />
+    <circle cx="75%" cy="66%" r="50" fill="blue" />
   </g>
 </svg>
 `;
@@ -94,9 +94,9 @@ export default class Drums extends Instrument{
   play(mNote) {
     let drumId = this.noteToDrumMap[mNote.name.substring(0,1)];
     let drum = this.graphics.children[drumId + 1];
-    drum.setAttribute('fill', this.colors[drumId]);
+    drum.setAttribute('r', 60);
     setTimeout(() => {
-      drum.setAttribute('fill', 'white');
+      drum.setAttribute('r', 50);
     }, 50);
   }
   
