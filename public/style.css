@@ -4,29 +4,31 @@ body {
   color: #ccc;
 }
 
-/******************** controls ************************/
+li {
+  list-style-type: square;
+}
+
+/******************** Control panel ************************/
 
 .controls {
   padding-top: 8px;
-  padding-left: 8px;
   display: flex;
+  justify-content: center;
 }
 
-.songs > button {
-  margin-right: 4px;
-}
-
-.audioControl {
-  display: none;
+.controls > * {
+  margin-left: 8px;
 }
 
 .icon {
-  float: left;
-  margin-right: 4px;
   opacity: 0.6;
   width: 30px;
   height: 30px;
 }  
+
+.audioControl {
+  display: none;
+}
 
 /******************** Instrument Settings **********************/
 
@@ -67,17 +69,25 @@ input:disabled + .slider > line {
   stroke: grey;
 }
 
-
 /******************** Instruments ************************/
+
+.instruments {
+  padding-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 .instruments > * {
   background-color: #fff;  
-  float: left;
   border: 10px solid #444;
   border-radius: 10px;  
   margin: 5px;
   height: 450px;
 }
+
+
+/******************** Guitar ************************/
 
 @keyframes notePulse {
   0%   { r: 3; }
@@ -91,12 +101,14 @@ input:disabled + .slider > line {
   stroke-width: 2;
   fill: none; 
   r: 14;
+  pointer-events: none;
 }
 
 .gNoteLine
 {
   stroke-linecap: round;
   stroke-width: 30;
+  pointer-events: none;
 /*   filter: blur(4px); */
 /*   filter: url(filters.svg#glow); */
 }
@@ -118,9 +130,27 @@ input:disabled + .slider > line {
 
 .dialog {
   margin: auto;
-  width: 50%;
-  height: 100px;
   background-color: #555;
   padding: 20px;
   border-radius: 4px;
+}
+
+/******************** Loader ************************/
+
+.loader {
+  width: 100%;
+  margin: auto;
+  --loader-color: #666;
+  --loader-linecap: round; /* round, butt, square */
+  --loader-anim-time: 0.25s;
+  --loader-background-color: #111;
+}
+
+.inner {
+  animation: move var(--loader-anim-time) ease-in-out infinite alternate;
+}
+
+@keyframes move {
+  from { transform: translateX(0px); }
+  to { transform: translateX(160px); }
 }
