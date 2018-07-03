@@ -130,7 +130,11 @@ function initAudio() {
 
 audioControlsEl.onclick = (event) => {
   if(!audioInit) {
-    initAudio();    
+    showLoader();
+    // Workaround to give time for the loader to appear
+    setTimeout(() => { 
+      initAudio();    
+    }, 100);
   }
   else 
     audioOn ? pause() : play();
