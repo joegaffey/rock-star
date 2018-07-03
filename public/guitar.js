@@ -53,6 +53,13 @@ export default class Guitar extends Instrument {
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = this.graphics.querySelectorAll('.control');
     
+    this.controls.forEach((control, i) => {
+      control.onclick = () => {
+        this.input(i, true);
+        setTimeout(() => {this.input(i, false) }, 300);
+      }
+    });
+    
     this.playerControl = false;
     let playerToggleEl = container.querySelector('.playerToggle > input');
     playerToggleEl.onclick = () => {

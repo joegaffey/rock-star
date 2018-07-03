@@ -4,18 +4,45 @@ import Drums from './drums.js';
 function animate() {
   if(audioOn) {    
     let now = Tone.now();
-    updateInstruments(now)
+    updateInstruments(now);
   }
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
 
+const loaderModalEl = document.querySelector('.loaderModal');
+function hideLoader() {
+  loaderModalEl.style.display = 'none';
+}
+
+function showLoader() {
+  loaderModalEl.style.display = 'flex';
+}
+
 let midi = {};
 let mNotes = [];
 let songList = [];
-const instruments = [];
+let instruments = [];
 const instrumentsEl = document.querySelector('.instruments');
-const songsEl = document.querySelector('.songs');
+const songsEl = document.querySelector('.songs');  
+
+const songSelectEl = document.querySelector('#songSelect');
+songSelectEl.onchange = () => {
+  let song = songList[songSelectEl.options[songSelectEl.selectedIndex].value];
+  if(songSelectEl.selectedIndex > 0 && song.title) {
+    showLoader();
+    if(audioInit) {
+      Tone.Transport.stop(); 
+      Tone.Transport.clear();
+      instruments = [];
+      audioInit = false;
+      audioOn = false;
+      audioControlsEl.src = './icons/play.svg';
+    }
+    initSong(song);
+    document.querySelector('.audioControl').style.display = 'block';
+  }
+};
 
 function updateInstruments(now) {
   instruments.forEach((inst) => {
@@ -31,25 +58,24 @@ function inputInstruments(input, state) {
   });                      
 }
 
+showLoader();
 fetch('/songs')
   .then(function(response) {
     return response.json();
   })
   .then(function(data) {
     songList = data;
-    songList.forEach(song => {
-      let button = document.createElement('button');
-      button.innerText = song.title;
-      button.onclick = () => {
-        initSong(song);        
-        songsEl.style.display = 'none';
-        document.querySelector('.audioControl').style.display = 'block';
-      };
-      songsEl.appendChild(button);
+    songList.forEach((song, i) => {
+      let option = document.createElement("option");
+      option.text = song.title;
+      option.value = i;
+      songSelectEl.add(option);
     });
+    hideLoader();
   });
 
 function initSong(song) {
+  instrumentsEl.innerHTML = '';
   console.log('Playing: ' + song.title);  
   fetch('/songs/' + song.id)
     .then(function(response) {
@@ -71,7 +97,8 @@ function initSong(song) {
                       instrument.mNotes.length + ' notes');
         }
       });
-  });
+      hideLoader();
+    });
 }
 
 const audioControlsEl = document.querySelector('.audioControl');
@@ -95,28 +122,30 @@ function initAudio() {
   });
   Tone.Transport.start('2.5', '0'); 
   audioInit = true;
-  audioOn = true;
-  audioControlsEl.src = './audioOff.svg';
 }
 
 audioControlsEl.onclick = (event) => {
-  if(!audioInit) 
+  if(!audioInit) {
+    audioControlsEl.src = './icons/pause.svg';
     initAudio();
+    audioOn = true;    
+  }
   else 
-    toggleAudio();
+    audioOn ? pause() : play();
 };
 
-function toggleAudio() {
-  if(audioOn) {
-    audioOn = false;
-    Tone.Transport.pause();
-    audioControlsEl.src = './audioOn.svg';
-  }
-  else {
-    audioOn = true;
-    Tone.Transport.start(); 
-    audioControlsEl.src = './audioOff.svg';
-  }
+var pauseTime = 0;
+function pause() {
+  audioControlsEl.src = './icons/play.svg';
+  Tone.Transport.pause();  
+  pauseTime = Tone.now();
+  audioOn = false;
+}
+
+function play() {
+  audioControlsEl.src = './icons/pause.svg';
+  Tone.Transport.start(pauseTime); 
+  audioOn = true;
 }
 
 window.addEventListener('keydown', function (e) {
@@ -160,11 +189,25 @@ var helpModalEl = document.querySelector('.helpModal');
 var helpOnScreen = false;
 helpIconEl.onclick = helpModalEl.onclick = () => {
   if(helpOnScreen) {
-    helpModalEl.style.display='none';
+    helpModalEl.style.display = 'none';
     helpOnScreen = false;
   }
   else {
-    helpModalEl.style.display='flex';
+    helpModalEl.style.display = 'flex';
     helpOnScreen = true;
+  }  
+}
+
+const settingsIconEl = document.querySelector('.settingsIcon');
+var settingsModalEl = document.querySelector('.settingsModal');
+var settingsOnScreen = false;
+settingsIconEl.onclick = settingsModalEl.onclick = () => {
+  if(settingsOnScreen) {
+    settingsModalEl.style.display = 'none';
+    settingsOnScreen = false;
+  }
+  else {
+    settingsModalEl.style.display = 'flex';
+    settingsOnScreen = true;
   }  
 }

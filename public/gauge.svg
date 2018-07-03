@@ -1,0 +1,18 @@
+<svg class="gauge" 
+  width="400px" 
+  viewbox="0 0 400 450" 
+  height="450px" 
+  xmlns="http://www.w3.org/2000/svg">
+<path d="M100,250 C150,100 350,100 400,250" 
+  stroke="red" 
+  stroke-width="50" 
+  fill="none" 
+  stroke-linecap="round" />
+<path d="M100,250 C150,100 350,100 400,250" 
+  stroke="green" 
+  stroke-width="50" 
+  fill="none" 
+  stroke-linecap="round" 
+  stroke-dasharray="500" 
+  stroke-dashoffset="250" />
+</svg>

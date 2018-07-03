@@ -10,18 +10,48 @@
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
-    <div class="modal helpModal">
-      <div class="dialog">Select a song and click the speaker icon to play it. 
-        Turn off auto mode using the "Auto" toggle switch. 
-        Then use keys Q-W-E-R-T to play along by hitting the right key to catch the pulsing notes.</div>
-    </div>
-    <div class="songs"></div>
     <div class="controls">
-      <img class="icon helpIcon" src="./help.svg">
-      <img class="icon audioControl" src="./audioOn.svg">
+      <img class="icon helpIcon" src="./icons/help.svg">
+      <img class="icon audioControl" src="./icons/play.svg">
+      <img class="icon settingsIcon" src="./icons/settings.svg">
+      <select id="songSelect">
+        <option>Select a song...</option>
+      </select>
     </div>
-    <br/>
+    
     <div class="instruments"></div>
+    
+    <div class="modal helpModal">
+      <div class="dialog">
+        <p>Select a song and click <img width="16px" height="16px" src="./icons/play.svg"> to play it. 
+        </p>
+        <p>Turn off auto mode using the "Auto" switch.
+        </p>
+        <p>Click or touch the colour blocks or use the Q-W-E-R-T keys on your keboard to play along.
+        </p>
+        <p>
+          Hit the correct color to catch the pulsing notes as they enter the bottom section.
+        </p>
+      </div>
+    </div>
+    
+    <div class="modal settingsModal">
+      <div class="dialog">Coming soon...
+        <ul>
+          <li>Input configuration</li>
+          <li>Difficulty</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="modal loaderModal">
+      <svg class="loader" width="250" height="30" viewbox="0 0 250 30" xmlns="http://www.w3.org/2000/svg">
+        <line y2="15" x2="235" y1="15" x1="15" stroke-width="30" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
+        <line y2="15" x2="235" y1="15" x1="15" stroke-width="20" stroke="var(--loader-background-color)" stroke-linecap="var(--loader-linecap)"/>
+        <line class="inner" y2="15" x2="75" y1="15" x1="15" stroke-width="15" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
+      </svg>
+    </div>
+    
     <script src="https://tonejs.github.io/build/Tone.min.js"></script>
     <script type="module" src="/main.js"></script>
   </body>
