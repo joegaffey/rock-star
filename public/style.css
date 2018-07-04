@@ -16,6 +16,8 @@ li {
   list-style-type: square;
 }
 
+/******************** Animated background ************************/
+
 .background {
   position: fixed;
   top: 0;
@@ -34,9 +36,29 @@ li {
   height: 100%;
 }
 
-iframe {
-  position: relative;
-  width: 100%;
+/******************** Title ************************/
+
+.title {
+  padding-top: 18vh;
+  text-align: center;
+  font-size: 8vw;
+  color: #fff;
+  font-family: Monoton;
+  animation: neon 1s ease-in-out infinite alternate;
+}
+
+@keyframes neon {
+  from {
+    text-shadow:  
+      0 0 10px #fff, 
+      0 0 40px #FF1177,
+      0 0 100px #FF1177;
+  }
+  to {
+    text-shadow: 
+      0 0 5px #fff, 
+      0 0 50px #FF1177;
+  }
 }
 
 /******************** Control panel ************************/
