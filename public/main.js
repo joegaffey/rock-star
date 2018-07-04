@@ -17,8 +17,6 @@ function showLoader() {
   loaderModalEl.style.display = 'flex';
 }
 
-let midi = {};
-let mNotes = [];
 let songList = [];
 let instruments = [];
 const instrumentsEl = document.querySelector('.instruments');
@@ -82,7 +80,7 @@ function initSong(song) {
       return response.json();
     })
     .then(function(data) {
-      midi = data;
+      Tone.Transport.bpm.value = data.header.bpm;
       song.tracks.forEach((track) => {
         let instrument = null;
         if(track.instrument === 'guitar' || track.instrument === 'bass')
@@ -90,7 +88,7 @@ function initSong(song) {
         else if(track.instrument === 'drums')
           instrument = new Drums(instrumentsEl);
         if(instrument) {
-          instrument.mNotes = midi.tracks[track.id].notes;
+          instrument.mNotes = data.tracks[track.id].notes;
           instruments.push(instrument);
           console.log(track.instrument + 
                       ' track: ' + track.id + ' - ' + 
@@ -109,7 +107,6 @@ function initAudio() {
   showLoader();
   audioOn = true;    
   Tone.context = new AudioContext();
-  Tone.Transport.bpm.value = midi.header.bpm;
   instruments.forEach((inst) => {
     inst.initSynth();
     let midiPart = new Tone.Part(function(time, note) {
