@@ -80,6 +80,7 @@ function initSong(song) {
       return response.json();
     })
     .then(function(data) {
+      instruments = [];
       Tone.Transport.bpm.value = data.header.bpm;
       song.tracks.forEach((track) => {
         let instrument = null;
