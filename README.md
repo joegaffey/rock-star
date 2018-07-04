@@ -5,7 +5,7 @@ Web and midi based Guitar Hero/Rockband clone in the making.
 
 Uses [tone.js](https://tonejs.github.io/) for audio.
 
-Animated backgrounds are courtesy of [Shadertoy](https://www.shadertoy.com/).
+Animated backgrounds are courtesy of [glslCanvas](https://github.com/patriciogonzalezvivo/glslCanvas) and [GLSL Sandbox](http://glslsandbox.com).
 
 
 [https://rock-star.glitch.me/](https://rock-star.glitch.me/)
