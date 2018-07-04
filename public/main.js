@@ -24,11 +24,8 @@ let instruments = [];
 const instrumentsEl = document.querySelector('.instruments');
 const songsEl = document.querySelector('.songs');  
 
-const songSelectEl = document.querySelector('#songSelect');
-songSelectEl.onchange = () => {
-  let song = songList[songSelectEl.options[songSelectEl.selectedIndex].value];
-  if(songSelectEl.selectedIndex > 0 && song.title) {
-    document.querySelector('.title').style.display = 'none';
+function loadSong(song) {
+  document.querySelector('.title').style.display = 'none';
     showLoader();
     if(audioInit) {
       Tone.Transport.stop(); 
@@ -40,8 +37,9 @@ songSelectEl.onchange = () => {
     }
     initSong(song);
     document.querySelector('.audioControl').style.display = 'block';
-  }
-};
+}
+
+const songListEl = document.querySelector('.songList');
 
 function updateInstruments(now) {
   instruments.forEach((inst) => {
@@ -65,10 +63,13 @@ fetch('/songs')
   .then(function(data) {
     songList = data;
     songList.forEach((song, i) => {
-      let option = document.createElement("option");
-      option.text = song.title;
-      option.value = i;
-      songSelectEl.add(option);
+      let li = document.createElement("li");
+      li.setAttribute('class', 'songListItem');
+      li.innerHTML = `${song.artist} - ${song.title} (${song.tracks.length} tracks)`;
+      li.onclick = () => {
+        loadSong(song);
+      };
+      songListEl.appendChild(li);
     });
     hideLoader();
   });
@@ -216,5 +217,19 @@ settingsIconEl.onclick = settingsModalEl.onclick = () => {
   else {
     settingsModalEl.style.display = 'flex';
     settingsOnScreen = true;
+  }  
+}
+
+const songListIconEl = document.querySelector('.songListIcon');
+var songListModalEl = document.querySelector('.songListModal');
+var songListOnScreen = false;
+songListIconEl.onclick = songListModalEl.onclick = () => {
+  if(songListOnScreen) {
+    songListModalEl.style.display = 'none';
+    songListOnScreen = false;
+  }
+  else {
+    songListModalEl.style.display = 'flex';
+    songListOnScreen = true;
   }  
 }

@@ -10,16 +10,14 @@
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/style.css">
-    <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
   </head>
   <body>
     <div class="controls">
       <img class="icon helpIcon" src="./icons/help.svg">
       <img class="icon audioControl" src="./icons/play.svg">
+      <img class="icon songListIcon" src="./icons/list.svg">
       <img class="icon settingsIcon" src="./icons/settings.svg">
-      <select id="songSelect">
-        <option>Select a song...</option>
-      </select>
     </div>
     
     <p class="title">ROCKSTAR</p>
@@ -29,7 +27,8 @@
     <div class="modal helpModal">
       <div class="dialog">
         <h2>Help</h2>
-        <p>Select a song and click <img width="16px" height="16px" src="./icons/play.svg"> to play it.</p>
+        <p>Click <img width="16px" height="16px" src="./icons/list.svg"> 
+          to select a song from list and then <img width="16px" height="16px" src="./icons/play.svg"> to play it.</p>
         <p>Turn off auto mode using the "Auto" switch on the instrumnent you want to play.</p>
         <p>Click or touch the colour blocks or use the Q-W-E-R-T keys on your keboard to play along.</p>
         <p>Hit the correct color to catch the pulsing notes as they enter the bottom section.</p>
@@ -46,6 +45,13 @@
           <li>Graphics options</li>
           <li>Difficulty</li>
         </ul>
+      </div>
+    </div>
+    
+    <div class="modal songListModal">
+      <div class="dialog">
+        <h2>Pick a tune</h2>
+        <ul class="songList"></ul>
       </div>
     </div>
     
