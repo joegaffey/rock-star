@@ -28,6 +28,7 @@ const songSelectEl = document.querySelector('#songSelect');
 songSelectEl.onchange = () => {
   let song = songList[songSelectEl.options[songSelectEl.selectedIndex].value];
   if(songSelectEl.selectedIndex > 0 && song.title) {
+    document.querySelector('.title').style.display = 'none';
     showLoader();
     if(audioInit) {
       Tone.Transport.stop(); 
