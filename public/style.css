@@ -38,25 +38,28 @@ li {
 
 /******************** Title ************************/
 
+/* Thanks! https://codepen.io/FelixRilling/pen/qzfoc */
+
 .title {
   padding-top: 18vh;
   text-align: center;
   font-size: 8vw;
   color: #fff;
-  font-family: Monoton;
+  font-family: Audiowide;
   animation: neon 1s ease-in-out infinite alternate;
 }
 
 @keyframes neon {
   from {
     text-shadow:  
-      0 0 10px #fff, 
+      0 0 20px #fff, 
       0 0 40px #FF1177,
-      0 0 100px #FF1177;
+      0 0 80px #FF1177;
   }
   to {
     text-shadow: 
       0 0 5px #fff, 
+      0 0 25px #FF1177, 
       0 0 50px #FF1177;
   }
 }
@@ -188,6 +191,25 @@ input:disabled + .slider > line {
   padding: 20px;
   padding-top: 0px;
   border-radius: 4px;
+}
+
+/******************** Song List Dialog ************************/
+
+.songList {
+  padding-left: 0px;
+  margin: 0 -10px -10px -10px;
+}
+
+.songListItem {
+  margin: 8px;
+  background-color: #333;
+  cursor: pointer;
+  padding: 4px 8px 4px 8px;
+  list-style-type: none;
+}
+
+.songListItem:hover {
+  background-color: #222;
 }
 
 /******************** Loader ************************/
