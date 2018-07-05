@@ -54,6 +54,8 @@ export default class Guitar extends Instrument {
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = container.querySelectorAll('.control');
     
+    this.errorRate = 0.95;
+    
     this.controls.forEach((control, i) => {
       control.onclick = () => {
         this.input(i, true);
@@ -130,16 +132,19 @@ export default class Guitar extends Instrument {
       this.ctx.beginPath();
       this.ctx.lineWidth = 30;
       this.ctx.lineCap = "round";
-      this.ctx.globalAlpha = ((gNote.isPlaying) ? 0.8 : 0.2);
+      this.ctx.globalAlpha = ((gNote.isPlaying) ? 0.4 : 0.05);
       this.ctx.strokeStyle = ((gNote.isError) ? 'grey' : gNote.color);
       this.ctx.moveTo(gNote.x, y + this.offset);
       this.ctx.lineTo(gNote.x, y + this.offset - gNote.length);
+      this.ctx.shadowBlur = 10;
+      this.ctx.shadowColor = gNote.color;
       this.ctx.stroke();
       
       this.ctx.beginPath();
       this.ctx.globalAlpha = 1;
       this.ctx.lineWidth = 8;
       this.ctx.lineTo(gNote.x, y + this.offset);
+      this.ctx.shadowBlur = 0;
       this.ctx.stroke();
       
       if(gNote.isPlayerNote) {
@@ -187,7 +192,7 @@ export default class Guitar extends Instrument {
     gNote.isPlaying = false;
     gNote.isError = false;
     mNote.gNote = gNote;       
-    if(this.playerControl && Math.random() > 0.8) {
+    if(this.playerControl && Math.random() > this.errorRate) {
       gNote.isPlayerNote = true;
       gNote.circle = 10;
     }
