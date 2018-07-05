@@ -13,11 +13,6 @@ guitarTemplate.innerHTML = `
   </label>
 </div>
 <svg class="guitarBackground" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <filter id="glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="5"/>
-    </filter>
-  </defs>
   <g>
     <rect fill="#aaa" height="325" width="250" y="0" x="0" />
     <rect fill="#fff" height="75" width="250" y="325" x="0" />    
@@ -26,14 +21,18 @@ guitarTemplate.innerHTML = `
     <line y2="400" x2="125" y1="0" x1="125" stroke-width="3" stroke="#888" stroke-dasharray="4 0.5" />
     <line y2="400" x2="175" y1="0" x1="175" stroke-width="2.5" stroke="#888" stroke-dasharray="4 0.5" />
     <line y2="400" x2="225" y1="0" x1="225" stroke-width="2" stroke="#888" />
-    <rect class="control" fill="green" height="75" width="50" y="325" x="0" style="fill-opacity: .5;" />
-    <rect class="control" fill="red" height="75" width="50" y="325" x="50" style="fill-opacity: .5;" />
-    <rect class="control" fill="yellow" height="75" width="50" y="325" x="100" style="fill-opacity: .5;" />
-    <rect class="control" fill="blue" height="75" width="50" y="325" x="150" style="fill-opacity: .5;" />
-    <rect class="control" fill="orange" height="75" width="50" y="325" x="200" style="fill-opacity: .5;" />
   </g>
 </svg>
 <canvas style="position: absolute; top: 50px; left: 0;" class="guitar" width="250" height="400"></canvas>
+<svg class="guitarControls" style="position: absolute; bottom: 0; left: 0;" width="250" height="75" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <rect class="control" fill="green" height="75" width="50" y="0" x="0" style="fill-opacity: .5;" />
+    <rect class="control" fill="red" height="75" width="50" y="0" x="50" style="fill-opacity: .5;" />
+    <rect class="control" fill="yellow" height="75" width="50" y="0" x="100" style="fill-opacity: .5;" />
+    <rect class="control" fill="blue" height="75" width="50" y="0" x="150" style="fill-opacity: .5;" />
+    <rect class="control" fill="orange" height="75" width="50" y="0" x="200" style="fill-opacity: .5;" />
+  </g>
+</svg>
 `;
 
 export default class Guitar extends Instrument {
@@ -147,7 +146,7 @@ export default class Guitar extends Instrument {
         if(gNote.circle > 50)
           gNote.circle = 10;
         this.ctx.lineWidth = 3;
-        this.ctx.globalAlpha = 0.2;
+        this.ctx.globalAlpha = 10 / (gNote.circle * 2);
         this.ctx.beginPath();
         this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
         this.ctx.stroke();
