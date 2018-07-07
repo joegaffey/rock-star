@@ -1,5 +1,7 @@
 import Guitar from './guitar.js';
 import Drums from './drums.js';
+import Controllers from './controllers.js';
+
 
 function animate() {
   if(audioOn)
@@ -213,9 +215,42 @@ settingsIconEl.onclick = settingsModalEl.onclick = () => {
     settingsOnScreen = false;
   }
   else {
+    updateControllers();
     settingsModalEl.style.display = 'flex';
     settingsOnScreen = true;
   }  
+}
+
+let controllers = new Controllers();
+const controllerListEl = document.querySelector('.controllerList');
+controllers.detectControllers();
+function updateControllers() {
+  controllers.detectControllers();
+  let ctrls = controllers.ctrls;
+  if(ctrls.length > 0) {
+    controllerListEl.innerHTML = `
+      <ul class="controllerList">
+        ${ctrls.map(ctrl => `<li class="ctrlId" id="${ctrl.index}">${ctrl.index} ${ctrl.id}
+        </li>`).join('')}
+      </ul>
+      `;
+  }
+  else {
+    controllerListEl.innerHTML = `
+    <ul class="controllerList"><li class="ctrlId">None</ul>`;
+  }
+  let liEls = controllerListEl.querySelectorAll('.ctrlId');
+  liEls.forEach((li) => {
+    if(li.id)
+      li.onclick = (e) => {
+        configure(li.id);
+        e.stopPropagation();
+      };
+  });
+}
+
+function configure(id) {
+  alert('Coming soon...');
 }
 
 const songListIconEl = document.querySelector('.songListIcon');

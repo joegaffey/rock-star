@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px"
 	 height="24px" viewBox="0 0 24 24">
 	<g id="settings">
-		<path id="gear" fill="#aaa" style="transform-origin:center;" transform="scale(0.8)"
+		<path id="gear" fill="#aaa" style="transform-box:fill-box;transform-origin:center;" transform="scale(0.8)"
       d="M20.869,13.476C20.948,12.994,21,12.504,21,12
 			s-0.052-0.994-0.131-1.476l-2.463-0.259c-0.149-0.556-0.367-1.082-0.648-1.57l1.558-1.924c-0.576-0.806-1.281-1.511-2.087-2.087
 			l-1.924,1.558c-0.488-0.281-1.015-0.499-1.57-0.648l-0.259-2.463C12.994,3.052,12.504,3,12,3s-0.994,0.052-1.476,0.131

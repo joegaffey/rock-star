@@ -5,14 +5,28 @@
     <meta name="description" content="Rock on!">
     <link id="favicon" rel="icon" href="/assets/favicon.ico" type="image/x-icon">
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet" type="text/css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/style.css">
-    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>        
   </head>
   <body>
+    
+    <div class="modal loaderModal">
+      <svg class="loader" width="250" height="30" viewbox="0 0 250 30" xmlns="http://www.w3.org/2000/svg">
+        <line y2="15" x2="235" y1="15" x1="15" stroke-width="30" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
+        <line y2="15" x2="235" y1="15" x1="15" stroke-width="20" stroke="var(--loader-background-color)" stroke-linecap="var(--loader-linecap)"/>
+        <line class="inner" y2="15" x2="75" y1="15" x1="15" stroke-width="15" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
+      </svg>
+    </div>
+    
+    <div class="background">
+      <canvas class="glslCanvas" data-fragment-url="bg1.frag" width="100%" height="100%"></canvas>      
+    </div>
+    
     <div class="controls">
       <img class="icon helpIcon" src="./icons/help.svg">
       <img class="icon audioControl" src="./icons/play.svg">
@@ -39,7 +53,12 @@
     <div class="modal settingsModal">
       <div class="dialog">
         <h2>Settings</h2>
-        Coming soon...
+        <p>Available controllers:</p>
+        <ul class="controllerList">
+          <li class="ctrlId">None</li>
+        </ul>
+        <br/>
+        <p>Coming soon...</p>
         <ul>
           <li>Input configuration</li>
           <li>Graphics options</li>
@@ -55,21 +74,8 @@
       </div>
     </div>
     
-    <div class="modal loaderModal">
-      <svg class="loader" width="250" height="30" viewbox="0 0 250 30" xmlns="http://www.w3.org/2000/svg">
-        <line y2="15" x2="235" y1="15" x1="15" stroke-width="30" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
-        <line y2="15" x2="235" y1="15" x1="15" stroke-width="20" stroke="var(--loader-background-color)" stroke-linecap="var(--loader-linecap)"/>
-        <line class="inner" y2="15" x2="75" y1="15" x1="15" stroke-width="15" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
-      </svg>
-    </div>
-    
-    <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
-        
-    <div class="background">
-      <canvas class="glslCanvas" data-fragment-url="bg1.frag" width="100%" height="100%"></canvas>      
-    </div>
-    
-    <script src="https://tonejs.github.io/build/Tone.min.js"></script>
+<!--     <script src="https://tonejs.github.io/build/Tone.min.js"></script> -->
+    <script src="./lib/tone.js"></script>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

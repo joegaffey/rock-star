@@ -1,6 +1,7 @@
 <svg class="helpIcon" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
   <g>
-    <text text-anchor="middle" dominant-baseline="middle" x="12" y="13.5" style="font:bold 16px sans-serif;fill:#aaa;">?</text>
+    <text text-anchor="middle" x="12" y="13.5" style="font:bold 16px sans-serif;fill:#aaa;">
+      <tspan dy="4">?</tspan></text> <!-- workaround for lack of support for dominant-baseline in Edge -->
     <circle cx="12" cy="12" r="11" fill="none" stroke="#aaa" style="fill:none;stroke-width:2;stroke-linecap:round" />
   </g>
 </svg>

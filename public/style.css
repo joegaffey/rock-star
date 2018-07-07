@@ -103,7 +103,7 @@ input {
 }
 
 input:checked + .slider > circle { 
-  cx: 35; 
+  transform: translateX(20px);
 }
 
 .slider {
@@ -195,12 +195,12 @@ input:disabled + .slider > line {
 
 /******************** Song List Dialog ************************/
 
-.songList {
+.songList, .controllerList {
   padding-left: 0px;
   margin: 0 -10px -10px -10px;
 }
 
-.songListItem {
+.songListItem, .ctrlId {
   margin: 8px;
   background-color: #333;
   cursor: pointer;
@@ -208,11 +208,14 @@ input:disabled + .slider > line {
   list-style-type: none;
 }
 
-.songListItem:hover {
+.songListItem:hover, .ctrlId:hover {
   background-color: #222;
 }
 
 /******************** Loader ************************/
+.loaderModal {
+  display: flex;
+}
 
 .loader {
   width: 100%;
@@ -230,4 +233,13 @@ input:disabled + .slider > line {
 @keyframes move {
   from { transform: translateX(0px); }
   to { transform: translateX(160px); }
+}
+
+/******************** Gauge ************************/
+
+.gauge {
+  --gauge-value: 50;
+  --gauge-radius: 40;
+  --gauge-offset: calc(var(--gauge-length) / 200 * (100 - var(--gauge-value))); 
+  --gauge-length: calc(var(--gauge-radius) * 6.28);
 }
