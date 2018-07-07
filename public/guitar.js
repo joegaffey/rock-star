@@ -120,7 +120,6 @@ export default class Guitar extends Instrument {
     
     // this.synth = new Tone.PolySynth(8).toMaster(); // test synth
   }
-
   
   update(now) {
     // Update existing notes
@@ -142,16 +141,17 @@ export default class Guitar extends Instrument {
       
       this.ctx.beginPath();
       this.ctx.globalAlpha = 1;
-      this.ctx.lineWidth = 8;
-      this.ctx.lineTo(gNote.x, y + this.offset);
-      this.ctx.shadowBlur = 0;
-      this.ctx.stroke();
+      this.ctx.fillStyle = gNote.color;
+      this.ctx.shadowColor = '#000';
+      this.ctx.shadowBlur = ((gNote.isPlayerNote) ? 10 : 0);
+      this.ctx.arc(gNote.x, y + this.offset, 4, 0, 6.28);
+      this.ctx.fill();
       
       if(gNote.isPlayerNote) {
         if(gNote.circle > 50)
-          gNote.circle = 10;
+          gNote.circle = 5;
         this.ctx.lineWidth = 3;
-        this.ctx.globalAlpha = 10 / (gNote.circle * 2);
+        this.ctx.globalAlpha = 10 / (gNote.circle * 5);
         this.ctx.beginPath();
         this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
         this.ctx.stroke();
