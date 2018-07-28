@@ -2,7 +2,7 @@ import Guitar from './guitar.js';
 import Drums from './drums.js';
 import Controllers from './controllers.js';
 import Modal from './modal.js';
-
+import Keyboard from './keyboard.js';
 
 function animate() {
   if(audioOn)
@@ -48,6 +48,11 @@ function updateInstruments(now) {
        inst.update(now);
   });                      
 }
+
+const keys = new Keyboard();
+keys.onKeyDown = keys.onKeyUp = (input, state) => {
+  inputInstruments(input, state)
+};
 
 function inputInstruments(input, state) {
   instruments.forEach((inst) => {
@@ -157,42 +162,6 @@ function play() {
   Tone.Transport.start(pauseTime); 
   audioOn = true;
 }
-
-window.addEventListener('keydown', function (e) {
-  if(e.keyCode === 81) {
-    inputInstruments(0, true);
-  }
-  else if(e.keyCode === 87) {
-    inputInstruments(1, true);
-  }
-  else if(e.keyCode === 69) {
-    inputInstruments(2, true);
-  }
-  else if(e.keyCode === 82) {
-    inputInstruments(3, true);
-  }
-  else if(e.keyCode === 84) {
-    inputInstruments(4, true);
-  }
-});
-
-window.addEventListener('keyup', function (e) {
-  if(e.keyCode === 81) {
-    inputInstruments(0, false);
-  }
-  else if(e.keyCode === 87) {
-    inputInstruments(1, false);
-  }
-  else if(e.keyCode === 69) {
-    inputInstruments(2, false);
-  }
-  else if(e.keyCode === 82) {
-    inputInstruments(3, false);
-  }
-  else if(e.keyCode === 84) {
-    inputInstruments(4, false);
-  }
-});
 
 const helpModal = new Modal(document.querySelector('.helpModal'));
 const helpIconEl = document.querySelector('.helpIcon');

@@ -25,6 +25,6 @@ export default class Modal {
     }
   }
   
-  onOpen() {};    
-  onClose() {};    
+  onOpen() {}   
+  onClose() {}    
 }

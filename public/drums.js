@@ -23,7 +23,7 @@ drumsTemplate.innerHTML = `
 </svg>
 `;
 
-export default class Drums extends Instrument{    
+export default class Drums extends Instrument {    
   constructor(parent) {
     super(parent);
     let container = document.createElement('div');
