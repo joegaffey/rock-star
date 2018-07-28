@@ -67,21 +67,24 @@ li {
 /******************** Control panel ************************/
 
 .controls {
-  padding-top: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .controls > * {
-  margin-left: 8px;
+  margin: 12px;
 }
 
 .icon {
-  opacity: 0.8;
+  opacity: 0.66;
   width: 30px;
   height: 30px;
 }  
+
+.icon:hover {
+  opacity: 1;
+}
 
 .audioControl {
   display: none;
@@ -192,6 +195,11 @@ input:disabled + .slider > line {
   padding-top: 0px;
   border-radius: 4px;
 }
+
+.closeModal {
+ float: right; 
+}
+
 
 /******************** Song List Dialog ************************/
 
