@@ -1,6 +1,7 @@
 import Guitar from './guitar.js';
 import Drums from './drums.js';
 import Controllers from './controllers.js';
+import Modal from './modal.js';
 
 
 function animate() {
@@ -68,6 +69,7 @@ fetch('/songs')
       li.innerHTML = `${song.artist} - ${song.title} (${song.tracks.length} tracks)`;
       li.onclick = () => {
         loadSong(song);
+        songListModal.toggle();
       };
       songListEl.appendChild(li);
     });
@@ -192,77 +194,18 @@ window.addEventListener('keyup', function (e) {
   }
 });
 
+const helpModal = new Modal(document.querySelector('.helpModal'));
 const helpIconEl = document.querySelector('.helpIcon');
-var helpModalEl = document.querySelector('.helpModal');
-var helpOnScreen = false;
-helpIconEl.onclick = helpModalEl.onclick = () => {
-  if(helpOnScreen) {
-    helpModalEl.style.display = 'none';
-    helpOnScreen = false;
-  }
-  else {
-    helpModalEl.style.display = 'flex';
-    helpOnScreen = true;
-  }  
-}
+helpIconEl.onclick = () => { helpModal.toggle(); };
 
-const settingsIconEl = document.querySelector('.settingsIcon');
-var settingsModalEl = document.querySelector('.settingsModal');
-var settingsOnScreen = false;
-settingsIconEl.onclick = settingsModalEl.onclick = () => {
-  if(settingsOnScreen) {
-    settingsModalEl.style.display = 'none';
-    settingsOnScreen = false;
-  }
-  else {
-    updateControllers();
-    settingsModalEl.style.display = 'flex';
-    settingsOnScreen = true;
-  }  
-}
-
-let controllers = new Controllers();
 const controllerListEl = document.querySelector('.controllerList');
-controllers.detectControllers();
-function updateControllers() {
-  controllers.detectControllers();
-  let ctrls = controllers.ctrls;
-  if(ctrls.length > 0) {
-    controllerListEl.innerHTML = `
-      <ul class="controllerList">
-        ${ctrls.map(ctrl => `<li class="ctrlId" id="${ctrl.index}">${ctrl.index} ${ctrl.id}
-        </li>`).join('')}
-      </ul>
-      `;
-  }
-  else {
-    controllerListEl.innerHTML = `
-    <ul class="controllerList"><li class="ctrlId">None</ul>`;
-  }
-  let liEls = controllerListEl.querySelectorAll('.ctrlId');
-  liEls.forEach((li) => {
-    if(li.id)
-      li.onclick = (e) => {
-        configure(li.id);
-        e.stopPropagation();
-      };
-  });
-}
+let controllers = new Controllers(controllerListEl);
 
-function configure(id) {
-  alert('Coming soon...');
-}
+const settingsModal = new Modal(document.querySelector('.settingsModal'));
+settingsModal.onOpen = () => { controllers.refresh(); };
+const settingsIconEl = document.querySelector('.settingsIcon');
+settingsIconEl.onclick = () => { settingsModal.toggle(); };
 
+const songListModal = new Modal(document.querySelector('.songListModal'));
 const songListIconEl = document.querySelector('.songListIcon');
-var songListModalEl = document.querySelector('.songListModal');
-var songListOnScreen = false;
-songListIconEl.onclick = songListModalEl.onclick = () => {
-  if(songListOnScreen) {
-    songListModalEl.style.display = 'none';
-    songListOnScreen = false;
-  }
-  else {
-    songListModalEl.style.display = 'flex';
-    songListOnScreen = true;
-  }  
-}
+songListIconEl.onclick = () => { songListModal.toggle(); };
