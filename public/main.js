@@ -49,8 +49,8 @@ function updateInstruments(now) {
   });                      
 }
 
-const keys = new Keyboard();
-keys.onKeyDown = keys.onKeyUp = (input, state) => {
+const keyboard = new Keyboard();
+keyboard.onKeyDown = keyboard.onKeyUp = (input, state) => {
   inputInstruments(input, state)
 };
 
@@ -167,8 +167,8 @@ const helpModal = new Modal(document.querySelector('.helpModal'));
 const helpIconEl = document.querySelector('.helpIcon');
 helpIconEl.onclick = () => { helpModal.toggle(); };
 
-const controllerListEl = document.querySelector('.controllerList');
-let controllers = new Controllers(controllerListEl);
+const controllerEl = document.querySelector('.controllerEl');
+let controllers = new Controllers(controllerEl);
 
 const settingsModal = new Modal(document.querySelector('.settingsModal'));
 settingsModal.onOpen = () => { controllers.refresh(); };

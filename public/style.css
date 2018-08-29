@@ -196,8 +196,16 @@ input:disabled + .slider > line {
   border-radius: 4px;
 }
 
+.modalTitle {
+  min-width: 300px;
+}
+
 .closeModal {
- float: right; 
+  float: right; 
+  background-image: url(./icons/close.svg);
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
 }
 
 
@@ -218,6 +226,21 @@ input:disabled + .slider > line {
 
 .songListItem:hover, .ctrlId:hover {
   background-color: #222;
+}
+
+/******************** Controllers ************************/
+
+.waiting {
+  color: white;
+  font-weight: bold;
+}
+
+.notReady {
+  color: #252525;
+}
+
+.joyButton {
+  float: right;
 }
 
 /******************** Loader ************************/

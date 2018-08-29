@@ -4,7 +4,6 @@ export default class Modal {
     this.element = element;
     this.onScreen = false;
     const closeEl = document.createElement('span');
-    closeEl.innerHTML = 'X';    
     closeEl.classList.add('closeModal');
     this.element.querySelector('.modalTitle').appendChild(closeEl);
     closeEl.onclick = () => {
