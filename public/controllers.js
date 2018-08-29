@@ -63,6 +63,8 @@ export default class Controllers {
       return;
     }
     instrument--;
+    
+    this.startChecking(i, 0);    
     i++;
     
     this.controllerEl.innerHTML = `
@@ -76,37 +78,42 @@ export default class Controllers {
     <p class="notReady">Strum Down <span class="joyButton">TBD</span></p>
     <button id="buttonAssignCancel">Cancel</button>`;    
     let button = this.controllerEl.querySelector('#buttonAssignCancel');
-    button.onclick = (e) => { this.updateUI(); };
+    button.onclick = (e) => { 
+      this.updateUI(); 
+    };
+    console.log(navigator.getGamepads()[1].buttons[0]);  
   }
-
-   
+  
+  startChecking(controller, button) {
+    let joyButton = this.check(controller)
+    if(joyButton > -1) {
+      alert('Button ' + joyButton + 'pressed! Full controller support coming soon!!!');
+    }
+    else {
+      setInterval(() => {
+        this.startChecking(controller, button);
+      }, 100);      
+    }
+  }
+  
   detect() {
     let pads = navigator.getGamepads();
     this.ctrls = [];
-    for(let i in pads){
+    for(let i in pads) {
       let pad = pads[i];
       if(pad && pad.connected) {
         this.ctrls.push(pad);
       }
     }
   }
-
-  check() {
-    var pads = navigator.getGamepads();  
-    
-    for (let pad in pads) {
-      try {   
-        if(pad.buttons[0].value === 1) {
-
-        }
-        if(pad.buttons[1].value === 1) {
-
-        }      
-        if(pad.buttons[2].value === 1) {  
-
-        }
+  
+  check(id) {
+    var buttons = navigator.getGamepads()[id].buttons;  
+    for(let i in buttons) {
+      if(buttons[i].pressed) {
+        return i;
       }
-      catch(e) { console.log(e); }
-    }
+    } 
+    return -1;
   }
 }
