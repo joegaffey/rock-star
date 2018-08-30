@@ -7,6 +7,14 @@ import Keyboard from './keyboard.js';
 function animate() {
   if(audioOn)
     updateInstruments(Tone.now());
+  for(let i in controllers.ctrls) {
+    let input = controllers.checkAssigned(i);
+    inputInstruments(0, input[0]);
+    inputInstruments(1, input[1]);
+    inputInstruments(2, input[2]);
+    inputInstruments(3, input[3]);
+    inputInstruments(4, input[4]);
+  }
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);

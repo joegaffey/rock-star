@@ -8,10 +8,10 @@ export default class Controllers {
   
   refresh() {
     this.detect();
-    this.updateUI();
+    this.showControllers();
   }
   
-  updateUI() {
+  showControllers() {
     if(this.ctrls.length > 0) {
       this.controllerEl.innerHTML = `
         <p>Available controllers:</p>
@@ -48,10 +48,10 @@ export default class Controllers {
     });
   }
 
-  configure(i) {
+  configure(controller) {
     let itemEls = this.controllerEl.querySelectorAll('.ctrlId');
-    let player = itemEls[i].querySelector('.playerSelect').value;
-    let instrument = itemEls[i].querySelector('.instrumentSelect').value;
+    let player = itemEls[controller].querySelector('.playerSelect').value;
+    let instrument = itemEls[controller].querySelector('.instrumentSelect').value;
     
     if(player < 1) {
       alert('Select a player');
@@ -64,35 +64,47 @@ export default class Controllers {
     }
     instrument--;
     
-    this.startChecking(i, 0);    
-    i++;
-    
+    //controller++;
+    let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down'];
     this.controllerEl.innerHTML = `
-    <p>Assign Player ${player} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${i}</p>
-    <p class="waiting">Green  <span class="joyButton">(Waiting...)</span></p>
-    <p class="notReady">Red <span class="joyButton">TBD</span></p>
-    <p class="notReady">Yellow <span class="joyButton">TBD</span></p>
-    <p class="notReady">Blue <span class="joyButton">TBD</span></p>
-    <p class="notReady">Orange <span class="joyButton">TBD</span></p>
-    <p class="notReady">Strum Up <span class="joyButton">TBD</span></p>
-    <p class="notReady">Strum Down <span class="joyButton">TBD</span></p>
-    <button id="buttonAssignCancel">Cancel</button>`;    
-    let button = this.controllerEl.querySelector('#buttonAssignCancel');
-    button.onclick = (e) => { 
-      this.updateUI(); 
+    <p>Assign Player ${player} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${controller + 1}</p>    
+    ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join(' ')}
+    <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
+    <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
+    this.controllerEl.querySelector('#buttonAssignCancel').onclick = (e) => { 
+      this.showControllers(); 
     };
-    console.log(navigator.getGamepads()[1].buttons[0]);  
+    this.buttonAssignOk = this.controllerEl.querySelector('#buttonAssignOk');
+    this.buttonAssignOk.style.display = 'none';
+    this.buttonAssignOk.style.float = 'right';
+    this.buttonAssignOk.onclick = (e) => { 
+      this.showControllers(); 
+    };
+    this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
+    
+    this.ctrls[controller].player = player;
+    this.ctrls[controller].joyButtons = [];
+    this.startChecking(controller, 0);
   }
   
   startChecking(controller, button) {
+    if(button >= this.buttonEls.length) {
+      this.buttonAssignOk.style.display = 'block';
+      return;
+    }
+    this.buttonEls[button].innerHTML = 'Waiting...';
     let joyButton = this.check(controller)
     if(joyButton > -1) {
-      alert('Button ' + joyButton + 'pressed! Full controller support coming soon!!!');
+      this.ctrls[controller].joyButtons.push(joyButton);
+      this.buttonEls[button].innerHTML = 'JOY ' + joyButton;
+      setTimeout(() => {
+        this.startChecking(controller, button + 1);
+      }, 500);      
     }
     else {
-      setInterval(() => {
+      setTimeout(() => {
         this.startChecking(controller, button);
-      }, 100);      
+      }, 500);      
     }
   }
   
@@ -115,5 +127,14 @@ export default class Controllers {
       }
     } 
     return -1;
+  }
+  
+  checkAssigned(id) {
+    var buttons = this.ctrls[id].joyButtons;  
+    var res = [];
+    for(let i in buttons) {
+      res.push(navigator.getGamepads()[id].buttons[buttons[i]].pressed);
+    } 
+    return res;
   }
 }
