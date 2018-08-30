@@ -69,21 +69,33 @@ export default class Controllers {
     this.controllerEl.innerHTML = `
     <p>Assign Player ${player} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${controller + 1}</p>    
     ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join(' ')}
-    <button id="buttonAssignCancel">Cancel</button>`;
-    let button = this.controllerEl.querySelector('#buttonAssignCancel');
-    button.onclick = (e) => { 
+    <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
+    <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
+    this.controllerEl.querySelector('#buttonAssignCancel').onclick = (e) => { 
+      this.showControllers(); 
+    };
+    this.buttonAssignOk = this.controllerEl.querySelector('#buttonAssignOk');
+    this.buttonAssignOk.style.display = 'none';
+    this.buttonAssignOk.style.float = 'right';
+    this.buttonAssignOk.onclick = (e) => { 
       this.showControllers(); 
     };
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
+    
+    this.ctrls[controller].player = player;
+    this.ctrls[controller].joyButtons = [];
     this.startChecking(controller, 0);
   }
   
   startChecking(controller, button) {
-    if(button >= this.buttonEls.length)
+    if(button >= this.buttonEls.length) {
+      this.buttonAssignOk.style.display = 'block';
       return;
+    }
     this.buttonEls[button].innerHTML = 'Waiting...';
     let joyButton = this.check(controller)
     if(joyButton > -1) {
+      this.ctrls[controller].joyButtons.push(joyButton);
       this.buttonEls[button].innerHTML = 'JOY ' + joyButton;
       setTimeout(() => {
         this.startChecking(controller, button + 1);
@@ -115,5 +127,14 @@ export default class Controllers {
       }
     } 
     return -1;
+  }
+  
+  checkAssigned(id) {
+    var buttons = this.ctrls[id].joyButtons;  
+    var res = [];
+    for(let i in buttons) {
+      res.push(navigator.getGamepads()[id].buttons[buttons[i]].pressed);
+    } 
+    return res;
   }
 }

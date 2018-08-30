@@ -196,6 +196,12 @@ input:disabled + .slider > line {
   border-radius: 4px;
 }
 
+.dialogButton {
+  margin: 10px;
+  width: 80px;
+  float: left;
+}
+
 .modalTitle {
   min-width: 300px;
 }
@@ -242,6 +248,7 @@ input:disabled + .slider > line {
 .joyButton {
   float: right;
 }
+
 
 /******************** Loader ************************/
 .loaderModal {
