@@ -118,7 +118,7 @@ export default class Guitar extends Instrument {
       Tone.Master
     );
     
-    // this.synth = new Tone.PolySynth(8).toMaster(); // test synth
+    // this.synth = new Tone.PolySynth(8).toMaster(); // Simple test synth
   }
   
   update(now) {
@@ -202,8 +202,10 @@ export default class Guitar extends Instrument {
   playCheck(gNote) {
     if(!this.playerControl)
       return true; 
-    if(this.controls[gNote.string].on)
+    if(this.controls[gNote.string].on) {
+      this.player.hit();
       return true;
+    }
     else {
       this.errorNote(gNote)
       return false;
@@ -212,6 +214,7 @@ export default class Guitar extends Instrument {
   
   errorNote(gNote) {
     gNote.isError = true;
+    this.player.miss();
     this.errorSynth.triggerAttackRelease('E4', gNote.mNote.duration);    
   }
   

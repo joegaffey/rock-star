@@ -1,14 +1,14 @@
-// init project
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
-var assets = require("./assets");
+const assets = require("./assets");
 app.use("/assets", assets);
 
-// http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
+var bodyParser = require('body-parser')
+app.use(bodyParser.json());   
+
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -18,6 +18,7 @@ app.get("/songs/latest", function (request, response) {
 });
 
 app.get("/songs/:id", function (request, response) {
+  songStats[request.params.id]++;
   response.sendFile(__dirname + '/s' +  request.params.id + '.json');
 });
 
@@ -25,11 +26,24 @@ app.get("/songs", function (request, response) {
   response.sendFile(__dirname + '/songs.json');
 });
 
-app.get("/metrics", function (request, response) {
-  response.send('metric1 666');
+let playerStats = new Array(4).fill(0);
+
+app.put('/metrics/players', function(req, res) {
+  req.body.forEach((stat, i) => {
+    playerStats[i] = stat;
+  });
+  res.send(playerStats);
 });
 
-// listen for requests
+let songStats = new Array(8).fill(0);
+
+app.get("/metrics", function (request, response) {
+  response.write('metric1 666\n');
+  response.write(playerStats.map((stat, i) => `player_${i}_accurracy ${stat}\n`).join(''));  
+  response.write(songStats.map((stat, i) => `song_${i}_plays ${stat}\n`).join(''));  
+  response.end();
+});
+
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });

@@ -28,6 +28,26 @@ function showLoader() {
   loaderModalEl.style.display = 'flex';
 }
 
+setInterval(() => {
+  var stats = [];
+  instruments.forEach(instrument => {
+    stats.push(instrument.player.avg);
+  });
+  sendPlayerStats(stats);  
+}, 2000);
+
+function sendPlayerStats(stats) {
+  var headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  var init = {
+    method: 'PUT',
+    body: JSON.stringify(stats),
+    headers: headers
+  };
+  var request = new Request('/metrics/players', init);  
+  fetch(request);
+}
+
 let songList = [];
 let instruments = [];
 const instrumentsEl = document.querySelector('.instruments');

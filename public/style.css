@@ -147,6 +147,10 @@ input:disabled + .slider > line {
   height: 450px;
 }
 
+/* .instruments > *:hover {
+  border-color: maroon;
+} */
+
 /******************** Guitar ************************/
 
 @keyframes notePulse {
