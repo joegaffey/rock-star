@@ -64,11 +64,10 @@ export default class Controllers {
     }
     instrument--;
     
-    //controller++;
-    let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down'];
+    let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down', 'Start', 'Select'];
     this.controllerEl.innerHTML = `
     <p>Assign Player ${player} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${controller + 1}</p>    
-    ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join(' ')}
+    ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join('')}
     <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
     <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
     this.controllerEl.querySelector('#buttonAssignCancel').onclick = (e) => { 

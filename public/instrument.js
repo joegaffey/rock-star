@@ -1,9 +1,12 @@
+import Player from './player.js';
+
 export default class Instrument {    
   constructor(parent) {
     if(!parent)
       throw new Error('You have to accept the parent DOM element as a paramter!');
     this.gNotes = []; // Note graphics
     this.mNotes = []; // Note music (Tone.js)
+    this.player = new Player();
   }
 
   /**
