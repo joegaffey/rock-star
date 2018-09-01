@@ -26,11 +26,11 @@ guitarTemplate.innerHTML = `
 <canvas style="position: absolute; top: 50px; left: 0;" class="guitar" width="250" height="400"></canvas>
 <svg class="guitarControls" style="position: absolute; bottom: 0; left: 0;" width="250" height="75" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect class="control" fill="green" height="75" width="50" y="0" x="0" style="fill-opacity: .5;" />
-    <rect class="control" fill="red" height="75" width="50" y="0" x="50" style="fill-opacity: .5;" />
-    <rect class="control" fill="yellow" height="75" width="50" y="0" x="100" style="fill-opacity: .5;" />
-    <rect class="control" fill="blue" height="75" width="50" y="0" x="150" style="fill-opacity: .5;" />
-    <rect class="control" fill="orange" height="75" width="50" y="0" x="200" style="fill-opacity: .5;" />
+    <rect class="control" fill="green" height="20" width="50" y="0" x="0" style="fill-opacity: .2;" />
+    <rect class="control" fill="red" height="20" width="50" y="0" x="50" style="fill-opacity: .2;" />
+    <rect class="control" fill="yellow" height="20" width="50" y="0" x="100" style="fill-opacity: .2;" />
+    <rect class="control" fill="blue" height="20" width="50" y="0" x="150" style="fill-opacity: .2;" />
+    <rect class="control" fill="orange" height="20" width="50" y="0" x="200" style="fill-opacity: .2;" />
   </g>
 </svg>
 `;
@@ -126,6 +126,9 @@ export default class Guitar extends Instrument {
     this.ctx.clearRect(0, 0, 250, 400);
       
     this.gNotes.forEach((gNote, i) => {
+      if(this.playerControl && !gNote.isPlayerNote)
+        return;
+      
       // Update notes
       let y = (now - gNote.mNote.time) * this.scale;
       this.ctx.beginPath();
@@ -229,9 +232,9 @@ export default class Guitar extends Instrument {
   
   input(input, state) {
     if(state)
-      this.controls[input].setAttribute('style', 'opacity: 0.75;');
+      this.controls[input].setAttribute('style', 'opacity: 1;');
     else
-      this.controls[input].setAttribute('style', 'opacity: 0.5;');
+      this.controls[input].setAttribute('style', 'opacity: 0.2;');
     this.controls[input].on = state;
   }
 }
