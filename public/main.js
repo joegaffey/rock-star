@@ -31,16 +31,7 @@ class App {
       })
       .then(data => {
         this.songList = data;
-        this.songList.forEach((song, i) => {
-          let li = document.createElement("li");
-          li.setAttribute('class', 'songListItem');
-          li.innerHTML = `${song.artist} - ${song.title} (${song.tracks.length} tracks)`;
-          li.onclick = () => {
-            this.loadSong(song);
-            this.ui.songListModal.toggle();
-          };
-          this.ui.songListEl.appendChild(li);
-        });
+        this.ui.showSongs(data, this);
         this.ui.hideLoader();
       });
     
@@ -94,7 +85,7 @@ class App {
   }
 
   loadSong(song) {
-    document.querySelector('.title').style.display = 'none';
+    this.ui.hideTitle();
     this.ui.showLoader();
     if(this.audioInit) {
       Tone.Transport.stop(); 
@@ -102,10 +93,10 @@ class App {
       this.instruments = [];
       this.audioInit = false;
       this.isPlaying = false;
-      this.ui.audioControlsEl.src = './icons/play.svg';
+      this.ui.showPlayIcon();
     }
     this.initSong(song);
-    document.querySelector('.audioControl').style.display = 'block';
+    this.ui.showAudioControlIcon();    
   }
 
   updateInstruments(now) {
@@ -123,7 +114,7 @@ class App {
   }
 
   initSong(song) {
-    this.ui.instrumentsEl.innerHTML = '';
+    this.ui.clearInstruments();
     console.log('Playing: ' + song.title);  
     fetch('/songs/' + song.id)
       .then(response => {
@@ -168,7 +159,7 @@ class App {
     this.audioInit = true;
     
     Tone.Transport.on('start', () => {
-      this.ui.audioControlsEl.src = './icons/pause.svg';
+      this.ui.showPauseIcon();
       this.ui.hideLoader();
     });
     Tone.Transport.start('2.5', '0'); 
@@ -176,17 +167,15 @@ class App {
   }
 
   pause() {
-    this.ui.audioControlsEl.src = './icons/play.svg';
+    this.ui.showPlayIcon();
     Tone.Transport.pause();  
-    this.paused = true;
     this.pauseTime = Tone.now();
     this.isPlaying = false;
   }
 
   play() {
-    this.ui.audioControlsEl.src = './icons/pause.svg';
+    this.ui.showPauseIcon();
     Tone.Transport.start(this.pauseTime); 
-    this.paused = false;
     this.isPlaying = true;
   }
 }

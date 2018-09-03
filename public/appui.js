@@ -30,4 +30,37 @@ export default class AppUI {
   showLoader() {
     this.loaderModalEl.style.display = 'flex';
   }
+  
+  hideTitle() {
+    document.querySelector('.title').style.display = 'none';
+  }
+  
+  showPlayIcon() {
+    this.audioControlsEl.src = './icons/play.svg';
+  }
+  
+  showPauseIcon() {
+    this.audioControlsEl.src = './icons/pause.svg';
+  }
+  
+  showAudioControlIcon() {
+    this.audioControlsEl.style.display = 'block';
+  }
+  
+  clearInstruments() {
+    this.instrumentsEl.innerHTML = '';
+  }
+  
+  showSongs(songs, app) {
+    songs.forEach((song, i) => {
+      let li = document.createElement("li");
+      li.setAttribute('class', 'songListItem');
+      li.innerHTML = `${song.artist} - ${song.title} (${song.tracks.length} tracks)`;
+      li.onclick = () => {
+        app.loadSong(song);
+        this.songListModal.toggle();
+      };
+      this.songListEl.appendChild(li);
+    });
+  }
 }
