@@ -7,7 +7,7 @@ export default class Controllers {
   }
   
   refresh() {
-    this.detect();
+    this.detectControllers();
     this.showControllers();
   }
   
@@ -50,10 +50,10 @@ export default class Controllers {
 
   configure(controller) {
     let itemEls = this.controllerEl.querySelectorAll('.ctrlId');
-    let player = itemEls[controller].querySelector('.playerSelect').value;
+    let playerId = itemEls[controller].querySelector('.playerSelect').value;
     let instrument = itemEls[controller].querySelector('.instrumentSelect').value;
     
-    if(player < 1) {
+    if(playerId < 1) {
       alert('Select a player');
       return;
     }
@@ -66,7 +66,7 @@ export default class Controllers {
     
     let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down', 'Start', 'Select'];
     this.controllerEl.innerHTML = `
-    <p>Assign Player ${player} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${controller + 1}</p>    
+    <p>Assign Player ${playerId} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${controller + 1}</p>    
     ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join('')}
     <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
     <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
@@ -81,7 +81,7 @@ export default class Controllers {
     };
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
     
-    this.ctrls[controller].player = player;
+    this.ctrls[controller].playerId = playerId;
     this.ctrls[controller].joyButtons = [];
     this.startChecking(controller, 0);
   }
@@ -107,7 +107,7 @@ export default class Controllers {
     }
   }
   
-  detect() {
+  detectControllers() {
     let pads = navigator.getGamepads();
     this.ctrls = [];
     for(let i in pads) {
