@@ -1,6 +1,11 @@
+import Instrument from './instrument.js';
+
 export default class Player {
   
   constructor() {
+    this.controller = null; //@TODO
+    this.instrument = null; //@TODO
+    
     this.score = 0;
     this.misses = 0;
     this.hits = 0;

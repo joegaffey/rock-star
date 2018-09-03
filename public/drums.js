@@ -2,16 +2,6 @@ import Instrument from './instrument.js';
 
 const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
-<div class="settings">Auto
-  <label class="playerToggle">
-    <input type="checkbox" disabled checked> 
-      <svg class="slider" width="50" height="30" viewbox="0 0 50 30" xmlns="http://www.w3.org/2000/svg">
-        <line y2="15" x2="35" y1="15" x1="15" stroke-width="30" stroke="slateblue" stroke-linecap="round"/>
-        <circle r=10 cx=15 cy=15 fill="#fff"/>
-      </svg>
-    </input>
-  </label>
-</div>
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#aaa" height="100%" width="100%" y="0" x="0" />
@@ -26,12 +16,11 @@ drumsTemplate.innerHTML = `
 export default class Drums extends Instrument {    
   constructor(parent) {
     super(parent);
-    let container = document.createElement('div');
-    container.appendChild(drumsTemplate.content.cloneNode(true));  
-    parent.appendChild(container);  
-    this.graphics = container.querySelector('g');
+    this.container.appendChild(drumsTemplate.content.cloneNode(true));  
+    this.graphics = this.container.querySelector('g');
     this.noteToDrumMap = { A:0, B:1, C:1, D:2, E:2, F:3, G:3 };   
     this.colors = ['green', 'red', 'yellow', 'blue'];
+    this.container.querySelector('.playerToggle > input').disabled = true;
   }
 
   initSynth() {    

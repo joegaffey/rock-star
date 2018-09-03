@@ -2,16 +2,6 @@ import Instrument from './instrument.js';
 
 const guitarTemplate = document.createElement('template');
 guitarTemplate.innerHTML = `
-<div class="settings">Auto
-  <label class="playerToggle">
-    <input type="checkbox" checked> 
-      <svg class="slider" width="50" height="30" viewbox="0 0 50 30" xmlns="http://www.w3.org/2000/svg">
-        <line y2="15" x2="35" y1="15" x1="15" stroke-width="30" stroke="slateblue" stroke-linecap="round"/>
-        <circle r=10 cx=15 cy=15 fill="#fff"/>
-      </svg>
-    </input>
-  </label>
-</div>
 <svg class="guitarBackground" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#aaa" height="325" width="250" y="0" x="0" />
@@ -38,11 +28,9 @@ guitarTemplate.innerHTML = `
 export default class Guitar extends Instrument {
   constructor(parent) {
     super(parent)
-    let container = document.createElement('div');
-    container.style.position = 'relative';
-    container.appendChild(guitarTemplate.content.cloneNode(true));  
-    parent.appendChild(container);  
-    this.graphics = container.querySelector('canvas');
+    this.container.appendChild(guitarTemplate.content.cloneNode(true));  
+    parent.appendChild(this.container);  
+    this.graphics = this.container.querySelector('canvas');
     
     this.colors = ['green', 'red', 'yellow', 'blue', 'orange'];
     
@@ -52,7 +40,7 @@ export default class Guitar extends Instrument {
     this.offset = 75;
     
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
-    this.controls = container.querySelectorAll('.control');
+    this.controls = this.container.querySelectorAll('.control');
     
     this.errorRate = 0.95;
     
@@ -61,13 +49,7 @@ export default class Guitar extends Instrument {
         this.input(i, true);
         setTimeout(() => {this.input(i, false) }, 300);
       }
-    });
-    
-    this.playerControl = false;
-    let playerToggleEl = container.querySelector('.playerToggle > input');
-    playerToggleEl.onclick = () => {
-      this.playerControl = !playerToggleEl.checked;
-    };    
+    });    
     
     this.ctx = this.graphics.getContext('2d');
   }
