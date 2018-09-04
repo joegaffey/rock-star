@@ -4,24 +4,25 @@ export default class Controllers {
     this.controllerEl = element;
     let controllers = localStorage.getItem('controllers');
     if(controllers)
-      this.ctrls = JSON.parse(controllers);
+      this.selectedControllers = JSON.parse(controllers);
     else {
-      this.ctrls = [];
       this.refresh();
     }
   }
   
   refresh() {
+    this.selectedControllers = [];
+    this.availableControllers = [];
     this.detectControllers();
-    this.showControllers();
+    this.showAvailableControllers();
   }
   
-  showControllers() {
-    if(this.ctrls.length > 0) {
+  showAvailableControllers() {
+    if(this.availableControllers.length > 0) {
       this.controllerEl.innerHTML = `
         <p>Available controllers:</p>
         <ul class="controllerList">
-          ${this.ctrls.map(ctrl => `<li class="ctrlId" id="${ctrl.index}">
+          ${this.availableControllers.map(ctrl => `<li class="ctrlId" id="${ctrl.index}">
             <p>${ctrl.index + 1} ${ctrl.id}</p>
             <p>
               <select class="playerSelect">
@@ -53,10 +54,10 @@ export default class Controllers {
     });
   }
 
-  configure(controller) {
+  configure(controllerIndex) {
     let itemEls = this.controllerEl.querySelectorAll('.ctrlId');
-    let playerId = itemEls[controller].querySelector('.playerSelect').value;
-    let instrument = itemEls[controller].querySelector('.instrumentSelect').value;
+    let playerId = itemEls[controllerIndex].querySelector('.playerSelect').value;
+    let instrument = itemEls[controllerIndex].querySelector('.instrumentSelect').value;
     
     if(playerId < 1) {
       alert('Select a player');
@@ -67,29 +68,30 @@ export default class Controllers {
       alert('Select an instrument');
       return;
     }
-    instrument--;
     
     let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down', 'Start', 'Select'];
     this.controllerEl.innerHTML = `
-    <p>Assign Player ${playerId} ${['Guitar', 'Drums'][instrument]} buttons using Controller ${controller + 1}</p>    
+    <p>Assign Player ${playerId} ${['Guitar', 'Drums'][instrument - 1]} buttons using Controller ${controllerIndex + 1}</p>    
     ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join('')}
     <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
     <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
     this.controllerEl.querySelector('#buttonAssignCancel').onclick = (e) => { 
-      this.showControllers(); 
+      this.showAvailableControllers(); 
     };
     this.buttonAssignOk = this.controllerEl.querySelector('#buttonAssignOk');
     this.buttonAssignOk.style.display = 'none';
     this.buttonAssignOk.style.float = 'right';
     this.buttonAssignOk.onclick = (e) => { 
-      localStorage.setItem('controllers', JSON.stringify(this.ctrls));
-      this.showControllers(); 
+      localStorage.setItem('controllers', JSON.stringify(this.selectedControllers));
+      this.showAvailableControllers(); 
     };
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
     
-    this.ctrls[controller].playerId = playerId;
-    this.ctrls[controller].joyButtons = [];
-    this.startChecking(controller, 0);
+    let selectedController = this.availableControllers[controllerIndex];
+    selectedController.playerId = playerId;
+    selectedController.assignedButtons = [];
+    this.selectedControllers.push(selectedController);
+    this.startChecking(selectedController, 0);
   }
   
   startChecking(controller, button) {
@@ -98,9 +100,9 @@ export default class Controllers {
       return;
     }
     this.buttonEls[button].innerHTML = 'Waiting...';
-    let joyButton = this.check(controller)
+    let joyButton = this.checkForButtonPress(controller)
     if(joyButton > -1) {
-      this.ctrls[controller].joyButtons.push(joyButton);
+      controller.assignedButtons.push(joyButton);
       this.buttonEls[button].innerHTML = 'JOY ' + joyButton;
       setTimeout(() => {
         this.startChecking(controller, button + 1);
@@ -115,31 +117,38 @@ export default class Controllers {
   
   detectControllers() {
     let pads = navigator.getGamepads();
-    this.ctrls = [];
+    this.availableControllers = [];
     for(let i in pads) {
       let pad = pads[i];
       if(pad && pad.connected) {
-        this.ctrls.push(pad);
+        this.availableControllers.push(pad);
       }
     }
   }
   
-  check(id) {
-    var buttons = navigator.getGamepads()[id].buttons;  
-    for(let i in buttons) {
-      if(buttons[i].pressed) {
+  checkForButtonPress(controller) {
+    let pad = navigator.getGamepads()[controller.index];    
+    for(let i in pad.buttons) {
+      if(pad.buttons[i].pressed) {
         return i;
       }
     } 
     return -1;
   }
   
-  checkAssigned(id) {
-    var buttons = this.ctrls[id].joyButtons;  
-    var res = [];
+  checkAssignedControllers(id) {
+    let controller = this.selectedControllers[id];
+    if(!controller)
+      return [];
+    var buttons = controller.assignedButtons;  
+    let pad = navigator.getGamepads()[controller.index];    
+    if(!pad) {
+      return [];
+    }
+    var result = [];
     for(let i in buttons) {
-      res.push(navigator.getGamepads()[id].buttons[buttons[i]].pressed);
+      result.push(pad.buttons[buttons[i]].pressed);
     } 
-    return res;
+    return result;
   }
 }

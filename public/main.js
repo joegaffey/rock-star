@@ -64,8 +64,8 @@ class App {
   animate() {
     if(this.isPlaying)
       this.updateInstruments(Tone.now());
-    for(let i in this.controllers.ctrls) {
-      let input = this.controllers.checkAssigned(i);
+    for(let i in this.controllers.selectedControllers) {
+      let input = this.controllers.checkAssignedControllers(i);
       this.inputInstruments(0, input[0]);
       this.inputInstruments(1, input[1]);
       this.inputInstruments(2, input[2]);
