@@ -22,9 +22,9 @@ export default class Player {
   }
   
   get avg() {
-    let avg = 100 * ((this.hits - this.misses) / this.hits);
-    if(!avg || avg < 1)
-      avg = 0;
-    return Math.round(avg);
+    if(this.hits + this.misses === 0)
+      return 0;
+    else 
+      return Math.round((100 * this.hits) / (this.hits + this.misses));
   }
 }
