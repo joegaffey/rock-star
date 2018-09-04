@@ -4,6 +4,9 @@ import Controllers from './controllers.js';
 import Keyboard from './keyboard.js';
 import AppUI from './appui.js';
 
+const SONG_SERVICE_URL = '';
+const STATS_SERVICE_URL = '';
+  
 class App {
   
   constructor() {     
@@ -25,7 +28,7 @@ class App {
   
   start() {
     this.ui.showLoader();
-    fetch('/songs')
+    fetch(SONG_SERVICE_URL + '/songs')
       .then(response => {
         return response.json();
       })
@@ -80,7 +83,7 @@ class App {
       body: JSON.stringify(stats),
       headers: headers
     };
-    var request = new Request('/metrics/players', init);  
+    var request = new Request(STATS_SERVICE_URL + '/metrics/players', init);  
     fetch(request);
   }
 
@@ -116,7 +119,7 @@ class App {
   initSong(song) {
     this.ui.clearInstruments();
     console.log('Playing: ' + song.title);  
-    fetch('/songs/' + song.id)
+    fetch(SONG_SERVICE_URL + '/songs/' + song.id)
       .then(response => {
         return response.json();
       })
