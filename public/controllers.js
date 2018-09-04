@@ -2,8 +2,13 @@ export default class Controllers {
   
   constructor(element) {
     this.controllerEl = element;
-    this.ctrls = [];
-    this.refresh();
+    let controllers = localStorage.getItem('controllers');
+    if(controllers)
+      this.ctrls = JSON.parse(controllers);
+    else {
+      this.ctrls = [];
+      this.refresh();
+    }
   }
   
   refresh() {
@@ -77,6 +82,7 @@ export default class Controllers {
     this.buttonAssignOk.style.display = 'none';
     this.buttonAssignOk.style.float = 'right';
     this.buttonAssignOk.onclick = (e) => { 
+      localStorage.setItem('controllers', JSON.stringify(this.ctrls));
       this.showControllers(); 
     };
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
