@@ -238,7 +238,7 @@ input:disabled + .slider > line {
   background-color: #222;
 }
 
-/******************** Controllers ************************/
+/******************** Controllers Dialog ************************/
 
 .waiting {
   color: white;
@@ -253,6 +253,31 @@ input:disabled + .slider > line {
   float: right;
 }
 
+/******************** Settings Dialog ************************/
+
+.playerList {
+  padding-left: 0px;
+}
+
+.playerConfigLI {
+  list-style-type: none;
+  padding-bottom: 10px;
+}
+
+.playerConfigLI > * {
+  padding-right: 10px;
+}
+
+.configureControllerIcon {
+  padding-left: 10px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.controllerSelect {
+  width: calc(100% - 120px);
+}
 
 /******************** Loader ************************/
 .loaderModal {

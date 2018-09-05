@@ -12,16 +12,22 @@ export default class Modal {
   }
   
   toggle() {
-    if(this.onScreen) {
-      this.onClose();
-      this.element.style.display = 'none';
-      this.onScreen = false;
-    }
-    else {
-      this.onOpen();
-      this.element.style.display = 'flex';
-      this.onScreen = true;
-    }
+    if(this.onScreen) 
+      this.hide();
+    else 
+      this.show();
+  }
+  
+  show() {
+    this.onOpen();
+    this.element.style.display = 'flex';
+    this.onScreen = true;
+  }
+  
+  hide() {
+    this.onClose();
+    this.element.style.display = 'none';
+    this.onScreen = false;
   }
   
   onOpen() {}   
