@@ -1,5 +1,6 @@
 import Guitar from './guitar.js';
 import Drums from './drums.js';
+import Settings from './settings.js';
 import Controllers from './controllers.js';
 import Keyboard from './keyboard.js';
 import AppUI from './appui.js';
@@ -14,19 +15,27 @@ class App {
     this.instruments = [];
     this.isPlaying = false;
     this.audioInit = false;
+    
     this.ui = new AppUI();
     
-    this.controllers = new Controllers(this.ui.controllerEl);
-    this.ui.settingsModal.onOpen = () => { this.controllers.refresh(); };
+    this.controllers = new Controllers(this.ui.settingsEl);
+    // this.controllers.onOk = () => this.ui.controllerModal.hide();
+    // this.controllers.onCancel = () => this.ui.controllerModal.hide();
+    // this.ui.controllerModal.onOpen = () => { this.controllers.refresh(); };
+    
+    this.settings = new Settings(this.ui.settingsEl, this.controllers);
+    this.settings.onOk = () => this.ui.settingsModal.hide();
+    this.settings.onCancel = () => this.ui.settingsModal.hide();
+    
     
     const keyboard = new Keyboard();
     keyboard.onKeyDown = keyboard.onKeyUp = (input, state) => {
       this.inputInstruments(input, state)
     };       
-    this.start();
+    this.init();
   }
   
-  start() {
+  init() {
     this.ui.showLoader();
     fetch(SONG_SERVICE_URL + '/songs')
       .then(response => {
