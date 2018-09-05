@@ -14,13 +14,12 @@ drumsTemplate.innerHTML = `
 `;
 
 export default class Drums extends Instrument {    
-  constructor(parent) {
-    super(parent);
+  constructor(parent, settings) {
+    super(parent, settings);
     this.container.appendChild(drumsTemplate.content.cloneNode(true));  
     this.graphics = this.container.querySelector('g');
     this.noteToDrumMap = { A:0, B:1, C:1, D:2, E:2, F:3, G:3 };   
     this.colors = ['green', 'red', 'yellow', 'blue'];
-    this.container.querySelector('.playerToggle > input').disabled = true;
   }
 
   initSynth() {    

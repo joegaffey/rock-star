@@ -4,7 +4,6 @@ export default class AppUI {
   
   constructor() {
     this.loaderModalEl = document.querySelector('.loaderModal');
-    // this.controllerEl = document.querySelector('.controllerEl');
     this.settingsEl = document.querySelector('.settingsEl');
     this.instrumentsEl = document.querySelector('.instruments');
     this.songsEl = document.querySelector('.songs');  
@@ -14,8 +13,6 @@ export default class AppUI {
     this.settingsModal = new Modal(document.querySelector('.settingsModal'));
     const settingsIconEl = document.querySelector('.settingsIcon');
     settingsIconEl.onclick = () => { this.settingsModal.toggle(); };
-    
-    // this.controllerModal = new Modal(document.querySelector('.controllerModal'));
     
     this.songListModal = new Modal(document.querySelector('.songListModal'));
     const songListIconEl = document.querySelector('.songListIcon');

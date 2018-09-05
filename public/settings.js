@@ -1,3 +1,4 @@
+import Player from './player.js';
 
 export default class Settings {
   
@@ -6,7 +7,7 @@ export default class Settings {
     this.controllers = controllers;
     this.controllers.onOk = () => { this.showSettings() };
     this.controllers.onCancel = () => { this.showSettings() };
-    this.players = [1,2,3,4];
+    this.players = [new Player(),new Player(),new Player(),new Player()];
     this.showSettings();
   }
    
@@ -28,9 +29,17 @@ export default class Settings {
     `;    
     
     this.settingsEl.querySelector('#buttonSettingsCancel').onclick = (e) => { this.onCancel(); };
-    this.buttonSettingsOk = this.settingsEl.querySelector('#buttonSettingsOk');
-    this.buttonSettingsOk.style.float = 'right';
-    this.buttonSettingsOk.onclick = (e) => { this.onOk(); };
+    let buttonSettingsOk = this.settingsEl.querySelector('#buttonSettingsOk');
+    buttonSettingsOk.style.float = 'right';
+    buttonSettingsOk.onclick = (e) => { this.onOk(); };
+    
+    let controllerSelects = this.settingsEl.querySelectorAll('.controllerSelect');
+    controllerSelects.forEach((select, i) => {
+      select.selectedIndex = this.players[i].controller;
+      select.onchange = (e) => {
+        this.players[i].controller = select.selectedIndex;
+      };
+    });
     
     let icons = this.settingsEl.querySelectorAll('.configureControllerIcon');
     let itemEls = this.settingsEl.querySelectorAll('.playerConfigLI');
@@ -38,9 +47,9 @@ export default class Settings {
       icon.onclick = (e) => { 
         let controller = itemEls[i].querySelector('.controllerSelect').value;
         if(controller === 'keyboard')
-          alert('Coming soon!');
+          alert('Keyboard configuration Coming soon! For now use Q,W,E,R and T');
         else 
-          this.controllers.configure(i, parseInt(controller));
+          this.controllers.configure(this.players[i], parseInt(controller));
       };
     });
   }

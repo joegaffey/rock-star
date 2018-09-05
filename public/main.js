@@ -18,15 +18,10 @@ class App {
     
     this.ui = new AppUI();
     
-    this.controllers = new Controllers(this.ui.settingsEl);
-    // this.controllers.onOk = () => this.ui.controllerModal.hide();
-    // this.controllers.onCancel = () => this.ui.controllerModal.hide();
-    // this.ui.controllerModal.onOpen = () => { this.controllers.refresh(); };
-    
+    this.controllers = new Controllers(this.ui.settingsEl);   
     this.settings = new Settings(this.ui.settingsEl, this.controllers);
     this.settings.onOk = () => this.ui.settingsModal.hide();
-    this.settings.onCancel = () => this.ui.settingsModal.hide();
-    
+    this.settings.onCancel = () => this.ui.settingsModal.hide();    
     
     const keyboard = new Keyboard();
     keyboard.onKeyDown = keyboard.onKeyUp = (input, state) => {
@@ -63,8 +58,8 @@ class App {
     
     setInterval(() => {
       var stats = [];
-      this.instruments.forEach(instrument => {
-        stats.push(instrument.player.avg);
+      this.settings.players.forEach(player => {
+        stats.push(player.avg);
       });
       this.sendPlayerStats(stats);  
     }, 2000);
@@ -73,14 +68,16 @@ class App {
   animate() {
     if(this.isPlaying)
       this.updateInstruments(Tone.now());
-    for(let i in this.controllers.selectedControllers) {
-      let input = this.controllers.checkAssignedControllers(i);
-      this.inputInstruments(0, input[0]);
-      this.inputInstruments(1, input[1]);
-      this.inputInstruments(2, input[2]);
-      this.inputInstruments(3, input[3]);
-      this.inputInstruments(4, input[4]);
-    }
+    this.settings.players.forEach(player => {
+      if(player.instrument && player.controller) {
+        let input = this.controllers.checkAssignedControllers(player.controller);
+        player.instrument.input(0, input[0]);
+        player.instrument.input(1, input[1]);
+        player.instrument.input(2, input[2]);
+        player.instrument.input(3, input[3]);
+        player.instrument.input(4, input[4]);
+      }
+    });
     requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -118,13 +115,6 @@ class App {
     });                      
   }
 
-  inputInstruments(input, state) {
-    this.instruments.forEach((inst) => {
-      if(inst.input)
-         inst.input(input, state);
-    });                      
-  }
-
   initSong(song) {
     this.ui.clearInstruments();
     console.log('Playing: ' + song.title);  
@@ -138,9 +128,9 @@ class App {
         song.tracks.forEach((track) => {
           let instrument = null;
           if(track.instrument === 'guitar' || track.instrument === 'bass')
-            instrument = new Guitar(this.ui.instrumentsEl);
+            instrument = new Guitar(this.ui.instrumentsEl, this.settings);
           else if(track.instrument === 'drums')
-            instrument = new Drums(this.ui.instrumentsEl);
+            instrument = new Drums(this.ui.instrumentsEl, this.settings);
           if(instrument) {
             instrument.mNotes = data.tracks[track.id].notes;
             this.instruments.push(instrument);
