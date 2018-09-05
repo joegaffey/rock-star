@@ -2,24 +2,15 @@ export default class Controllers {
   
   constructor(element) {
     this.controllerEl = element;
-    let controllers = localStorage.getItem('controllers');
-    this.detectControllers();
-    if(controllers)
-      this.selectedControllers = JSON.parse(controllers);
-    else {
-      this.refresh();
-    }
-  }
-  
-  refresh() {
     this.selectedControllers = [];
     this.availableControllers = [];
+    this.detectControllers();
   }
   
-  configure(playerId, controllerIndex) {
+  configure(player, controllerIndex) {
     let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down', 'Start', 'Select'];
     this.controllerEl.innerHTML = `
-    <p>Assign Player ${playerId + 1} buttons using Controller ${controllerIndex + 1}</p>    
+    <p>Assign Player ${player.id + 1} buttons using Controller ${controllerIndex + 1}</p>    
     ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join('')}
     <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
     <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
@@ -30,15 +21,16 @@ export default class Controllers {
     this.buttonAssignOk.style.display = 'none';
     this.buttonAssignOk.style.float = 'right';
     this.buttonAssignOk.onclick = (e) => { 
-      localStorage.setItem('controllers', JSON.stringify(this.selectedControllers));
       this.onOk(); 
     };
     
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
     
     let selectedController = this.availableControllers[controllerIndex];
-    selectedController.playerId = playerId;
+    selectedController.player = player;
     selectedController.assignedButtons = [];
+    player.controller = selectedController;
+    
     this.selectedControllers.push(selectedController);
     this.startChecking(selectedController, 0);
   }
@@ -93,8 +85,7 @@ export default class Controllers {
     return -1;
   }
   
-  checkAssignedControllers(id) {
-    let controller = this.selectedControllers[id];
+  checkAssignedControllers(controller) {
     if(!controller)
       return [];
     var buttons = controller.assignedButtons;  
