@@ -20,6 +20,11 @@ export default class Drums extends Instrument {
     this.graphics = this.container.querySelector('g');
     this.noteToDrumMap = { A:0, B:1, C:1, D:2, E:2, F:3, G:3 };   
     this.colors = ['green', 'red', 'yellow', 'blue'];
+    
+    let playerSelectEls = this.container.querySelectorAll('.dropdown-content > div');
+    playerSelectEls.forEach((select, i) => {
+      select.onclick = () => { alert('Drum support coming soon!'); }
+    });
   }
 
   initSynth() {    

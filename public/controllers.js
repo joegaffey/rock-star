@@ -2,15 +2,14 @@ export default class Controllers {
   
   constructor(element) {
     this.controllerEl = element;
-    this.selectedControllers = [];
     this.availableControllers = [];
     this.detectControllers();
   }
   
-  configure(player, controllerIndex) {
+  configure(player, controller) {
     let buttons = ['Green', 'Red', 'Yellow', 'Blue', 'Orange', 'Strum Up', 'Strum Down', 'Start', 'Select'];
     this.controllerEl.innerHTML = `
-    <p>Assign Player ${player.id + 1} buttons using Controller ${controllerIndex + 1}</p>    
+    <p>Assign controller ${controller.index + 1} buttons.</p>    
     ${buttons.map(button => `<p>${button} <span class="joyButton">TBD</span></p>`).join('')}
     <button class="dialogButton" id="buttonAssignCancel">Cancel</button>
     <button class="dialogButton" id="buttonAssignOk">Ok</button>`;
@@ -26,22 +25,16 @@ export default class Controllers {
     
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
     
-    let selectedController = this.availableControllers[controllerIndex];
-    selectedController.player = player;
-    selectedController.assignedButtons = [];
-    player.controller = selectedController;
+    controller.player = player;
+    controller.assignedButtons = [];
+    player.controller = controller;
     
-    this.selectedControllers.push(selectedController);
-    this.startChecking(selectedController, 0);
+    this.startChecking(controller, 0);
   }
   
-  onCancel() {
-    console.error('Must provide an implmentation of onCancel');
-  }
+  onCancel() {}
   
-  onOk() {
-    console.error('Must provide an implmentation of onOk');
-  }
+  onOk() {}
   
   startChecking(controller, button) {
     if(button >= this.buttonEls.length) {
@@ -64,6 +57,16 @@ export default class Controllers {
     }
   }
   
+  checkForButtonPress(controller) {
+    let pad = navigator.getGamepads()[controller.index];    
+    for(let i in pad.buttons) {
+      if(pad.buttons[i].pressed) {
+        return i;
+      }
+    } 
+    return -1;
+  }
+  
   detectControllers() {
     let pads = navigator.getGamepads();
     this.availableControllers = [];
@@ -75,19 +78,7 @@ export default class Controllers {
     }
   }
   
-  checkForButtonPress(controller) {
-    let pad = navigator.getGamepads()[controller.index];    
-    for(let i in pad.buttons) {
-      if(pad.buttons[i].pressed) {
-        return i;
-      }
-    } 
-    return -1;
-  }
-  
-  checkAssignedControllers(controller) {
-    if(!controller)
-      return [];
+  checkController(controller) {
     var buttons = controller.assignedButtons;  
     let pad = navigator.getGamepads()[controller.index];    
     if(!pad) {

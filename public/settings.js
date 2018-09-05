@@ -35,9 +35,9 @@ export default class Settings {
     
     let controllerSelects = this.settingsEl.querySelectorAll('.controllerSelect');
     controllerSelects.forEach((select, i) => {
-      select.selectedIndex = this.players[i].controller;
+      select.selectedIndex = this.players[i].controllerIndex;
       select.onchange = (e) => {
-        this.players[i].controller = select.selectedIndex;
+        this.players[i].controllerIndex = select.selectedIndex;
       };
     });
     
@@ -49,16 +49,12 @@ export default class Settings {
         if(controller === 'keyboard')
           alert('Keyboard configuration Coming soon! For now use Q,W,E,R and T');
         else 
-          this.controllers.configure(this.players[i], parseInt(controller));
+          this.controllers.configure(this.players[i], this.controllers.availableControllers[parseInt(controller)]);
       };
     });
   }
   
-  onCancel() {
-    console.error('Must provide an implmentation of onCancel');
-  }
+  onCancel() {}
   
-  onOk() {
-    console.error('Must provide an implmentation of onOk');
-  }
+  onOk() {}
 }

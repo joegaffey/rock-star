@@ -70,7 +70,7 @@ class App {
       this.updateInstruments(Tone.now());
     this.settings.players.forEach(player => {
       if(player.instrument && player.controller) {
-        let input = this.controllers.checkAssignedControllers(player.controller);
+        let input = this.controllers.checkController(player.controller);
         player.instrument.input(0, input[0]);
         player.instrument.input(1, input[1]);
         player.instrument.input(2, input[2]);
@@ -128,9 +128,9 @@ class App {
         song.tracks.forEach((track) => {
           let instrument = null;
           if(track.instrument === 'guitar' || track.instrument === 'bass')
-            instrument = new Guitar(this.ui.instrumentsEl, this.settings);
+            instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
           else if(track.instrument === 'drums')
-            instrument = new Drums(this.ui.instrumentsEl, this.settings);
+            instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
           if(instrument) {
             instrument.mNotes = data.tracks[track.id].notes;
             this.instruments.push(instrument);
