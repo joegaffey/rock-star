@@ -18,7 +18,7 @@ template.innerHTML = `
 
 export default class Instrument {    
   
-  constructor(parent, settings) {
+  constructor(parent, players) {
     if(!parent)
       throw new Error('You have to accept the parent DOM element as a paramter!');
     else {
@@ -29,12 +29,10 @@ export default class Instrument {
       this.playerControl = false;
     }
     
-    this.settings = settings;
-    
     this.gNotes = []; // Note graphics
     this.mNotes = []; // Note music (Tone.js)
     
-    let playerDropdownEl = this.container.querySelector('.dropbtn');
+    this.playerDropdownEl = this.container.querySelector('.dropbtn');
     let playerSelectEls = this.container.querySelectorAll('.dropdown-content > div');
     playerSelectEls.forEach((select, i) => {
       select.onclick = () => {
@@ -43,12 +41,19 @@ export default class Instrument {
           this.player = null;
         }
         else {
+          window.dispatchEvent(new CustomEvent('PlayerChange', {detail: {sender: this, before: this.playerDropdownEl.innerHTML, after:select.innerHTML}}));
           this.playerControl = true;
-          this.player = this.settings.players[i - 1];
+          this.player = players[i - 1];
           this.player.instrument = this;          
         }
-        playerDropdownEl.innerHTML = select.innerHTML;
+        this.playerDropdownEl.innerHTML = select.innerHTML;
       };
+    });
+    
+    window.addEventListener('PlayerChange', e => {
+      if(e.detail.sender !== this && this.playerDropdownEl.innerHTML === e.detail.after) {
+        this.playerDropdownEl.innerHTML = e.detail.before;
+      }
     });
   }
 
