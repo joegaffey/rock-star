@@ -108,39 +108,12 @@ export default class Guitar extends Instrument {
     this.ctx.clearRect(0, 0, 250, 400);
       
     this.gNotes.forEach((gNote, i) => {
-      if(this.playerControl && !gNote.isPlayerNote)
-        return;
-      
-      // Update notes
       let y = (now - gNote.mNote.time) * this.scale;
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 30;
-      this.ctx.lineCap = "round";
-      this.ctx.globalAlpha = ((gNote.isPlaying) ? 0.4 : 0.05);
-      this.ctx.strokeStyle = ((gNote.isError) ? 'grey' : gNote.color);
-      this.ctx.moveTo(gNote.x, y + this.offset);
-      this.ctx.lineTo(gNote.x, y + this.offset - gNote.length);
-      this.ctx.shadowBlur = 10;
-      this.ctx.shadowColor = gNote.color;
-      this.ctx.stroke();
-      
-      this.ctx.beginPath();
-      this.ctx.globalAlpha = 1;
-      this.ctx.fillStyle = gNote.color;
-      this.ctx.shadowColor = '#000';
-      this.ctx.shadowBlur = ((gNote.isPlayerNote) ? 10 : 0);
-      this.ctx.arc(gNote.x, y + this.offset, 4, 0, 6.28);
-      this.ctx.fill();
-      
-      if(gNote.isPlayerNote) {
-        if(gNote.circle > 50)
-          gNote.circle = 5;
-        this.ctx.lineWidth = 3;
-        this.ctx.globalAlpha = 10 / (gNote.circle * 5);
-        this.ctx.beginPath();
-        this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
-        this.ctx.stroke();
-      }        
+    
+      if(this.playerControl && !gNote.isPlayerNote)
+        this.drawShadowNote(y, gNote);
+      else 
+        this.drawPlayerNote(y, gNote);
       
       // Remove notes outside the render area
       if(y - gNote.length > 420) {
@@ -163,6 +136,45 @@ export default class Guitar extends Instrument {
       if(mNote.time > now + this.windowSize)
         return;
     });
+  }
+  
+  drawPlayerNote(y, gNote) {
+    this.ctx.beginPath();
+    this.ctx.lineWidth = 30;
+    this.ctx.lineCap = "round";
+    this.ctx.globalAlpha = ((gNote.isPlaying) ? 0.5 : 0.2);
+    this.ctx.strokeStyle = ((gNote.isError) ? 'grey' : gNote.color);
+    this.ctx.moveTo(gNote.x, y + this.offset);
+    this.ctx.lineTo(gNote.x, y + this.offset - gNote.length);
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.globalAlpha = 1;
+    this.ctx.fillStyle = gNote.color;
+    this.ctx.arc(gNote.x, y + this.offset, 4, 0, 6.28);
+    this.ctx.fill();
+
+    if(gNote.isPlayerNote) {
+      if(gNote.circle > 50)
+        gNote.circle = 5;
+      this.ctx.lineWidth = 3;
+      this.ctx.globalAlpha = 20 / (gNote.circle * 5);
+      this.ctx.beginPath();
+      this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
+      this.ctx.stroke();
+    }   
+  }
+  
+  drawShadowNote(y, gNote) {
+    this.ctx.beginPath();
+    this.ctx.lineWidth = 30;
+    this.ctx.lineCap = "round";
+    this.ctx.globalAlpha = ((gNote.isPlaying) ? 0.25 : 0.1);
+    this.ctx.strokeStyle = 'grey';
+    this.ctx.shadowBlur = 0;
+    this.ctx.moveTo(gNote.x, y + this.offset);
+    this.ctx.lineTo(gNote.x, y + this.offset - gNote.length);
+    this.ctx.stroke();
   }
 
   addNote(string, y, length, color, mNote) {
