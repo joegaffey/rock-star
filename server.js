@@ -36,12 +36,13 @@ app.get("/", function (request, response) {
 });
 
 app.get("/songs/latest", function (request, response) {
-  sendMessage('game', 1);
+  sendMessage('game', JSON.stringify({id: 1}));
   response.sendFile(__dirname + '/s1.json');
 });
 
 app.get("/songs/:id", function (request, response) {
-  sendMessage('game', request.params.id);
+  sendMessage('song', JSON.stringify({id: request.params.id}));
+  sendMessage('game', JSON.stringify({id:'tmp',action: 'start'}));
   songStats[request.params.id]++;
   response.sendFile(__dirname + '/s' +  request.params.id + '.json');
 });
@@ -53,7 +54,11 @@ app.get("/songs", function (request, response) {
 let playerStats = new Array(4).fill(0);
 
 app.put('/metrics/players', function(req, res) {
-  sendMessage('stats', req.body);
+  let message = {'playerOneAccuracy':req.body[0],
+                 'playerTwoAccuracy':req.body[1], 
+                 'playerThreeAccuracy':req.body[2],
+                 'playerFourAccuracy':req.body[3] };
+  sendMessage('stats',JSON.stringify(message));
   req.body.forEach((stat, i) => {
     playerStats[i] = stat;
   });
