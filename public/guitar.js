@@ -225,6 +225,8 @@ export default class Guitar extends Instrument {
   }
   
   input(input, state) {
+    if(input >= 5) 
+      return;
     if(state)
       this.controls[input].setAttribute('style', 'opacity: 1;');
     else
