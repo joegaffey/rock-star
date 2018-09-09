@@ -42,7 +42,7 @@ export default class Guitar extends Instrument {
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = this.container.querySelectorAll('.control');
     
-    this.errorRate = 0.95;
+    this.errorRate = 0.9;
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
@@ -55,7 +55,15 @@ export default class Guitar extends Instrument {
   }
    
   initSynth() {    
-    this.errorSynth = new Tone.MembraneSynth().toMaster();
+    this.errorSynth = new Tone.Sampler({
+      'B0'  : 'buzzer.mp3'
+    },{
+      attack: 0,
+      release: 0,
+      baseUrl: './assets/'
+    }).toMaster();
+    this.errorSynth.volume.value = 10;
+    
     this.sound = presets.rock;      
     
     this.gainIn = new Tone.Gain();
@@ -205,15 +213,15 @@ export default class Guitar extends Instrument {
       return true;
     }
     else {
-      this.errorNote(gNote)
+      this.error(gNote)
       return false;
     }
   }
   
-  errorNote(gNote) {
+  error(gNote) {
     gNote.isError = true;
     this.player.miss();
-    this.errorSynth.triggerAttackRelease('E4', gNote.mNote.duration);    
+    this.errorSynth.triggerAttack('B0');    
   }
   
   play(mNote) {
