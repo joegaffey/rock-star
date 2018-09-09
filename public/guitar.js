@@ -43,6 +43,7 @@ export default class Guitar extends Instrument {
     this.controls = this.container.querySelectorAll('.control');
     
     this.errorRate = 0.9;
+    this.STRUM_TIMEOUT = 200;
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
@@ -243,6 +244,11 @@ export default class Guitar extends Instrument {
         this.controls[input].setAttribute('style', 'opacity: 1;');
       else
         this.controls[input].setAttribute('style', 'opacity: 0.2;');
+    }
+    if(this.strumOn) {
+      setTimeout(() => {
+        this.strumOn = false;
+      }, this.STRUM_TIMEOUT);
     }
   }
 }
