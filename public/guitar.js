@@ -199,7 +199,8 @@ export default class Guitar extends Instrument {
   playCheck(gNote) {
     if(!this.playerControl)
       return true; 
-    if(this.controls[gNote.string].on) {
+    
+    if(this.controls[gNote.string].on && this.strumOn) {
       this.player.hit();
       return true;
     }
@@ -225,13 +226,16 @@ export default class Guitar extends Instrument {
   }
   
   input(input, state) {
-    if(input >= 5) 
-      return;
-    if(state)
-      this.controls[input].setAttribute('style', 'opacity: 1;');
-    else
-      this.controls[input].setAttribute('style', 'opacity: 0.2;');
-    this.controls[input].on = state;
+    if(input === 5 || input === 6) {
+      this.strumOn = state;
+    }
+    else if(input < 5) {
+      this.controls[input].on = state;
+      if(state)
+        this.controls[input].setAttribute('style', 'opacity: 1;');
+      else
+        this.controls[input].setAttribute('style', 'opacity: 0.2;');
+    }
   }
 }
 

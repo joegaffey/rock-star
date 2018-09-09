@@ -78,8 +78,8 @@ class App {
         player.instrument.input(4, buttons[4]);
         
         let axes = this.controllers.checkControllerAxes(player.controller);
-        player.instrument.input(5, axes[0]);
-        player.instrument.input(6, axes[1]);        
+        player.instrument.input(5, (Math.abs(axes[0]) === 1)? true : false);
+        player.instrument.input(6, (Math.abs(axes[1]) === 1)? true : false);
       }
     });
     requestAnimationFrame(this.animate.bind(this));
