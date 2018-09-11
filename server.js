@@ -54,10 +54,10 @@ app.get("/songs", function (request, response) {
 let playerStats = new Array(4).fill(0);
 
 app.put('/metrics/players', function(req, res) {
-  let message = {'playerOneAccuracy':req.body[0],
-                 'playerTwoAccuracy':req.body[1], 
-                 'playerThreeAccuracy':req.body[2],
-                 'playerFourAccuracy':req.body[3] };
+  let message = [];
+  req.body.forEach((stat) => {
+    message.push({ playerAccurracy: stat });
+  });                   
   sendMessage('stats',JSON.stringify(message));
   req.body.forEach((stat, i) => {
     playerStats[i] = stat;
