@@ -239,5 +239,78 @@
         "instrument": "reed"
       }
     ]
+  },
+  {
+    "id": "8",
+    "title": "Walk this way",
+    "artist": "Aerosmith",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "drums"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "guitar"
+      },
+      {
+        "id":"4",
+        "instrument": "guitar"
+      },     
+      {
+        "id":"5",
+        "instrument": "bass"
+      },
+      {
+        "id":"6",
+        "instrument": "bass"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "title": "Seven Nation Army",
+    "artist": "White Stripes",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "bass"
+      },
+      {
+        "id":"4",
+        "instrument": "drums"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "title": "Bomb Track",
+    "artist": "Rage Against the Machine",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "bass"
+      },
+      {
+        "id":"4",
+        "instrument": "drums"
+      }
+    ]
   }
 ]
