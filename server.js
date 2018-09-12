@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const kafka = require('kafka-node');
+const request = require('request');  
 
 const assets = require("./assets");
 app.use("/assets", assets);
@@ -9,6 +10,8 @@ app.use(express.static('public'));
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());   
+
+const samplePath = process.env.samples || 'https://nbrosowsky.github.io/tonejs-instruments';
 
 const client = new kafka.Client(process.env.zk, 'rockstar');
 const producer = new kafka.Producer(client);
@@ -40,15 +43,28 @@ app.get("/songs/latest", function (request, response) {
   response.sendFile(__dirname + '/s1.json');
 });
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+} 
+
 app.get("/songs/:id", function (request, response) {
   sendMessage('song', JSON.stringify({id: request.params.id}));
-  sendMessage('game', JSON.stringify({id:'tmp',action: 'start'}));
+  sendMessage('game', JSON.stringify({id: guid(), action: 'start'}));
   songStats[request.params.id]++;
   response.sendFile(__dirname + '/s' +  request.params.id + '.json');
 });
 
 app.get("/songs", function (request, response) {
   response.sendFile(__dirname + '/songs.json');
+});
+
+app.get("/samples*", function (req, res) {
+  request(samplePath + req.path).pipe(res);
 });
 
 let playerStats = new Array(4).fill(0);
