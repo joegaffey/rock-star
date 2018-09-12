@@ -104,6 +104,7 @@ class App {
       Tone.Transport.stop(); 
       Tone.Transport.clear();
       this.instruments = [];
+      this.bgTracks = [];
       this.audioInit = false;
       this.isPlaying = false;
       this.ui.showPlayIcon();
@@ -128,6 +129,7 @@ class App {
       })
       .then(data => {
         this.instruments = [];
+        this.bgTracks = [];
         Tone.Transport.bpm.value = data.header.bpm;
         song.tracks.forEach((track) => {
           let instrument = null;
@@ -136,11 +138,15 @@ class App {
           else if(track.instrument === 'drums')
             instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
           if(instrument) {
+            instrument.name = instrument;
             instrument.mNotes = data.tracks[track.id].notes;
             this.instruments.push(instrument);
             console.log(track.instrument + 
                         ' track: ' + track.id + ' - ' + 
                         instrument.mNotes.length + ' notes');
+          }
+          else {
+            this.bgTracks.push(data.tracks[track.id]);
           }
         });
         this.ui.hideLoader();
@@ -150,6 +156,7 @@ class App {
   initAudio() {
     this.ui.showLoader();
     Tone.context = new AudioContext();
+    
     this.instruments.forEach((inst) => {
       inst.initSynth();
       let midiPart = new Tone.Part(function(time, note) {
@@ -158,10 +165,21 @@ class App {
           note.ready = inst.playCheck(note.gNote);
         if(note.ready) {
           inst.play(note);
-          inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+          inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
         }
       }, inst.mNotes).start(+2.5);
     });
+    
+    console.log(this.bgTracks.length + ' background track(s)')
+    
+    this.bgTracks.forEach((track, i) => {
+      console.log(track.instrument + ' ' + track.notes.length + ' notes')
+      let synth = this.getSynth(track.instrumentFamily).toMaster();
+      let midiPart = new Tone.Part(function(time, note) {
+        synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+      }, track.notes).start(+2.5);      
+    });
+        
     this.audioInit = true;
     
     Tone.Transport.on('start', () => {
@@ -170,6 +188,17 @@ class App {
     });
     Tone.Transport.start('2.5', '0'); 
     this.isPlaying = true;
+  }
+  
+  getSynth(name) {
+    if(name === 'piano') {
+      return SampleLibrary.load({
+        instruments: 'piano',
+        minify: true
+      });
+    }
+    else
+      return new Tone.FMSynth().toMaster()
   }
 
   pause() {
