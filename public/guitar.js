@@ -48,7 +48,9 @@ export default class Guitar extends Instrument {
     this.controls.forEach((control, i) => {
       control.onclick = () => {
         this.input(i, true);
-        setTimeout(() => {this.input(i, false) }, 300);
+        setTimeout(() => { this.input(i, false); }, 300);
+        this.strumOn = true;
+        setTimeout(() => { this.strumOn = false; }, 300);
       }
     });    
     
