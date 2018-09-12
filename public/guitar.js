@@ -91,47 +91,13 @@ export default class Guitar extends Instrument {
     this.chorus.frequency.value = this.sound.chorusFreq * 5;
     this.chorus.depth = this.sound.chorusDepth;
     
-    // this.synth = new Tone.Sampler({
-    // 			'A2' : 'Open_A2.mp3',
-    // 			'B3' : 'Open_B3.mp3',
-    // 			'D3' : 'Open_D3.mp3',
-    // 			'E2' : 'Open_E2.mp3',
-    // 			'E4' : 'Open_E4.mp3',
-    // 			'G3' : 'Open_G3.mp3'
-    // 		}, {
-    // 			'release' : 1,
-    // 			'baseUrl' : './assets/'
-    // 		}).chain(
-    //   this.gainIn,
-    //   this.distortion,
-    //   this.tremolo,
-    //   this.chorus,
-    //   this.feedbackDelay,
-    //   this.reverb,
-    //   Tone.Master
-    // );
-    
-    //   this.synth = new Tone.Sampler({
-    // 			'A2' : 'A2.mp3',
-    // 			'A5' : 'A5.mp3',
-    // 			'C3' : 'C3.mp3',
-    // 			'C6' : 'C6.mp3',
-    // 			'E2' : 'E2.mp3'
-    // 		}, {
-    // 			'release' : 1,
-    // 			'baseUrl' : './samples/guitar-electric/'
-    // 		}).chain(
-    //   this.gainIn,
-    //   this.distortion,
-    //   this.tremolo,
-    //   this.chorus,
-    //   this.feedbackDelay,
-    //   this.reverb,
-    //   Tone.Master
-    // );
+    let instrument = 'guitar-electric'; 
+    if(this.name === 'bass')
+      instrument = 'bass-electric';
     
     this.synth = SampleLibrary.load({
-      instruments: "guitar-electric"
+      instruments: instrument,
+      minify: true
     });
     this.synth.chain(
       this.gainIn,
@@ -142,7 +108,6 @@ export default class Guitar extends Instrument {
       this.reverb,
       Tone.Master
     );
-    console.log(this.synth);
     
     // this.synth = new Tone.PolySynth(8).toMaster(); // Simple test synth
   }
