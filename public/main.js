@@ -146,7 +146,9 @@ class App {
                         instrument.mNotes.length + ' notes');
           }
           else {
-            this.bgTracks.push(data.tracks[track.id]);
+            let bgTrack = data.tracks[track.id];
+            bgTrack.synth = track.synth;
+            this.bgTracks.push(bgTrack);
           }
         });
         this.ui.hideLoader();
@@ -173,10 +175,23 @@ class App {
     console.log(this.bgTracks.length + ' background track(s)')
     
     this.bgTracks.forEach((track, i) => {
-      console.log(track.instrument + ' ' + track.notes.length + ' notes')
-      let synth = this.getSynth(track.instrumentFamily).toMaster();
+      console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
+      
+      let synth = SampleLibrary.load({
+        instruments: track.synth,
+        minify: true
+      });
+      synth.toMaster();
+      
       let midiPart = new Tone.Part(function(time, note) {
-        synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+        try {
+          synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+        }
+        catch(e) {
+          console.log('Error on note:');
+          console.log(note);
+          console.error(e);
+        }
       }, track.notes).start(+2.5);      
     });
         
@@ -188,17 +203,6 @@ class App {
     });
     Tone.Transport.start('2.5', '0'); 
     this.isPlaying = true;
-  }
-  
-  getSynth(name) {
-    if(name === 'piano') {
-      return SampleLibrary.load({
-        instruments: 'piano',
-        minify: true
-      });
-    }
-    else
-      return new Tone.FMSynth().toMaster()
   }
 
   pause() {
