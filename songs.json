@@ -141,11 +141,13 @@
       },
       {
         "id":"2",
-        "instrument": "piano"
+        "instrument": "piano",
+        "synth": "piano"
       },
       {
         "id":"3",
-        "instrument": "pipe"
+        "instrument": "pipe",
+        "synth": "flute"
       },
       {
         "id": "4",
@@ -153,15 +155,18 @@
       },
       {
         "id":"5",
-        "instrument": "piano"
+        "instrument": "piano",
+        "synth": "piano"
       },
       {
         "id":"6",
-        "instrument": "piano"
+        "instrument": "piano",
+        "synth": "piano"
       },
       {
         "id":"7",
-        "instrument": "pipe"
+        "instrument": "pipe",
+        "synth": "flute"
       },
       {
         "id": "8",
@@ -228,15 +233,18 @@
       },
       {
         "id": "12",
-        "instrument": "reed"
+        "instrument": "reed",
+        "synth": "saxophone"        
       },
       {
         "id": "13",
-        "instrument": "reed"
+        "instrument": "reed",
+        "synth": "saxophone"
       },
       {
         "id": "14",
-        "instrument": "reed"
+        "instrument": "reed",
+        "synth": "saxophone"
       }
     ]
   },
