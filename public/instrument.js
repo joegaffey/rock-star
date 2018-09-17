@@ -80,6 +80,11 @@ export default class Instrument {
   }
   
   set name(name) {
+    this._name = name;
     this.container.querySelector('.name').innerHTML = name;
+  }
+  
+  get name() {
+    return this._name;
   }
 }

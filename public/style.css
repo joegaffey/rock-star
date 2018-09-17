@@ -129,6 +129,17 @@ input:disabled + .slider > line {
   stroke: grey;
 }
 
+/******************** Song Title **************************/
+
+.songTitle {
+  height: 32px;
+  color: #888;
+  font-size: 32px;
+  text-align: center;
+  text-transform: capitalize;
+  padding: 12px;
+}
+
 /******************** Instruments ************************/
 
 .instruments {
@@ -149,10 +160,12 @@ input:disabled + .slider > line {
 
 .instruments .name {
   position: absolute;
-  color: #444;
+  color: #ddd;
   top: 54px;
   left: 4px;
-  background-color: transparent;
+  padding: 6px;
+  border-radius: 4px;
+  background-color: rgba(10,10,10,0.5);
   text-transform: capitalize;
   font-weight: bold;
 }

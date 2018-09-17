@@ -52,7 +52,8 @@
       },
       {
         "id":"2",
-        "instrument": "guitar"
+        "instrument": "trumpet",
+        "synth": "saxophone"
       },
       {
         "id":"3",

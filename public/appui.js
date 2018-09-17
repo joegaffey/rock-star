@@ -56,6 +56,7 @@ export default class AppUI {
       let li = document.createElement("li");
       li.setAttribute('class', 'songListItem');
       li.innerHTML = `${song.artist} - ${song.title} (${song.tracks.length} tracks)`;
+      console.log(song)
       li.onclick = () => {
         app.loadSong(song);
         this.songListModal.toggle();
