@@ -14,7 +14,8 @@ template.innerHTML = `
       <div>Player 4</div>
     </div>
   </div>
-</div>`;
+</div>
+<div class="name"></div>`;
 
 export default class Instrument {    
   
@@ -72,9 +73,13 @@ export default class Instrument {
   }
   
   /**
-   * Called when ever a note is played
+   * Called whenever a note is played
    */
   play(note) {
     throw new Error('You have to implement the method "play"!');
+  }
+  
+  set name(name) {
+    this.container.querySelector('.name').innerHTML = name;
   }
 }
