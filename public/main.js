@@ -138,7 +138,9 @@ class App {
           else if(track.instrument === 'drums')
             instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
           if(instrument) {
-            instrument.name = track.instrument;
+            instrument.name = data.tracks[track.id].instrument;
+            if(!instrument.name)
+              instrument.name = track.instrument;
             instrument.mNotes = data.tracks[track.id].notes;
             this.instruments.push(instrument);
             console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
@@ -149,6 +151,7 @@ class App {
             this.bgTracks.push(bgTrack);
           }
         });
+        document.querySelector('.songTitle').innerHTML = `${song.title} (${song.artist})`;
         this.ui.hideLoader();
       });
   }
