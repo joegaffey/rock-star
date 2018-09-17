@@ -147,6 +147,16 @@ input:disabled + .slider > line {
   height: 450px;
 }
 
+.instruments .name {
+  position: absolute;
+  color: #444;
+  top: 54px;
+  left: 4px;
+  background-color: transparent;
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
 /* .instruments > *:hover {
   border-color: maroon;
 } */

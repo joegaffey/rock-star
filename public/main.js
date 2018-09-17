@@ -138,12 +138,10 @@ class App {
           else if(track.instrument === 'drums')
             instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
           if(instrument) {
-            instrument.name = instrument;
+            instrument.name = track.instrument;
             instrument.mNotes = data.tracks[track.id].notes;
             this.instruments.push(instrument);
-            console.log(track.instrument + 
-                        ' track: ' + track.id + ' - ' + 
-                        instrument.mNotes.length + ' notes');
+            console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
           }
           else {
             let bgTrack = data.tracks[track.id];
