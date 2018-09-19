@@ -49,6 +49,13 @@ class App {
         setTimeout(() => { 
           this.initAudio();    
         }, 100);
+        
+        let players = 0;
+        this.instruments.forEach(instrument => {
+          if(instrument.player)
+            players++;
+        });
+        this.sendGameStart(players);
       }
       else 
         this.isPlaying ? this.pause() : this.play();
@@ -94,6 +101,18 @@ class App {
       headers: headers
     };
     var request = new Request(STATS_SERVICE_URL + '/metrics/players', init);  
+    fetch(request);
+  }
+  
+  sendGameStart(players) {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    var init = {
+      method: 'POST',
+      body: JSON.stringify({playerCount: players}),
+      headers: headers
+    };
+    var request = new Request(STATS_SERVICE_URL + '/games', init);  
     fetch(request);
   }
 
