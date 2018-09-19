@@ -54,7 +54,6 @@ function guid() {
 
 app.get("/songs/:id", function (request, response) {
   sendMessage('song', JSON.stringify({id: request.params.id}));
-  sendMessage('game', JSON.stringify({id: guid(), action: 'start'}));
   songStats[request.params.id]++;
   response.sendFile(__dirname + '/s' +  request.params.id + '.json');
 });
@@ -73,6 +72,12 @@ app.put('/metrics/players', function(req, res) {
   sendMessage('stats', JSON.stringify({ playerAccurracy: req.body }));
   playerStats = req.body;
   res.send(playerStats);
+});
+
+app.post('/games', function(req, res) {
+  let game  = { id: guid(), action: 'start', playerCount: req.body.playerCount };
+  sendMessage('game', JSON.stringify(game));
+  res.send(game);
 });
 
 let songStats = new Array(8).fill(0);
