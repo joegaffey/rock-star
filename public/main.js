@@ -115,6 +115,18 @@ class App {
     var request = new Request(STATS_SERVICE_URL + '/games', init);  
     fetch(request);
   }
+  
+  sendGameEnd() {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    var init = {
+      method: 'PUT',
+      body: JSON.stringify({ action: 'end' }),
+      headers: headers
+    };
+    var request = new Request(STATS_SERVICE_URL + '/games', init);  
+    fetch(request);
+  }
 
   loadSong(song) {
     this.ui.hideTitle();
@@ -179,22 +191,33 @@ class App {
     this.ui.showLoader();
     Tone.context = new AudioContext();
     
+    this.finishedTracks = this.totalTracks = 0;
+    
     this.instruments.forEach((inst) => {
       inst.initSynth();
-      let midiPart = new Tone.Part(function(time, note) {
+      this.totalTracks++;
+      let currentNote = 0;
+      let midiPart = new Tone.Part((time, note) => {
         note.ready = true;
+        
         if(note.gNote && note.gNote.isPlayerNote)
           note.ready = inst.playCheck(note.gNote);
         if(note.ready) {
           inst.play(note);
           inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
         }
+        
+        currentNote++;
+        if(currentNote >= midiPart.length)
+          this.trackFinished();
+        
       }, inst.mNotes).start(+2.5);
     });
     
-    console.log(this.bgTracks.length + ' background track(s)')
+    console.log(this.bgTracks.length + ' background track(s)');
     
     this.bgTracks.forEach((track, i) => {
+      this.totalTracks++;
       console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
       
       let synth = SampleLibrary.load({
@@ -202,8 +225,8 @@ class App {
         minify: true
       });
       synth.toMaster();
-      
-      let midiPart = new Tone.Part(function(time, note) {
+      let currentNote = 0;
+      let midiPart = new Tone.Part((time, note) => {
         try {
           synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
         }
@@ -212,6 +235,9 @@ class App {
           console.log(note);
           console.error(e);
         }
+        currentNote++;
+        if(currentNote >= midiPart.length)
+          this.trackFinished();
       }, track.notes).start(+2.5);      
     });
         
@@ -221,9 +247,26 @@ class App {
       this.ui.showPauseIcon();
       this.ui.hideLoader();
     });
+    
     Tone.Transport.start('2.5', '0'); 
     this.isPlaying = true;
   }
+  
+  trackFinished() {
+    this.finishedTracks++;
+    if(this.finishedTracks >= this.totalTracks) {
+      this.endSong();
+    }
+  }
+  
+  endSong() {
+    setTimeout(() => {
+      this.ui.showPlayIcon();
+      Tone.Transport.stop();  
+      this.isPlaying = false;
+      this.sendGameEnd();
+    }, 5000);
+  }                   
 
   pause() {
     this.ui.showPlayIcon();
@@ -234,7 +277,10 @@ class App {
 
   play() {
     this.ui.showPauseIcon();
-    Tone.Transport.start(this.pauseTime); 
+    if(this.pauseTime > 0)
+      Tone.Transport.start(this.pauseTime); 
+    else 
+      Tone.Transport.start('2.5', '0'); 
     this.isPlaying = true;
   }
 }

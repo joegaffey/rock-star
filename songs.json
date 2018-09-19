@@ -321,5 +321,21 @@
         "instrument": "drums"
       }
     ]
+  },
+  {
+    "id": "11",
+    "title": "Test Track",
+    "artist": "Joe Gaffey",
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "bass"
+      },
+      {
+        "id":"2",
+        "instrument": "piano",
+        "synth": "piano"
+      }
+    ]
   }
 ]
