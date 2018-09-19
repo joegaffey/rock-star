@@ -74,8 +74,19 @@ app.put('/metrics/players', function(req, res) {
   res.send(playerStats);
 });
 
+let currentGameId = '';
+
 app.post('/games', function(req, res) {
-  let game  = { id: guid(), action: 'start', playerCount: req.body.playerCount };
+  currentGameId = guid();
+  let game  = { id: currentGameId, action: 'start', playerCount: req.body.playerCount };
+  console.log(game)
+  sendMessage('game', JSON.stringify(game));
+  res.send(game);
+});
+
+app.put('/games', function(req, res) {
+  let game  = { id: currentGameId, action: req.body.action };
+  console.log(game)
   sendMessage('game', JSON.stringify(game));
   res.send(game);
 });
