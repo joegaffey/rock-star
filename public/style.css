@@ -90,6 +90,10 @@ li {
   display: none;
 }
 
+.closeControl {
+  display: none;
+}
+
 /******************** Instrument Settings **********************/
 
 .settings {
