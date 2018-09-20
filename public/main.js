@@ -17,12 +17,16 @@ class App {
     this.audioInit = false;
     
     this.ui = new AppUI();
-    
+    this.ui.closeControlsEl.onclick = () => { 
+      this.ui.hideCloseIcon();
+      this.endSongNoDelay(); 
+    };   
+        
     this.controllers = new Controllers(this.ui.settingsEl);   
     this.settings = new Settings(this.ui.settingsEl, this.controllers);
     this.settings.onOk = () => this.ui.settingsModal.hide();
     this.settings.onCancel = () => this.ui.settingsModal.hide();    
-    
+        
     const keyboard = new Keyboard();
     keyboard.onKeyDown = keyboard.onKeyUp = (input, state) => {
       this.inputInstruments(input, state)
@@ -55,6 +59,7 @@ class App {
           if(instrument.player)
             players++;
         });
+        this.ui.showCloseIcon();
         this.sendGameStart(players);
       }
       else 
@@ -256,17 +261,22 @@ class App {
     this.finishedTracks++;
     if(this.finishedTracks >= this.totalTracks) {
       this.endSong();
+      this.ui.hideCloseIcon();
     }
   }
   
   endSong() {
     setTimeout(() => {
-      this.ui.showPlayIcon();
-      Tone.Transport.stop();  
-      this.isPlaying = false;
-      this.sendGameEnd();
+      this.endSongNoDelay();
     }, 5000);
-  }                   
+  }   
+  
+  endSongNoDelay() {
+    this.ui.showPlayIcon();
+    Tone.Transport.stop();  
+    this.isPlaying = false;
+    this.sendGameEnd();
+  }
 
   pause() {
     this.ui.showPlayIcon();

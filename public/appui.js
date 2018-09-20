@@ -9,6 +9,7 @@ export default class AppUI {
     this.songsEl = document.querySelector('.songs');  
     this.songListEl = document.querySelector('.songList');
     this.audioControlsEl = document.querySelector('.audioControl');
+    this.closeControlsEl = document.querySelector('.closeControl');
     
     this.settingsModal = new Modal(document.querySelector('.settingsModal'));
     const settingsIconEl = document.querySelector('.settingsIcon');
@@ -37,6 +38,14 @@ export default class AppUI {
   
   showPlayIcon() {
     this.audioControlsEl.src = './icons/play.svg';
+  }
+  
+  showCloseIcon() {
+    this.closeControlsEl.style.display = 'block';
+  }
+  
+  hideCloseIcon() {
+    this.closeControlsEl.style.display = 'none';
   }
   
   showPauseIcon() {
