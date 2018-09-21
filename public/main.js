@@ -81,17 +81,10 @@ class App {
     if(this.isPlaying)
       this.updateInstruments(Tone.now());
     this.settings.players.forEach(player => {
-      if(player.instrument && player.controller) {
-        let buttons = this.controllers.checkControllerButtons(player.controller);
-        player.instrument.input(0, buttons[0]);
-        player.instrument.input(1, buttons[1]);
-        player.instrument.input(2, buttons[2]);
-        player.instrument.input(3, buttons[3]);
-        player.instrument.input(4, buttons[4]);
-        
-        let axes = this.controllers.checkControllerAxes(player.controller);
-        player.instrument.input(5, (Math.abs(axes[0]) === 1)? true : false);
-        player.instrument.input(6, (Math.abs(axes[1]) === 1)? true : false);
+      if(player.instrument && player.controller) {        
+        this.controllers.getInputStates(player.controller).forEach((state, i) => {
+          player.instrument.input(i, state);
+        });
       }
     });
     requestAnimationFrame(this.animate.bind(this));

@@ -26,8 +26,7 @@ export default class Controllers {
     this.buttonEls = this.controllerEl.querySelectorAll('.joyButton');
     
     controller.player = player;
-    controller.assignedButtons = [];
-    controller.assignedAxes = [];
+    controller.assignedInputs = [];
     player.controller = controller;
     
     this.detectInput(controller, 0);
@@ -43,19 +42,19 @@ export default class Controllers {
       return;
     }
     this.buttonEls[button].innerHTML = 'Waiting...';
-    let joyButton = this.detectButton(controller)
-    if(joyButton > -1) {
-      controller.assignedButtons.push(joyButton);
-      this.buttonEls[button].innerHTML = 'JOY ' + joyButton;
+    let joyInput = this.detectButton(controller)
+    if(joyInput > -1) {
+      controller.assignedInputs.push({ button: button, isButton: true, controllerInputId: joyInput});
+      this.buttonEls[button].innerHTML = 'JOY ' + joyInput;
     }
     else {
-      joyButton = this.detectAxis(controller);
-      if(joyButton > -1) {
-        controller.assignedAxes.push(joyButton);
-        this.buttonEls[button].innerHTML = 'AXIS ' + joyButton;
+      joyInput = this.detectAxis(controller);
+      if(joyInput > -1) {
+        controller.assignedInputs.push({ button: button, isAxis: true, controllerInputId: joyInput});
+        this.buttonEls[button].innerHTML = 'AXIS ' + joyInput;
       }
     }    
-    if(joyButton > -1) {
+    if(joyInput > -1) {
       setTimeout(() => {
         this.detectInput(controller, button + 1);
       }, 500);      
@@ -100,29 +99,17 @@ export default class Controllers {
     }
   }
   
-  checkControllerButtons(controller) {
-    var buttons = controller.assignedButtons;  
-    let pad = navigator.getGamepads()[controller.index];    
-    if(!pad) {
-      return [];
-    }
+  getInputStates(controller) {
     var result = [];
-    for(let i in buttons) {
-      result.push(pad.buttons[buttons[i]].pressed);
-    } 
-    return result;
-  }
-  
-  checkControllerAxes(controller) {
-    var axes = controller.assignedAxes;  
-    let pad = navigator.getGamepads()[controller.index];    
-    if(!pad) {
+    let pad = navigator.getGamepads()[controller.index];   
+    if(!pad) 
       return [];
-    }
-    var result = [];
-    for(let i in axes) {
-      result.push(pad.axes[axes[i]]);
-    } 
+    controller.assignedInputs.forEach((input, i) => {
+      if(input.isButton) 
+        result.push(pad.buttons[input.controllerInputId].pressed);
+      else if(input.isAxis)
+        result.push((Math.abs(pad.axes[input.controllerInputId]) === 1)? true : false);
+    });
     return result;
   }
 }
