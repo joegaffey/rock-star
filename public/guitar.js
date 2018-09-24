@@ -14,13 +14,13 @@ guitarTemplate.innerHTML = `
   </g>
 </svg>
 <canvas style="position: absolute; top: 50px; left: 0;" class="guitar" width="250" height="400"></canvas>
-<svg class="guitarControls" style="position: absolute; bottom: 0; left: 0;" width="250" height="75" xmlns="http://www.w3.org/2000/svg">
+<svg class="guitarControls" style="position: absolute; bottom: 5; left: 0;" width="250" height="75" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect class="control" fill="green" height="20" width="50" y="0" x="0" style="fill-opacity: .2;" />
-    <rect class="control" fill="red" height="20" width="50" y="0" x="50" style="fill-opacity: .2;" />
-    <rect class="control" fill="yellow" height="20" width="50" y="0" x="100" style="fill-opacity: .2;" />
-    <rect class="control" fill="blue" height="20" width="50" y="0" x="150" style="fill-opacity: .2;" />
-    <rect class="control" fill="orange" height="20" width="50" y="0" x="200" style="fill-opacity: .2;" />
+    <rect class="control" fill="green" height="30" width="50" y="0" x="0" style="fill-opacity: .2;" />
+    <rect class="control" fill="red" height="30" width="50" y="0" x="50" style="fill-opacity: .2;" />
+    <rect class="control" fill="yellow" height="30" width="50" y="0" x="100" style="fill-opacity: .2;" />
+    <rect class="control" fill="blue" height="30" width="50" y="0" x="150" style="fill-opacity: .2;" />
+    <rect class="control" fill="orange" height="30" width="50" y="0" x="200" style="fill-opacity: .2;" />
   </g>
 </svg>
 `;
@@ -43,7 +43,7 @@ export default class Guitar extends Instrument {
     this.controls = this.container.querySelectorAll('.control');
     
     this.errorRate = 0.9;
-    this.STRUM_TIMEOUT = 200;
+    this.strumReset = true;
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
@@ -134,9 +134,9 @@ export default class Guitar extends Instrument {
     let futureNotes = this.mNotes.slice(this.mNoteIndex);
     
     futureNotes.forEach((mNote, i) => {
-      if(mNote.time >= now && mNote.time < now + this.windowSize && mNote.duration > 0) {
+      if(mNote.time < now + this.windowSize && mNote.duration > 0) {
         let string = this.noteToStringMap[mNote.name.substring(0,1)]; // First charter of note only
-        if(mNote.time > 0 && !mNote.added) {
+        if(mNote.time >= 0 && !mNote.added) {
           this.addNote(string, -1000, mNote.duration * this.scale, this.colors[string], mNote);
           mNote.added = true; // Only add notes once
         }
@@ -207,21 +207,23 @@ export default class Guitar extends Instrument {
   
   playCheck(gNote) {
     if(!this.playerControl)
-      return true; 
+      return true;
     
     if(this.controls[gNote.string].on && this.strumOn) {
       this.player.hit();
+      this.strumReset = false;
       return true;
     }
     else {
-      this.error(gNote)
+      this.error(gNote);
+      this.player.miss();
+      this.strumReset = false;
       return false;
     }
   }
   
   error(gNote) {
     gNote.isError = true;
-    this.player.miss();
     this.errorSynth.triggerAttack('B0');    
   }
   
@@ -236,19 +238,19 @@ export default class Guitar extends Instrument {
   
   input(input, state) {
     if(input === 5 || input === 6) {
-      this.strumOn = state;
+      if(state && this.strumReset) 
+        this.strumOn = true;
+      else
+        this.strumOn = false;
+      if(!state)
+        this.strumReset = true;
     }
     else if(input < 5) {
       this.controls[input].on = state;
       if(state)
-        this.controls[input].setAttribute('style', 'opacity: 1;');
+        this.controls[input].setAttribute('style', 'opacity: 0.5;');
       else
         this.controls[input].setAttribute('style', 'opacity: 0.2;');
-    }
-    if(this.strumOn) {
-      setTimeout(() => {
-        this.strumOn = false;
-      }, this.STRUM_TIMEOUT);
     }
   }
 }

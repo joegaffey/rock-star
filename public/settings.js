@@ -7,7 +7,20 @@ export default class Settings {
     this.controllers = controllers;
     this.controllers.onOk = () => { this.showSettings() };
     this.controllers.onCancel = () => { this.showSettings() };
-    this.players = [new Player(),new Player(),new Player(),new Player()];
+    this.players = [];
+    let playersStore = localStorage.getItem('players');
+    if(playersStore) {
+      let playerData = JSON.parse(playersStore);
+      playerData.forEach(player => {
+        let p = new Player();
+        p.controllerId = player.controllerId;
+        p.controllerIndex = player.controllerIndex;
+        p.assignedInputs = player.assignedInputs;
+        this.players.push(p);
+      });
+    }
+    else
+      this.players = [new Player(),new Player(),new Player(),new Player()];
     this.showSettings();
   }
    
@@ -18,7 +31,7 @@ export default class Settings {
         ${this.players.map((player, i) => `<li class="playerConfigLI">
           <span>Player ${i + 1}</span>
           <select class="controllerSelect">
-            <option value="keyboard">Keyboard</option>
+            <option value="pointer">Mouse/Touch</option>
             ${this.controllers.availableControllers.map((controller, i) => `<option value="${i}">${controller.id}</option>`).join('')}
           </select>
           <img class="configureControllerIcon icon settingsIcon" src="./icons/settings.svg">
@@ -31,7 +44,10 @@ export default class Settings {
     this.settingsEl.querySelector('#buttonSettingsCancel').onclick = (e) => { this.onCancel(); };
     let buttonSettingsOk = this.settingsEl.querySelector('#buttonSettingsOk');
     buttonSettingsOk.style.float = 'right';
-    buttonSettingsOk.onclick = (e) => { this.onOk(); };
+    buttonSettingsOk.onclick = (e) => { 
+      localStorage.setItem('players', JSON.stringify(this.players));
+      this.onOk(); 
+    };
     
     let controllerSelects = this.settingsEl.querySelectorAll('.controllerSelect');
     controllerSelects.forEach((select, i) => {
@@ -46,8 +62,8 @@ export default class Settings {
     icons.forEach((icon, i) => {
       icon.onclick = (e) => { 
         let controller = itemEls[i].querySelector('.controllerSelect').value;
-        if(controller === 'keyboard')
-          alert('Keyboard configuration Coming soon! For now use Q,W,E,R and T');
+        if(controller === 'pointer')
+          alert('Just touch or click on the control bar!');
         else 
           this.controllers.configure(this.players[i], this.controllers.availableControllers[parseInt(controller)]);
       };
