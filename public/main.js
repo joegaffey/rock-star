@@ -27,10 +27,6 @@ class App {
     this.settings.onOk = () => this.ui.settingsModal.hide();
     this.settings.onCancel = () => this.ui.settingsModal.hide();    
         
-    const keyboard = new Keyboard();
-    keyboard.onKeyDown = keyboard.onKeyUp = (input, state) => {
-      this.inputInstruments(input, state)
-    };       
     this.init();
   }
   
@@ -81,8 +77,8 @@ class App {
     if(this.isPlaying)
       this.updateInstruments(Tone.now());
     this.settings.players.forEach(player => {
-      if(player.instrument && player.controller) {        
-        this.controllers.getInputStates(player.controller).forEach((state, i) => {
+      if(player.instrument && player.controllerId) {        
+        this.controllers.getInputStates(player).forEach((state, i) => {
           player.instrument.input(i, state);
         });
       }
@@ -126,22 +122,6 @@ class App {
     fetch(request);
   }
 
-  loadSong(song) {
-    this.ui.hideTitle();
-    this.ui.showLoader();
-    if(this.audioInit) {
-      Tone.Transport.stop(); 
-      Tone.Transport.clear();
-      this.instruments = [];
-      this.bgTracks = [];
-      this.audioInit = false;
-      this.isPlaying = false;
-      this.ui.showPlayIcon();
-    }
-    this.initSong(song);
-    this.ui.showAudioControlIcon();    
-  }
-
   updateInstruments(now) {
     this.instruments.forEach((inst) => {
       if(inst.update)
@@ -149,8 +129,22 @@ class App {
     });                      
   }
 
-  initSong(song) {
+  loadSong(song) {
+    this.currentSong = song;
+    this.ui.hideTitle();
+    this.ui.showLoader();
+    this.ui.showPlayIcon();
+    this.ui.showAudioControlIcon();  
     this.ui.clearInstruments();
+    
+    Tone.Transport.stop(); 
+    Tone.Transport.clear();
+    
+    this.instruments = [];
+    this.bgTracks = [];
+    this.audioInit = false;
+    this.isPlaying = false;
+    
     console.log('Playing: ' + song.title);  
     fetch(SONG_SERVICE_URL + '/songs/' + song.id)
       .then(response => {
@@ -182,7 +176,7 @@ class App {
         });
         document.querySelector('.songTitle').innerHTML = `${song.title} (${song.artist})`;
         this.ui.hideLoader();
-      });
+      });  
   }
 
   initAudio() {
@@ -266,14 +260,25 @@ class App {
   
   endSongNoDelay() {
     this.ui.showPlayIcon();
-    Tone.Transport.stop();  
+    
+    Tone.Transport.stop(); 
+    Tone.Transport.clear();
+    this.audioInit = false;
+    
+    this.instruments = [];
+    this.bgTracks = []; 
     this.isPlaying = false;
+    this.songFinished = true;
+
+    // this.settings.players.forEach(player => {
+    //   player.instrument = null;
+    // });
     this.sendGameEnd();
   }
 
   pause() {
     this.ui.showPlayIcon();
-    Tone.Transport.pause();  
+    Tone.Transport.stop();  
     this.pauseTime = Tone.now();
     this.isPlaying = false;
   }
