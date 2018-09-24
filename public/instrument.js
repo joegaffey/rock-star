@@ -26,8 +26,19 @@ export default class Instrument {
     else {
       this.container = document.createElement('div');
       this.container.style.position = 'relative';
+      
       this.container.appendChild(template.content.cloneNode(true));  
-      parent.appendChild(this.container);       
+      parent.appendChild(this.container);    
+      
+      this.container.draggable = true; 
+      
+      document.addEventListener("dragstart", (event) => {
+          this.dragging = event.target;
+      }, false);
+      
+      this.container.ondragover = (ev) => { ev.preventDefault(); };
+      this.container.ondrop = this.onDrop.bind(this);
+      
       this.playerControl = false;
     }
     
@@ -58,26 +69,43 @@ export default class Instrument {
       }
     });
   }
+  
+  onDrop(ev) {
+    ev.preventDefault();    
+    this.swap(this.container, this.dragging);
+  }
+  
+  
+  swap(node1, node2) {
+    const afterNode2 = node2.nextElementSibling;
+    const afterNode1 = node1.previousElementSibling;
+    const parent = node1.parentNode;
+    node1.replaceWith(node2);
+    if(node1 !== afterNode2)
+      parent.insertBefore(node1, afterNode2);
+    else 
+      parent.insertBefore(node1, afterNode1);  
+  }
 
   /**
    * Create your instrument synth here as 'this.synth'
    */
   initSynth() {
-    throw new Error('You have to implement the method "initSynth"!');
+    throw new Error('You have to implement the "initSynth" method !');
   }
   
   /**
    * Called once per RAF with the current Tone.js time 
    */
   update(now) {
-    throw new Error('You have to implement the method "update"!');
+    throw new Error('You have to implement the "update" method!');
   }
   
   /**
    * Called whenever a note is played
    */
   play(note) {
-    throw new Error('You have to implement the method "play"!');
+    throw new Error('You have to implement the "play" method!');
   }
   
   set name(name) {
