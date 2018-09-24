@@ -11,11 +11,13 @@ export default class Player {
   miss() {
     this.misses++;
     this.score -= 25;
+    this.instrument.accuracy = this.avg;
   }
   
   hit() {
     this.hits++;
     this.score += 50; 
+    this.instrument.accuracy = this.avg;
   }
   
   get avg() {

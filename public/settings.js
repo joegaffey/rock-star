@@ -63,7 +63,7 @@ export default class Settings {
       icon.onclick = (e) => { 
         let controller = itemEls[i].querySelector('.controllerSelect').value;
         if(controller === 'pointer')
-          alert('Just touch or click on the control bar!');
+          alert('Touch or mouse left click on the control bar.');
         else 
           this.controllers.configure(this.players[i], this.controllers.availableControllers[parseInt(controller)]);
       };
