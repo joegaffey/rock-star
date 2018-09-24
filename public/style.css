@@ -162,17 +162,25 @@ input:disabled + .slider > line {
   height: 450px;
 }
 
-.instruments .name {
+.instruments .infoOverlay {
   position: absolute;
   color: #ddd;
-  top: 54px;
-  left: 4px;
+  top: 54px;  
   padding: 6px;
   border-radius: 4px;
   background-color: rgba(10,10,10,0.5);
   text-transform: capitalize;
   font-weight: bold;
 }
+
+.instruments .name {
+  left: 4px;
+}
+
+.instruments .accuracy {
+  right: 4px;
+}
+
 
 /* .instruments > *:hover {
   border-color: maroon;

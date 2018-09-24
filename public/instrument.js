@@ -15,7 +15,8 @@ template.innerHTML = `
     </div>
   </div>
 </div>
-<div class="name"></div>`;
+<div class="infoOverlay name"></div>
+<div class="infoOverlay accuracy"><span class="score">100</span>%</div>`;
 
 export default class Instrument {    
   
@@ -86,5 +87,9 @@ export default class Instrument {
   
   get name() {
     return this._name;
+  }
+  
+  set accuracy(acc) {
+    this.container.querySelector('.score').innerHTML = acc;
   }
 }
