@@ -163,7 +163,7 @@ export default class Guitar extends Instrument {
     this.ctx.arc(gNote.x, y + this.offset, 4, 0, 6.28);
     this.ctx.fill();
 
-    if(gNote.isPlayerNote) {
+    if(this.playerControl && gNote.isPlayerNote) {
       if(gNote.circle > 50)
         gNote.circle = 5;
       this.ctx.lineWidth = 3;
