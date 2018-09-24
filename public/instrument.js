@@ -32,11 +32,20 @@ export default class Instrument {
       
       this.container.draggable = true; 
       
-      document.addEventListener("dragstart", (event) => {
-          this.dragging = event.target;
+      document.addEventListener("dragstart", (ev) => {
+          this.dragging = ev.target;
       }, false);
       
-      this.container.ondragover = (ev) => { ev.preventDefault(); };
+      this.container.ondragover = (ev) => { 
+        ev.preventDefault();
+        // ev.target.style.border = "dotted green";
+      };
+      
+      this.container.ondragleave = (ev) => { 
+        ev.preventDefault();
+        // ev.target.style.border = "solid black";
+      };
+      
       this.container.ondrop = this.onDrop.bind(this);
       
       this.playerControl = false;
@@ -66,6 +75,8 @@ export default class Instrument {
     window.addEventListener('PlayerChange', e => {
       if(e.detail.sender !== this && this.playerDropdownEl.innerHTML === e.detail.after) {
         this.playerDropdownEl.innerHTML = e.detail.before;
+        if(e.detail.before === 'Computer')
+          this.playerControl = false;
       }
     });
   }
