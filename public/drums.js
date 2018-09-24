@@ -5,10 +5,14 @@ drumsTemplate.innerHTML = `
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#ccc" height="100%" width="100%" y="0" x="0" />
-    <circle cx="25%" cy="33%" r="50" fill="green"/>
-    <circle cx="75%" cy="33%" r="50" fill="red" />
-    <circle cx="25%" cy="66%" r="50" fill="yellow" />
-    <circle cx="75%" cy="66%" r="50" fill="blue" />
+    <circle cx="25%" cy="33%" r="50" fill="green" opacity="0.5"/>
+    <circle cx="75%" cy="33%" r="50" fill="red" opacity="0.5"/>
+    <circle cx="25%" cy="66%" r="50" fill="#999900" opacity="0.5"/>
+    <circle cx="75%" cy="66%" r="50" fill="blue" opacity="0.25"/>
+    <circle cx="25%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
+    <circle cx="75%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
+    <circle cx="25%" cy="66%" r="25" fill="#fff" opacity="0.25"/>
+    <circle cx="75%" cy="66%" r="25" fill="#fff" opacity="0.25"/>    
   </g>
 </svg>
 `;
@@ -88,8 +92,10 @@ export default class Drums extends Instrument {
     let drumId = this.noteToDrumMap[mNote.name.substring(0,1)];
     let drum = this.graphics.children[drumId + 1];
     drum.setAttribute('r', 60);
+    drum.setAttribute('opacity', 0.60);
     setTimeout(() => {
       drum.setAttribute('r', 50);
+      drum.setAttribute('opacity', 0.5);
     }, 50);
   }
   

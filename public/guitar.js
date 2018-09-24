@@ -18,9 +18,9 @@ guitarTemplate.innerHTML = `
   <g>
     <rect class="control" fill="green" height="30" width="50" y="0" x="0" style="fill-opacity: .5;" />
     <rect class="control" fill="red" height="30" width="50" y="0" x="50" style="fill-opacity: .5;" />
-    <rect class="control" fill="yellow" height="30" width="50" y="0" x="100" style="fill-opacity: .5;" />
+    <rect class="control" fill="#999900" height="30" width="50" y="0" x="100" style="fill-opacity: .5;" />
     <rect class="control" fill="blue" height="30" width="50" y="0" x="150" style="fill-opacity: .5;" />
-    <rect class="control" fill="orange" height="30" width="50" y="0" x="200" style="fill-opacity: .5;" />
+    <rect class="control" fill="darkorange" height="30" width="50" y="0" x="200" style="fill-opacity: .5;" />
   </g>
 </svg>
 `;
@@ -32,7 +32,7 @@ export default class Guitar extends Instrument {
     parent.appendChild(this.container);  
     this.graphics = this.container.querySelector('canvas');
     
-    this.colors = ['green', 'red', 'yellow', 'blue', 'orange'];
+    this.colors = ['green', 'red', '#999900', 'blue', 'darkorange'];
     
     this.windowSize = 2; // Time window in seconds
     this.scale = 50; // Used map note time to graphics - to be tweaked
