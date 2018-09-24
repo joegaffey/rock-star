@@ -4,7 +4,7 @@ const guitarTemplate = document.createElement('template');
 guitarTemplate.innerHTML = `
 <svg class="guitarBackground" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect fill="#aaa" height="325" width="250" y="0" x="0" />
+    <rect fill="#ccc" height="325" width="250" y="0" x="0" />
     <rect fill="#fff" height="75" width="250" y="325" x="0" />    
     <line y2="400" x2="25" y1="0" x1="25" stroke-width="4" stroke="#888" stroke-dasharray="4 0.5" />
     <line y2="400" x2="75" y1="0" x1="75" stroke-width="3.5" stroke="#888" stroke-dasharray="4 0.5" />
@@ -14,13 +14,13 @@ guitarTemplate.innerHTML = `
   </g>
 </svg>
 <canvas style="position: absolute; top: 50px; left: 0;" class="guitar" width="250" height="400"></canvas>
-<svg class="guitarControls" style="position: absolute; bottom: 5; left: 0;" width="250" height="75" xmlns="http://www.w3.org/2000/svg">
+<svg class="guitarControls" style="position: absolute; bottom: 15; left: 0;" width="250" height="75" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect class="control" fill="green" height="30" width="50" y="0" x="0" style="fill-opacity: .2;" />
-    <rect class="control" fill="red" height="30" width="50" y="0" x="50" style="fill-opacity: .2;" />
-    <rect class="control" fill="yellow" height="30" width="50" y="0" x="100" style="fill-opacity: .2;" />
-    <rect class="control" fill="blue" height="30" width="50" y="0" x="150" style="fill-opacity: .2;" />
-    <rect class="control" fill="orange" height="30" width="50" y="0" x="200" style="fill-opacity: .2;" />
+    <rect class="control" fill="green" height="30" width="50" y="0" x="0" style="fill-opacity: .5;" />
+    <rect class="control" fill="red" height="30" width="50" y="0" x="50" style="fill-opacity: .5;" />
+    <rect class="control" fill="yellow" height="30" width="50" y="0" x="100" style="fill-opacity: .5;" />
+    <rect class="control" fill="blue" height="30" width="50" y="0" x="150" style="fill-opacity: .5;" />
+    <rect class="control" fill="orange" height="30" width="50" y="0" x="200" style="fill-opacity: .5;" />
   </g>
 </svg>
 `;
@@ -248,9 +248,9 @@ export default class Guitar extends Instrument {
     else if(input < 5) {
       this.controls[input].on = state;
       if(state)
-        this.controls[input].setAttribute('style', 'opacity: 0.5;');
+        this.controls[input].setAttribute('style', 'opacity: 1;');
       else
-        this.controls[input].setAttribute('style', 'opacity: 0.2;');
+        this.controls[input].setAttribute('style', 'opacity: 0.52;');
     }
   }
 }

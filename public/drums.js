@@ -4,7 +4,7 @@ const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect fill="#aaa" height="100%" width="100%" y="0" x="0" />
+    <rect fill="#ccc" height="100%" width="100%" y="0" x="0" />
     <circle cx="25%" cy="33%" r="50" fill="green"/>
     <circle cx="75%" cy="33%" r="50" fill="red" />
     <circle cx="25%" cy="66%" r="50" fill="yellow" />
