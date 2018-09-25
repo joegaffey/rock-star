@@ -28,7 +28,7 @@ guitarTemplate.innerHTML = `
 export default class Guitar extends Instrument {
   constructor(parent, settings) {
     super(parent, settings)
-    this.container.appendChild(guitarTemplate.content.cloneNode(true));  
+    this.container.querySelector('.instrument').appendChild(guitarTemplate.content.cloneNode(true));  
     parent.appendChild(this.container);  
     this.graphics = this.container.querySelector('canvas');
     
