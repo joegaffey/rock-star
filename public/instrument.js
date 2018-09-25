@@ -15,6 +15,7 @@ template.innerHTML = `
     </div>
   </div>
 </div>
+<div class="instrument"></div>
 <div class="infoOverlay name"></div>
 <div class="infoOverlay accuracy"><span class="score">100</span>%</div>`;
 
