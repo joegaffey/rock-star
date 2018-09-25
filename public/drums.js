@@ -92,10 +92,10 @@ export default class Drums extends Instrument {
     let drumId = this.noteToDrumMap[mNote.name.substring(0,1)];
     let drum = this.graphics.children[drumId + 1];
     drum.setAttribute('r', 60);
-    drum.setAttribute('opacity', 0.60);
+    // drum.setAttribute('opacity', 0.60);
     setTimeout(() => {
       drum.setAttribute('r', 50);
-      drum.setAttribute('opacity', 0.5);
+      // drum.setAttribute('opacity', 0.5);
     }, 50);
   }
   

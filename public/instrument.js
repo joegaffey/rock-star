@@ -131,4 +131,8 @@ export default class Instrument {
   set accuracy(acc) {
     this.container.querySelector('.score').innerHTML = acc;
   }
+  
+  endSong() {
+    this.container.querySelector('.accuracy').classList.add('maxed');
+  }
 }
