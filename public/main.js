@@ -259,6 +259,12 @@ class App {
   }   
   
   endSongNoDelay() {
+    
+    this.settings.players.forEach(player => {
+      if(player.instrument)
+       player.instrument.endSong();
+    });
+      
     this.ui.showPlayIcon();
     
     Tone.Transport.stop(); 
