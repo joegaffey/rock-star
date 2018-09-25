@@ -105,6 +105,19 @@ li {
   justify-content: center;
 }
 
+.gripper {
+  pointer-events: none;
+  position: absolute;
+  top: 14px;
+}
+
+.gripper.left {
+  left: 8px;
+}
+
+.gripper.right {
+  right: 8px;
+}
 
 /******************** Song Title **************************/
 
