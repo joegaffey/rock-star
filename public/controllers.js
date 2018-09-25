@@ -36,34 +36,40 @@ export default class Controllers {
   onOk() {}
   
   detectInput(player, button) {
+    
     let controller = navigator.getGamepads()[player.controllerId];
     if(button >= this.buttonEls.length) {
       this.buttonAssignOk.style.display = 'block';
       return;
     }
     this.buttonEls[button].innerHTML = 'Waiting...';
-    let joyInput = this.detectButton(controller)
+    let joyInput = this.detectButton(controller);
     if(joyInput > -1) {
-      player.assignedInputs.push({ button: button, isButton: true, controllerInputId: joyInput});
-      this.buttonEls[button].innerHTML = 'JOY ' + joyInput;
+      if(!this.locked) {
+        player.assignedInputs.push({ button: button, isButton: true, controllerInputId: joyInput});
+        this.buttonEls[button].innerHTML = 'JOY ' + joyInput;
+        this.locked = true;
+        button++;
+      }
     }
     else {
       joyInput = this.detectAxis(controller);
       if(joyInput > -1) {
-        player.assignedInputs.push({ button: button, isAxis: true, controllerInputId: joyInput});
-        this.buttonEls[button].innerHTML = 'AXIS ' + joyInput;
+        if(!this.locked) {
+          player.assignedInputs.push({ button: button, isAxis: true, controllerInputId: joyInput});
+          this.buttonEls[button].innerHTML = 'AXIS ' + joyInput;        
+          this.locked = true;
+          button++;
+        }
       }
-    }    
-    if(joyInput > -1) {
-      setTimeout(() => {
-        this.detectInput(player, button + 1);
-      }, 500);      
-    }
-    else {
-      setTimeout(() => {
-        this.detectInput(player, button);
-      }, 500);      
-    }
+    } 
+    
+    if(this.locked && joyInput === -1) 
+      this.locked = false;
+    
+    setTimeout(() => {
+      this.detectInput(player, button);
+    }, 100);
   }
   
   detectButton(controller) {
