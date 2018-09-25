@@ -42,8 +42,10 @@ export default class Guitar extends Instrument {
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = this.container.querySelectorAll('.control');
     
-    this.errorRate = 0.9;
+    this.playerNoteRate = 0.8;
     this.strumReset = true;
+    
+    this.backOff = this.BACK_OFF = 60;
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
@@ -113,6 +115,7 @@ export default class Guitar extends Instrument {
   }
   
   update(now) {
+    this.backOff--;
     // Update existing notes
     this.ctx.clearRect(0, 0, 250, 400);
       
@@ -198,9 +201,10 @@ export default class Guitar extends Instrument {
     gNote.isPlaying = false;
     gNote.isError = false;
     mNote.gNote = gNote;       
-    if(this.playerControl && Math.random() > this.errorRate) {
+    if(this.playerControl && this.backOff < 0 && Math.random() > this.playerNoteRate) {
       gNote.isPlayerNote = true;
       gNote.circle = 10;
+      this.backOff = this.BACK_OFF;
     }
     this.gNotes.push(gNote);   
   }
