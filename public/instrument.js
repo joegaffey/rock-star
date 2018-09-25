@@ -4,6 +4,8 @@ import Settings from './settings.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <div class="settings">
+  <img class="gripper left" src="grippy.svg"/>
+  <img class="gripper right" src="grippy.svg"/>
   <div class="dropdown">
     <button class="dropbtn">Computer</button>
     <div class="dropdown-content">
