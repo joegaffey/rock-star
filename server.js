@@ -23,7 +23,7 @@ producer.on('ready', function () {
 producer.on('error', function (err) {
   console.log('Producer is in error state');
   console.log(err);
-})
+});
 
 function sendMessage(topic, message) {
   let payloads = [
