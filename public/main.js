@@ -50,13 +50,13 @@ class App {
           this.initAudio();    
         }, 100);
         
-        let players = 0;
+        this.players = 0;
         this.instruments.forEach(instrument => {
           if(instrument.player)
-            players++;
+            this.players++;
         });
         this.ui.showCloseIcon();
-        this.sendGameStart(players);
+        this.sendGameStart(this.players);
       }
       else 
         this.isPlaying ? this.pause() : this.play();
@@ -73,7 +73,7 @@ class App {
           gameOver = false;
       });
       this.sendPlayerStats(stats);  
-      if(this.isPlaying && gameOver) {
+      if(this.players > 0 && this.isPlaying && gameOver) {
         this.endSongNoDelay();
         clearInterval(updateTimer);
       }
@@ -253,10 +253,8 @@ class App {
   
   trackFinished() {
     this.finishedTracks++;
-    if(this.finishedTracks >= this.totalTracks) {
+    if(this.finishedTracks >= this.totalTracks)
       this.endSong();
-      this.ui.hideCloseIcon();
-    }
   }
   
   endSong() {
@@ -272,6 +270,7 @@ class App {
     });
       
     this.ui.showPlayIcon();
+    this.ui.hideCloseIcon();
     
     Tone.Transport.stop(); 
     Tone.Transport.clear();

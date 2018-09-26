@@ -62,7 +62,7 @@ export default class Controllers {
           button++;
         }
       }
-    } 
+    }
     
     if(this.locked && joyInput === -1) 
       this.locked = false;

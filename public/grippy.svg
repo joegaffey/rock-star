@@ -4,6 +4,5 @@
       <circle cx="4" cy="4" r="2" fill="#ccc" fill-opacity="0.2"/>
     </pattern>
   </defs>
-
   <rect fill="url(#Pattern)" width="50" height="20"/>
 </svg>

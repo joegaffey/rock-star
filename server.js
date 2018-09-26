@@ -50,7 +50,7 @@ function guid() {
       .substring(1);
   }
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-} 
+}
 
 app.get("/songs/:id", function (request, response) {
   sendMessage('song', JSON.stringify({id: request.params.id}));
