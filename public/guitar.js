@@ -147,6 +147,8 @@ export default class Guitar extends Instrument {
       }
       if(mNote.time > now + this.windowSize)
         return;
+      if(mNote.gNote && mNote.gNote.isPlayerNote && (mNote.time - now + 5) < 0.5)
+        mNote.gNote.upComing  = true;
     });
   }
   
@@ -165,15 +167,25 @@ export default class Guitar extends Instrument {
     this.ctx.fillStyle = gNote.color;
     this.ctx.arc(gNote.x, y + this.offset, 4, 0, 6.28);
     this.ctx.fill();
-
+    
     if(this.playerControl && gNote.isPlayerNote) {
-      if(gNote.circle > 50)
-        gNote.circle = 5;
-      this.ctx.lineWidth = 3;
-      this.ctx.globalAlpha = 20 / (gNote.circle * 5);
-      this.ctx.beginPath();
-      this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
-      this.ctx.stroke();
+      if(gNote.upComing) {
+        this.ctx.fillStyle = gNote.color;
+        this.ctx.lineWidth = 3;
+        this.ctx.globalAlpha = 1;
+        this.ctx.beginPath();
+        this.ctx.arc(gNote.x, y + this.offset, 15, 0, 2 * Math.PI);
+        this.ctx.stroke();
+      }
+      else {
+        if(gNote.circle > 50)
+          gNote.circle = 5;
+        this.ctx.lineWidth = 3;
+        this.ctx.globalAlpha = 20 / (gNote.circle * 5);
+        this.ctx.beginPath();
+        this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
+        this.ctx.stroke();
+      }
     }   
   }
   

@@ -83,6 +83,7 @@ class App {
   animate() {
     if(this.isPlaying)
       this.updateInstruments(Tone.now());
+    
     this.settings.players.forEach(player => {
       if(player.instrument && player.controllerId) {        
         this.controllers.getInputStates(player).forEach((state, i) => {
