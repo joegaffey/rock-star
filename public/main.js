@@ -2,7 +2,7 @@ import Guitar from './guitar.js';
 import Drums from './drums.js';
 import Settings from './settings.js';
 import Controllers from './controllers.js';
-import Keyboard from './keyboard.js';
+// import Keyboard from './keyboard.js';
 import AppUI from './appui.js';
 
 const SONG_SERVICE_URL = '';

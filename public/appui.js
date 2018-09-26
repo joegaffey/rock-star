@@ -64,12 +64,18 @@ export default class AppUI {
     songs.forEach((song, i) => {
       let li = document.createElement("li");
       li.setAttribute('class', 'songListItem');
-      li.innerHTML = `${song.artist} - ${song.title} (${song.tracks.length} tracks)`;
+      li.innerHTML = `${song.artist} - ${song.title} (${this.secondsToMinutesAndSeconds(song.duration)}) - ${song.tracks.length} tracks`;
       li.onclick = () => {
         app.loadSong(song);
         this.songListModal.toggle();
       };
       this.songListEl.appendChild(li);
     });
+  }
+  
+  secondsToMinutesAndSeconds(duration) {
+    let minutes = Math.floor(duration / 60);
+    let seconds = Math.round(duration - (minutes * 60));
+    return `${minutes}:${seconds}`;
   }
 }

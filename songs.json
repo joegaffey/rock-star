@@ -3,6 +3,7 @@
     "id": "1",
     "title": "Nothing Else Matters",
     "artist": "Metallica",
+    "duration": 391.95642374999863,
     "tracks": [
       {
         "id": "2",
@@ -20,8 +21,9 @@
   },
   {
     "id": "2",
-    "title": "Ace of Spades",
+    "title": "Ace of Spades (Intro)",
     "artist": "Motorhead",
+    "duration": 55.384559999999965,
     "tracks": [
       {
         "id":"1",
@@ -45,6 +47,7 @@
     "id": "3",
     "title": "Iron Man",
     "artist": "Black Sabbath",
+    "duration": 339.17630100001566,
     "tracks": [
       {
         "id":"1",
@@ -73,6 +76,7 @@
     "id": "4",
     "title": "Enter Sandman",
     "artist": "Metallica",
+    "duration": 324.3896599999999,
     "tracks": [
       {
         "id":"2",
@@ -104,6 +108,7 @@
     "id": "5",
     "title": "Paranoid",
     "artist": "Black Sabbath",
+    "duration": 157.72639172499927,
     "tracks": [
       {
         "id":"1",
@@ -135,6 +140,7 @@
     "id": "6",
     "title": "Freebird",
     "artist": "Lynyrd Skynyrd",
+    "duration": 461.99999999999994,
     "tracks": [
       {
         "id":"1",
@@ -187,6 +193,7 @@
     "id": "7",
     "title": "More than a Feeling",
     "artist": "Boston",
+    "duration": 201.29303249999953,
     "tracks": [
       {
         "id":"1",
@@ -253,6 +260,7 @@
     "id": "8",
     "title": "Walk this way",
     "artist": "Aerosmith",
+    "duration": 196.36379999999963,
     "tracks": [
       {
         "id":"1",
@@ -284,6 +292,7 @@
     "id": "9",
     "title": "Seven Nation Army",
     "artist": "White Stripes",
+    "duration": 226,
     "tracks": [
       {
         "id":"1",
@@ -307,6 +316,7 @@
     "id": "10",
     "title": "Bomb Track",
     "artist": "Rage Against the Machine",
+    "duration": 251.19999999999916,
     "tracks": [
       {
         "id":"1",
@@ -326,6 +336,7 @@
     "id": "11",
     "title": "Test Track",
     "artist": "Joe Gaffey",
+    "duration": 5,
     "tracks": [
       {
         "id":"1",
