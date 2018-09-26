@@ -110,11 +110,11 @@ li {
 }
 
 .gripper.left {
-  left: 8px;
+  left: 12px;
 }
 
 .gripper.right {
-  right: 8px;
+  right: 12px;
 }
 
 /******************** Song Title **************************/
@@ -122,8 +122,6 @@ li {
 .songTitle {
   height: 32px;
   color: #bbb;
-/*   font-family: Audiowide; */
-/*   font-family: 'New Rocker', cursive; */
   font-family: 'Metal Mania', cursive;
   text-shadow: 0px 0px 30px #E25822;
   font-size: 32px;
@@ -183,13 +181,13 @@ li {
 }
 
 .instrumentContainer .accuracy {
-  right: 4px;
+  right: 34px;
 }
 
 .instrumentContainer .maxed {
   top: 175px;
   left: 4px;
-  right: 4px;
+  right: 34px;
   font-size: 72px;
   text-align: center;
   transition: font-size, top, left 10000ms ease-in;

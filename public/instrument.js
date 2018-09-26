@@ -20,27 +20,27 @@ template.innerHTML = `
 <div class="instrument"></div>
 <div class="cexBar">
   <svg class="cexBarSvg" width="30" height="400">
-    <rect class="cexItem" x="5" y="5" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="20" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="35" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="50" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="65" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="80" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="95" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="110" rx="4" ry="4" width="20" height="10" style="fill:green" />  
-    <rect class="cexItem" x="5" y="125" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="140" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="155" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="170" rx="4" ry="4" width="20" height="10" style="fill:green" />
-    <rect class="cexItem" x="5" y="185" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="200" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="215" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="230" rx="4" ry="4" width="20" height="10" style="fill:orange" />  
-    <rect class="cexItem" x="5" y="245" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="260" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="275" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="290" rx="4" ry="4" width="20" height="10" style="fill:orange" />
-    <rect class="cexItem" x="5" y="305" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="5" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="20" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="35" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="50" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="65" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="80" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="95" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="110" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />  
+    <rect class="cexItem" x="5" y="125" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="140" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="155" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="170" rx="4" ry="4" width="20" height="10" style="fill:lightgreen" />
+    <rect class="cexItem" x="5" y="185" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="200" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="215" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="230" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />  
+    <rect class="cexItem" x="5" y="245" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="260" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="275" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="290" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
+    <rect class="cexItem" x="5" y="305" rx="4" ry="4" width="20" height="10" style="fill:darkorange" />
     <rect class="cexItem" x="5" y="320" rx="4" ry="4" width="20" height="10" style="fill:red" />
     <rect class="cexItem" x="5" y="335" rx="4" ry="4" width="20" height="10" style="fill:red" />
     <rect class="cexItem" x="5" y="350" rx="4" ry="4" width="20" height="10" style="fill:red" />  
@@ -115,15 +115,15 @@ export default class Instrument {
     });
     
     this.cexBar = this.container.querySelector('.cexBarSvg');
-    this.cex = 30;
+    this.cex = this.CEX_MAX = 30;
     this.CEX_UPDATE_RATE = 1000;
     this.CEX_FACTOR = 0.5;
     this.CEX_THRESHOLD = 50;
     
     setInterval(() => {
-      if(!this.playerControl)
+      if(!this.playerControl || this.finished)
         return;
-      if(this.player.avg > this.CEX_THRESHOLD) 
+      if(this.player.avg > this.CEX_THRESHOLD && this.cex < this.CEX_MAX) 
         this.cex += this.CEX_FACTOR;
       else
         this.cex -= this.CEX_FACTOR;
@@ -187,6 +187,7 @@ export default class Instrument {
   }
   
   endSong() {
+    this.finished = true;
     this.container.querySelector('.accuracy').classList.add('maxed');
   }  
   

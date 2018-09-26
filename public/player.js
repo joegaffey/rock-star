@@ -22,7 +22,7 @@ export default class Player {
   
   get avg() {
     if(this.hits + this.misses === 0)
-      return 0;
+      return 100;
     else 
       return Math.round((100 * this.hits) / (this.hits + this.misses));
   }
