@@ -8,11 +8,13 @@ drumsTemplate.innerHTML = `
     <circle cx="25%" cy="33%" r="50" fill="green" opacity="0.5"/>
     <circle cx="75%" cy="33%" r="50" fill="red" opacity="0.5"/>
     <circle cx="25%" cy="66%" r="50" fill="#999900" opacity="0.5"/>
-    <circle cx="75%" cy="66%" r="50" fill="blue" opacity="0.25"/>
+    <circle cx="75%" cy="66%" r="50" fill="blue" opacity="0.5"/>
+    <circle cx="50%" cy="50%" r="50" fill="darkorange" opacity="0.5"/>
     <circle cx="25%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
     <circle cx="75%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
     <circle cx="25%" cy="66%" r="25" fill="#fff" opacity="0.25"/>
     <circle cx="75%" cy="66%" r="25" fill="#fff" opacity="0.25"/>    
+    <circle cx="50%" cy="50%" r="25" fill="#fff" opacity="0.25"/>    
   </g>
 </svg>
 `;
@@ -22,8 +24,7 @@ export default class Drums extends Instrument {
     super(parent, settings);
     this.container.appendChild(drumsTemplate.content.cloneNode(true));  
     this.graphics = this.container.querySelector('g');
-    this.noteToDrumMap = { A:0, B:1, C:1, D:2, E:2, F:3, G:3 };   
-    this.colors = ['green', 'red', 'yellow', 'blue'];
+    this.noteToDrumMap = { A:0, B:1, C:2, D:2, E:3, F:4, G:4 };   
     
     let playerSelectEls = this.container.querySelectorAll('.dropdown-content > div');
     playerSelectEls.forEach((select, i) => {

@@ -42,7 +42,8 @@ li {
   height: 70vh;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.05;
+  mix-blend-mode: screen;
   background-image: url(./assets/fire.gif);
   background-size: 70vh;
   background-repeat: repeat-x; 
@@ -129,6 +130,9 @@ li {
   text-align: center;
   text-transform: capitalize;
   padding: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /******************** Instruments ************************/
