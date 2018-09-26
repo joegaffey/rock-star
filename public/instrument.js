@@ -18,6 +18,36 @@ template.innerHTML = `
   </div>
 </div>
 <div class="instrument"></div>
+<div class="cexBar">
+  <svg class="cexBarSvg" width="30" height="400">
+    <rect class="cexItem" x="5" y="5" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="20" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="35" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="50" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="65" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="80" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="95" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="110" rx="4" ry="4" width="20" height="10" style="fill:green" />  
+    <rect class="cexItem" x="5" y="125" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="140" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="155" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="170" rx="4" ry="4" width="20" height="10" style="fill:green" />
+    <rect class="cexItem" x="5" y="185" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="200" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="215" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="230" rx="4" ry="4" width="20" height="10" style="fill:orange" />  
+    <rect class="cexItem" x="5" y="245" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="260" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="275" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="290" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="305" rx="4" ry="4" width="20" height="10" style="fill:orange" />
+    <rect class="cexItem" x="5" y="320" rx="4" ry="4" width="20" height="10" style="fill:red" />
+    <rect class="cexItem" x="5" y="335" rx="4" ry="4" width="20" height="10" style="fill:red" />
+    <rect class="cexItem" x="5" y="350" rx="4" ry="4" width="20" height="10" style="fill:red" />  
+    <rect class="cexItem" x="5" y="365" rx="4" ry="4" width="20" height="10" style="fill:red" />
+    <rect class="cexItem" x="5" y="380" rx="4" ry="4" width="20" height="10" style="fill:red" />
+  </svg>
+</div>
 <div class="infoOverlay name"></div>
 <div class="infoOverlay accuracy"><span class="score">100</span>%</div>`;
 
@@ -29,6 +59,7 @@ export default class Instrument {
     else {
       this.container = document.createElement('div');
       this.container.style.position = 'relative';
+      this.container.classList.add('instrumentContainer');
       
       this.container.appendChild(template.content.cloneNode(true));  
       parent.appendChild(this.container);    
@@ -82,6 +113,26 @@ export default class Instrument {
           this.playerControl = false;
       }
     });
+    
+    this.cexBar = this.container.querySelector('.cexBarSvg');
+    this.cex = 30;
+    this.CEX_UPDATE_RATE = 1000;
+    this.CEX_FACTOR = 0.5;
+    this.CEX_THRESHOLD = 50;
+    
+    setInterval(() => {
+      if(!this.playerControl)
+        return;
+      if(this.player.avg > this.CEX_THRESHOLD) 
+        this.cex += this.CEX_FACTOR;
+      else
+        this.cex -= this.CEX_FACTOR;
+      if(this.cex === 0) {
+        this.endSong();
+        this.playerControl = false;
+      }
+      this.updateCexBar();
+    }, this.CEX_UPDATE_RATE);
   }
   
   onDrop(ev) {
@@ -137,5 +188,15 @@ export default class Instrument {
   
   endSong() {
     this.container.querySelector('.accuracy').classList.add('maxed');
+  }  
+  
+  updateCexBar() {
+    let items = this.cexBar.querySelectorAll('.cexItem');
+    items.forEach((el, i) => {
+      if(items.length - i > this.cex)
+        el.classList.add('invisible');
+      else
+        el.classList.remove('invisible');
+    });
   }
 }
