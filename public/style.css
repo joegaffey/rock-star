@@ -26,13 +26,13 @@ li {
   pointer-events: none;
 }
 
-.background > canvas {
+/* .background > canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-}
+} */
 
 .footer {
   position: fixed;
@@ -40,11 +40,9 @@ li {
   left: 0;
   width: 100%;
   height: 70vh;
-  z-index: 0;
   pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: screen;
-  background-image: url(./assets/fire.gif);
+  opacity: 0.1;
+  background-image: url(./assets/fire.png);
   background-size: 70vh;
   background-repeat: repeat-x; 
 }
