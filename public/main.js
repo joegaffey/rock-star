@@ -201,7 +201,7 @@ class App {
         note.ready = true;
         
         if(note.gNote && note.gNote.isPlayerNote)
-          note.ready = inst.playCheck(note.gNote);
+          note.ready = inst.playCheck(note);
         if(note.ready) {
           inst.play(note);
           inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
