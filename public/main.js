@@ -64,12 +64,19 @@ class App {
     
     requestAnimationFrame(this.animate.bind(this));
     
-    setInterval(() => {
+    let updateTimer = setInterval(() => {
       var stats = [];
+      let gameOver = true; 
       this.settings.players.forEach(player => {
         stats.push(player.avg);
+        if(player.instrument && !player.instrument.finished)        
+          gameOver = false;
       });
       this.sendPlayerStats(stats);  
+      if(this.isPlaying && gameOver) {
+        this.endSongNoDelay();
+        clearInterval(updateTimer);
+      }
     }, 2000);
   }
 
@@ -258,8 +265,7 @@ class App {
     }, 5000);
   }   
   
-  endSongNoDelay() {
-    
+  endSongNoDelay() {    
     this.settings.players.forEach(player => {
       if(player.instrument)
        player.instrument.endSong();
