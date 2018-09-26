@@ -164,7 +164,7 @@ export default class Guitar extends Instrument {
 
     this.ctx.beginPath();
     this.ctx.globalAlpha = 1;
-    this.ctx.fillStyle = gNote.color;
+    this.ctx.fillStyle = ((gNote.isError) ? 'grey' : gNote.color);
     this.ctx.arc(gNote.x, y + this.offset, 4, 0, 6.28);
     this.ctx.fill();
     
@@ -178,10 +178,10 @@ export default class Guitar extends Instrument {
         this.ctx.stroke();
       }
       else {
-        if(gNote.circle > 50)
-          gNote.circle = 5;
+        gNote.circle = Math.abs(250 - y);
         this.ctx.lineWidth = 3;
-        this.ctx.globalAlpha = 20 / (gNote.circle * 5);
+        let opacity = 5 / gNote.circle;
+        ((opacity > 0.05)? this.ctx.globalAlpha = opacity : this.ctx.globalAlpha = 0);
         this.ctx.beginPath();
         this.ctx.arc(gNote.x, y + this.offset, gNote.circle++, 0, 2 * Math.PI);
         this.ctx.stroke();
@@ -221,26 +221,27 @@ export default class Guitar extends Instrument {
     this.gNotes.push(gNote);   
   }
   
-  playCheck(gNote) {
+  playCheck(mNote) {
     if(!this.playerControl)
       return true;
     
-    if(this.controls[gNote.string].on && this.strumOn) {
+    if(this.controls[mNote.gNote.string].on && this.strumOn) {
       this.player.hit();
       this.strumReset = false;
       return true;
     }
     else {
-      this.error(gNote);
+      this.error(mNote);
       this.player.miss();
       this.strumReset = false;
       return false;
     }
   }
   
-  error(gNote) {
-    gNote.isError = true;
-    this.errorSynth.triggerAttack('B0');    
+  error(mNote) {
+    mNote.gNote.isError = true;
+    let errorNotes = ['A0','B0','C0','D0','E0','F0']
+    this.errorSynth.triggerAttackRelease(errorNotes[Math.floor(Math.random() * 6)], mNote.duration);//Tone.Frequency(mNote.name).transpose(-10), Math.random() * 0.3 + 0.2);    
   }
   
   play(mNote) {
