@@ -5,8 +5,6 @@ html, body {
 }
 
 body {
-/*   background: #222 url('./assets/fire_bg.jpg') no-repeat center center fixed; */
-/*   background-size: cover; */
   font-family: arial;
   color: #ccc;
 }
@@ -41,41 +39,26 @@ li {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 500px;
+  height: 70vh;
   z-index: 0;
   pointer-events: none;
   opacity: 0.025;
   background-image: url(./assets/fire.gif);
-  background-size: 500px;
+  background-size: 70vh;
   background-repeat: repeat-x; 
 }
 
 /******************** Title ************************/
 
-/* Thanks! https://codepen.io/FelixRilling/pen/qzfoc */
-
 .title {
-  padding-top: 18vh;
+  position: absolute;
+  width: 100%;
+  top: 0;
   text-align: center;
-  font-size: 8vw;
+  font-size: 16vw;
   color: #fff;
-  font-family: Audiowide;
-  animation: neon 1s ease-in-out infinite alternate;
-}
-
-@keyframes neon {
-  from {
-    text-shadow:  
-      0 0 20px #fff, 
-      0 0 40px #FF1177,
-      0 0 80px #FF1177;
-  }
-  to {
-    text-shadow: 
-      0 0 5px #fff, 
-      0 0 25px #FF1177, 
-      0 0 50px #FF1177;
-  }
+  font-family: 'Metal Mania', cursive;
+  text-shadow: 0px 0px 30px #E25822;
 }
 
 /******************** Control panel ************************/
@@ -139,25 +122,19 @@ li {
   height: 32px;
   color: #bbb;
 /*   font-family: Audiowide; */
-  font-family: 'Metal Mania', cursive;
 /*   font-family: 'New Rocker', cursive; */
+  font-family: 'Metal Mania', cursive;
+  text-shadow: 0px 0px 30px #E25822;
   font-size: 32px;
   text-align: center;
   text-transform: capitalize;
   padding: 12px;
-  text-shadow: 0px 0px 30px #E25822;
 }
 
 /******************** Instruments ************************/
 
-.instruments {
-  padding-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.instruments > * {
+.instrumentContainer {
+  width: 280px;
   background-color: #fff;  
   box-shadow: 0px 0px 30px #E25822;
   border: 10px solid #212121;
@@ -166,7 +143,14 @@ li {
   height: 450px;
 }
 
-.instruments .infoOverlay {
+.instruments {
+  padding-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.instrumentContainer .infoOverlay {
   position: absolute;
   color: #ddd;
   top: 54px;  
@@ -177,15 +161,28 @@ li {
   font-weight: bold;
 }
 
-.instruments .name {
+.instrumentContainer .cexBar {
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  width: 30px;  
+  height: 400px;
+  background-color: #444;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.instrumentContainer .name {
   left: 4px;
 }
 
-.instruments .accuracy {
+.instrumentContainer .accuracy {
   right: 4px;
 }
 
-.instruments .maxed {
+.instrumentContainer .maxed {
   top: 175px;
   left: 4px;
   right: 4px;
