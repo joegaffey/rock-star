@@ -75,7 +75,7 @@ class App {
           gameOver = false;
       });
       this.sendPlayerStats(stats);  
-      if(this.players > 0 && gameOver) {
+      if(!this.isSongFinished && this.players > 0 && gameOver) {
         this.endSongNoDelay();
         clearInterval(updateTimer);
       }

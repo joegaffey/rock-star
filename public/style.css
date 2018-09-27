@@ -191,22 +191,26 @@ li {
   transition: font-size, top, left 10000ms ease-in;
 }
 
-
 /* .instruments > *:hover {
   border-color: maroon;
 } */
 
 /******************** Guitar ************************/
 
-@keyframes notePulse {
+/* @keyframes notePulse {
   0%   { r: 3; }
   100% { r: 20; }
+} */
+
+.control {
+  outline-offset: -5px;
+  outline-style: solid;
 }
 
 .gNoteCircle
 {
   opacity: 0.3;
-  animation: notePulse 1s infinite;
+/*   animation: notePulse 1s infinite; */
   stroke-width: 2;
   fill: none; 
   r: 14;
