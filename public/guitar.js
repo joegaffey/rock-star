@@ -35,17 +35,14 @@ export default class Guitar extends Instrument {
     this.colors = ['green', 'red', '#999900', 'blue', 'darkorange'];
     
     this.windowSize = 2; // Time window in seconds
-    this.scale = 50; // Used map note time to graphics - to be tweaked
+    this.scale = 100; // Used map note time to graphics - to be tweaked
     this.mNoteIndex = 0; // Current position in track
     this.offset = 75;
     
     this.noteToStringMap = { D:0, E:1, F:2, G:2, A:3, B:3, C:4 };   
     this.controls = this.container.querySelectorAll('.control');
     
-    this.playerNoteRate = 0.8;
     this.strumReset = true;
-    
-    this.backOff = this.BACK_OFF = 60;
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
@@ -55,6 +52,16 @@ export default class Guitar extends Instrument {
         setTimeout(() => { this.strumOn = false; }, 300);
       }
     });    
+    
+    this.backOff = this.BACK_OFF = 60;
+    this.playerNoteRate = 0.8;
+    
+    this.difficulyTimer = setInterval(() => {
+      this.playerNoteRate -= 0.01;
+      this.BACK_OFF -= 0.5;
+      if(this.playerNoteRate < 0.1)
+         clearInterval(this.difficulyTimer);
+    }, 1000);
     
     this.ctx = this.graphics.getContext('2d');
   }
@@ -110,8 +117,6 @@ export default class Guitar extends Instrument {
       this.reverb,
       Tone.Master
     );
-    
-    // this.synth = new Tone.PolySynth(8).toMaster(); // Simple test synth
   }
   
   update(now) {
@@ -120,7 +125,7 @@ export default class Guitar extends Instrument {
     this.ctx.clearRect(0, 0, 250, 400);
       
     this.gNotes.forEach((gNote, i) => {
-      let y = (now - gNote.mNote.time) * this.scale;
+      let y = (now - gNote.mNote.time) * this.scale - 250;
     
       if(this.playerControl && !gNote.isPlayerNote)
         this.drawShadowNote(y, gNote);
@@ -255,8 +260,9 @@ export default class Guitar extends Instrument {
   
   input(input, state) {
     if(input === 5 || input === 6) {
-      if(state && this.strumReset) 
+      if(state && this.strumReset) {
         this.strumOn = true;
+      }
       else
         this.strumOn = false;
       if(!state)
@@ -264,10 +270,17 @@ export default class Guitar extends Instrument {
     }
     else if(input < 5) {
       this.controls[input].on = state;
-      if(state)
-        this.controls[input].setAttribute('style', 'opacity: 1;');
-      else
-        this.controls[input].setAttribute('style', 'opacity: 0.52;');
+      if(state) {
+        this.controls[input].setAttribute('style', `opacity: 1; outline-width:5px; outline-color:${this.colors[input]};`);
+        this.controls[input].setAttribute('fill', 'transparent');
+        if(this.strumOn)
+          this.controls[input].setAttribute('fill', this.colors[input]);
+      }
+      else {
+        this.controls[input].setAttribute('style', 'opacity: 0.5;');
+        this.controls[input].setAttribute('stroke', 'transparent');
+        this.controls[input].setAttribute('fill', this.colors[input]);
+      }
     }
   }
 }

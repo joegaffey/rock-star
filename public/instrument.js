@@ -117,8 +117,8 @@ export default class Instrument {
     this.cexBar = this.container.querySelector('.cexBarSvg');
     this.cex = this.CEX_MAX = 30;
     this.CEX_UPDATE_RATE = 1000;
-    this.CEX_FACTOR = 0.5;
-    this.CEX_THRESHOLD = 50;
+    this.CEX_FACTOR = 1;
+    this.CEX_THRESHOLD = 75;
     
     setInterval(() => {
       if(!this.playerControl || this.finished)
