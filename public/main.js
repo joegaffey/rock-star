@@ -13,12 +13,14 @@ class App {
   constructor() {     
     this.songList = [];
     this.instruments = [];
-    this.isPlaying = false;
-    this.audioInit = false;
+    this.isPaused = false;
+    this.isAudioStarted = false;
+    this.isSongFinished = true;
     
     this.ui = new AppUI();
     this.ui.closeControlsEl.onclick = () => { 
       this.ui.hideCloseIcon();
+      this.ui.hideAudioControlIcon();
       this.endSongNoDelay(); 
     };   
         
@@ -43,11 +45,11 @@ class App {
       });
     
     this.ui.audioControlsEl.onclick = () => {
-      if(!this.audioInit) {
+      if(!this.isAudioStarted) {
         this.ui.showLoader();
         // Workaround to give time for the loader to appear
         setTimeout(() => { 
-          this.initAudio();    
+          this.startAudio(); 
         }, 100);
         
         this.players = 0;
@@ -59,7 +61,7 @@ class App {
         this.sendGameStart(this.players);
       }
       else 
-        this.isPlaying ? this.pause() : this.play();
+        this.isPaused ? this.unPause() : this.pause();
     };
     
     requestAnimationFrame(this.animate.bind(this));
@@ -73,16 +75,17 @@ class App {
           gameOver = false;
       });
       this.sendPlayerStats(stats);  
-      if(this.players > 0 && this.isPlaying && gameOver) {
+      if(this.players > 0 && gameOver) {
         this.endSongNoDelay();
         clearInterval(updateTimer);
       }
-    }, 2000);
+    }, 1000);
   }
 
   animate() {
-    if(this.isPlaying)
+    if(this.isAudioStarted && !this.isPaused) {
       this.updateInstruments(Tone.now());
+    }
     
     this.settings.players.forEach(player => {
       if(player.instrument && player.controllerId) {        
@@ -136,63 +139,84 @@ class App {
          inst.update(now);
     });                      
   }
-
-  loadSong(song) {
-    this.currentSong = song;
-    this.ui.hideTitle();
-    this.ui.showLoader();
+  
+  loadSongData(song, data) {
     this.ui.showPlayIcon();
     this.ui.showAudioControlIcon();  
     this.ui.clearInstruments();
     
-    Tone.Transport.stop(); 
-    Tone.Transport.clear();
-    
     this.instruments = [];
-    this.bgTracks = [];
-    this.audioInit = false;
-    this.isPlaying = false;
+    this.bgTracks = [];          
+
+    song.tracks.forEach((track) => {
+      let instrument = null;
+      if(track.instrument === 'guitar' || track.instrument === 'bass')
+        instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
+      else if(track.instrument === 'drums')
+        instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
+      if(instrument) {
+        instrument.name = data.tracks[track.id].instrument;
+        if(!instrument.name)
+          instrument.name = track.instrument;
+        instrument.mNotes = data.tracks[track.id].notes;
+        this.instruments.push(instrument);
+        console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
+      }
+      else {
+        let bgTrack = data.tracks[track.id];
+        bgTrack.synth = track.synth;
+        this.bgTracks.push(bgTrack);
+      }
+    });
+  }
+
+  loadSong(song) {   
+    this.ui.showLoader();
     
-    console.log('Playing: ' + song.title);  
+    if(!this.isSongFinished)
+      this.endSongNoDelay();
+    
+    this.currentSong = song;
+    this.ui.hideTitle();
+    
+    console.log('Loading: ' + song.title);  
+    document.querySelector('.songTitle').innerHTML = `${song.title} (${song.artist})`;
+    
     fetch(SONG_SERVICE_URL + '/songs/' + song.id)
       .then(response => {
         return response.json();
       })
       .then(data => {
-        this.instruments = [];
-        this.bgTracks = [];
-        Tone.Transport.bpm.value = data.header.bpm;
-        song.tracks.forEach((track) => {
-          let instrument = null;
-          if(track.instrument === 'guitar' || track.instrument === 'bass')
-            instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
-          else if(track.instrument === 'drums')
-            instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
-          if(instrument) {
-            instrument.name = data.tracks[track.id].instrument;
-            if(!instrument.name)
-              instrument.name = track.instrument;
-            instrument.mNotes = data.tracks[track.id].notes;
-            this.instruments.push(instrument);
-            console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
-          }
-          else {
-            let bgTrack = data.tracks[track.id];
-            bgTrack.synth = track.synth;
-            this.bgTracks.push(bgTrack);
-          }
-        });
-        document.querySelector('.songTitle').innerHTML = `${song.title} (${song.artist})`;
+        this.songData = data;
+        this.loadSongData(song, data);
         this.ui.hideLoader();
       });  
   }
 
-  initAudio() {
+  startAudio() {
     this.ui.showLoader();
-    Tone.context = new AudioContext();
-    
     this.finishedTracks = this.totalTracks = 0;
+    this.isSongFinished = false;
     
+    Tone.context = new Tone.Context();
+    Tone.Transport.bpm.value = this.songData.header.bpm;
+    
+    Tone.Transport.start('2.5', '0');     
+    
+    console.log('Starting instrument(s)');
+    this.startInstruments();
+    
+    console.log('Starting ' + this.bgTracks.length + ' background track(s)');
+    this.startBackgroundTracks();
+        
+    Tone.Transport.on('start', () => {
+      this.ui.showPauseIcon();
+      this.ui.hideLoader();
+      this.isAudioStarted = true;
+    });    
+  }
+  
+  startInstruments() {
     this.instruments.forEach((inst) => {
       inst.initSynth();
       this.totalTracks++;
@@ -213,9 +237,9 @@ class App {
         
       }, inst.mNotes).start(+2.5);
     });
-    
-    console.log(this.bgTracks.length + ' background track(s)');
-    
+  }
+  
+  startBackgroundTracks() {
     this.bgTracks.forEach((track, i) => {
       this.totalTracks++;
       console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
@@ -240,16 +264,6 @@ class App {
           this.trackFinished();
       }, track.notes).start(+2.5);      
     });
-        
-    this.audioInit = true;
-    
-    Tone.Transport.on('start', () => {
-      this.ui.showPauseIcon();
-      this.ui.hideLoader();
-    });
-    
-    Tone.Transport.start('2.5', '0'); 
-    this.isPlaying = true;
   }
   
   trackFinished() {
@@ -265,6 +279,7 @@ class App {
   }   
   
   endSongNoDelay() {    
+    console.log('Ending song');
     this.settings.players.forEach(player => {
       if(player.instrument)
        player.instrument.endSong();
@@ -274,34 +289,30 @@ class App {
     this.ui.hideCloseIcon();
     
     Tone.Transport.stop(); 
-    Tone.Transport.clear();
-    this.audioInit = false;
+    Tone.Transport.cancel();
+    Tone.context.close();
     
     this.instruments = [];
     this.bgTracks = []; 
-    this.isPlaying = false;
-    this.songFinished = true;
-
-    // this.settings.players.forEach(player => {
-    //   player.instrument = null;
-    // });
+    
+    this.isPaused = false;
+    this.isAudioStarted = false;
+    this.isSongFinished = true;
+    
     this.sendGameEnd();
   }
 
   pause() {
     this.ui.showPlayIcon();
-    Tone.Transport.stop();  
+    Tone.Transport.pause();  
     this.pauseTime = Tone.now();
-    this.isPlaying = false;
+    this.isPaused = true;
   }
 
-  play() {
+  unPause() {
     this.ui.showPauseIcon();
-    if(this.pauseTime > 0)
-      Tone.Transport.start(this.pauseTime); 
-    else 
-      Tone.Transport.start('2.5', '0'); 
-    this.isPlaying = true;
+    Tone.Transport.start(this.pauseTime);
+    this.isPaused = false;
   }
 }
 

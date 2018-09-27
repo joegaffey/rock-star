@@ -56,6 +56,10 @@ export default class AppUI {
     this.audioControlsEl.style.display = 'block';
   }
   
+  hideAudioControlIcon() {
+    this.audioControlsEl.style.display = 'none';
+  }
+  
   clearInstruments() {
     this.instrumentsEl.innerHTML = '';
   }
