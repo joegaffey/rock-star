@@ -40,7 +40,7 @@ app.get("/", function (request, response) {
 
 app.get("/songs/latest", function (request, response) {
   sendMessage('game', JSON.stringify({id: 1}));
-  response.sendFile(__dirname + '/s1.json');
+  response.sendFile(__dirname + '/songs/s1.json');
 });
 
 function guid() {
@@ -55,7 +55,7 @@ function guid() {
 app.get("/songs/:id", function (request, response) {
   sendMessage('song', JSON.stringify({id: request.params.id}));
   songStats[request.params.id]++;
-  response.sendFile(__dirname + '/s' +  request.params.id + '.json');
+  response.sendFile(__dirname + '/songs/s' +  request.params.id + '.json');
 });
 
 app.get("/songs", function (request, response) {
