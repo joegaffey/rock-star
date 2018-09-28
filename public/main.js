@@ -88,7 +88,7 @@ class App {
     }
     
     this.settings.players.forEach(player => {
-      if(player.instrument && player.controllerId) {        
+      if(player.instrument) {
         this.controllers.getInputStates(player).forEach((state, i) => {
           player.instrument.input(i, state);
         });
