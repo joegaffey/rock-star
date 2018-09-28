@@ -70,11 +70,13 @@ class App {
       var stats = [];
       let gameOver = true; 
       this.settings.players.forEach(player => {
-        stats.push(player.avg);
+        if(player.instrument)
+          stats.push(player.avg);
         if(player.instrument && !player.instrument.finished)        
           gameOver = false;
       });
-      this.sendPlayerStats(stats);  
+      if(!this.isSongFinished)
+        this.sendPlayerStats(stats);  
       if(!this.isSongFinished && this.players > 0 && gameOver) {
         this.endSongNoDelay();
         clearInterval(updateTimer);
