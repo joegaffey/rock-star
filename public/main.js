@@ -152,10 +152,17 @@ class App {
 
     song.tracks.forEach((track) => {
       let instrument = null;
-      if(track.instrument === 'guitar' || track.instrument === 'bass')
+      
+      if(track.isBackground) {
+        let bgTrack = data.tracks[track.id];
+        bgTrack.synth = track.synth || track.instrument;
+        this.bgTracks.push(bgTrack);
+      }
+      else if(track.instrument === 'guitar' || track.instrument === 'bass')
         instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
       else if(track.instrument === 'drums')
         instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
+      
       if(instrument) {
         instrument.name = data.tracks[track.id].instrument;
         if(!instrument.name)
@@ -163,11 +170,6 @@ class App {
         instrument.mNotes = data.tracks[track.id].notes;
         this.instruments.push(instrument);
         console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
-      }
-      else {
-        let bgTrack = data.tracks[track.id];
-        bgTrack.synth = track.synth;
-        this.bgTracks.push(bgTrack);
       }
     });
   }

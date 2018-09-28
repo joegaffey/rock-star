@@ -138,8 +138,7 @@ export default class Instrument {
   onDrop(ev) {
     ev.preventDefault();    
     this.swap(this.container, this.dragging);
-  }
-  
+  }  
   
   swap(node1, node2) {
     const afterNode2 = node2.nextElementSibling;

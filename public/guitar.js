@@ -125,7 +125,7 @@ export default class Guitar extends Instrument {
     this.ctx.clearRect(0, 0, 250, 400);
       
     this.gNotes.forEach((gNote, i) => {
-      let y = (now - gNote.mNote.time) * this.scale - 250;
+      let y = (now - gNote.mNote.time) * this.scale - (this.scale * 2.5);
     
       if(this.playerControl && !gNote.isPlayerNote)
         this.drawShadowNote(y, gNote);
