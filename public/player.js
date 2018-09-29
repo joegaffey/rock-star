@@ -29,7 +29,6 @@ export default class Player {
   }
   
   set avg(avg) {
-    console.log(avg)
     this.accuracy = avg;
     this.instrument.accuracy = this.accuracy;
   }

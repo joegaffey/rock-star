@@ -2,24 +2,37 @@ import Instrument from './instrument.js';
 
 const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
+<style>
+  .base {
+    fill: #fff;
+    opacity: 0.5;
+    r: 50;
+  }
+  .inner { 
+    pointer-events: none; 
+    fill: #fff;
+    opacity: 0.25;
+    r: 25;
+  }
+</style>
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#ccc" height="100%" width="100%" y="0" x="0" />
-    <circle cx="85%" cy="60%" r="50" fill="white" opacity="0.5"/>
-    <circle cx="15%" cy="60%" r="50" fill="white" opacity="0.5"/>
-    <circle cx="30%" cy="35%" r="50" fill="white" opacity="0.5"/>
-    <circle cx="70%" cy="35%" r="50" fill="white" opacity="0.5"/>
-    <circle cx="50%" cy="75%" r="50" fill="white" opacity="0.5"/>    
+    <circle class="base" cx="85%" cy="60%"/>
+    <circle class="base" cx="15%" cy="60%"/>
+    <circle class="base" cx="30%" cy="35%"/>
+    <circle class="base" cx="70%" cy="35%"/>
+    <circle class="base" cx="50%" cy="75%"/>    
     <circle class="pad" cx="85%" cy="60%" r="50" fill="green" opacity="0.5"/>
     <circle class="pad" cx="15%" cy="60%" r="50" fill="red" opacity="0.5"/>
     <circle class="pad" cx="30%" cy="35%" r="50" fill="#999900" opacity="0.5"/>
     <circle class="pad" cx="70%" cy="35%" r="50" fill="blue" opacity="0.5"/>
     <circle class="pad" cx="50%" cy="75%" r="50" fill="darkorange" opacity="0.5"/>
-    <circle cx="85%" cy="60%" r="25" fill="#fff" opacity="0.25"/>
-    <circle cx="15%" cy="60%" r="25" fill="#fff" opacity="0.25"/>    
-    <circle cx="70%" cy="35%" r="25" fill="#fff" opacity="0.25"/>
-    <circle cx="30%" cy="35%" r="25" fill="#fff" opacity="0.25"/>
-    <circle cx="50%" cy="75%" r="25" fill="#fff" opacity="0.25"/>    
+    <circle class="inner" cx="85%" cy="60%" r="25"/>
+    <circle class="inner" cx="15%" cy="60%" r="25"/>    
+    <circle class="inner" cx="70%" cy="35%" r="25"/>
+    <circle class="inner" cx="30%" cy="35%" r="25"/>
+    <circle class="inner" cx="50%" cy="75%" r="25"/>    
   </g>
 </svg>
 `;
@@ -32,11 +45,15 @@ export default class Drums extends Instrument {
     this.noteToDrumMap = { A:0, B:1, C:2, D:2, E:3, F:4, G:4 };   
     
     this.pads = Array.from(this.graphics.children).slice(6, 11);
+    this.pads[4].isPedal = true;
     this.minRadius = 30;
     this.maxRadius = 50;
         
     this.pads.forEach((pad) => {
       pad.radius = this.maxRadius;
+      pad.addEventListener('click', () => {
+        this.hitPad(pad);
+      });
     });    
     
     setInterval(() => {
@@ -118,15 +135,15 @@ export default class Drums extends Instrument {
   }
   
   play(mNote) {
-    let drumId = this.noteToDrumMap[mNote.name.substring(0,1)];
-    let drum = this.pads[drumId];
+    let padId = this.noteToDrumMap[mNote.name.substring(0,1)];
+    let pad = this.pads[padId];
     
-    if(this.playerControl && drum.radius > this.minRadius)
-      drum.radius -= this.shrinkRate;
+    if(this.playerControl && pad.radius > this.minRadius)
+      pad.radius -= this.shrinkRate;
     
-    drum.setAttribute('r', Math.round(drum.radius) + 10);
+    pad.setAttribute('r', Math.round(pad.radius) + 10);
     setTimeout(() => {
-      drum.setAttribute('r', Math.round(drum.radius));
+      pad.setAttribute('r', Math.round(pad.radius));
     }, 50);
   }
   
@@ -137,19 +154,19 @@ export default class Drums extends Instrument {
   update(now) {}
   
   input(input, state) {
-    if(!state)
-       return;
+    if(state)
+      this.hitPad(this.pads[input]);
+  }
+  
+  hitPad(pad) {
+    if(pad.radius < this.maxRadius && pad.isPedal)
+      pad.radius += this.pedalRate;
+    else if(pad.radius < this.maxRadius)
+      pad.radius += this.growRate;
     
-    let drum = this.pads[input];
-    
-    if(drum.radius < this.maxRadius && input === 4) //Pedal
-      drum.radius += this.pedalRate;
-    else if(drum.radius < this.maxRadius)
-      drum.radius += this.growRate;
-    
-    drum.setAttribute('r', Math.round(drum.radius) + 10);
+    pad.setAttribute('r', Math.round(pad.radius) + 10);
     setTimeout(() => {
-      drum.setAttribute('r', Math.round(drum.radius));
+      pad.setAttribute('r', Math.round(pad.radius));
     }, 50);
   }
 }
