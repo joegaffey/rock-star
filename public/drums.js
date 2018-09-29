@@ -5,16 +5,21 @@ drumsTemplate.innerHTML = `
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#ccc" height="100%" width="100%" y="0" x="0" />
-    <circle class="pad" cx="25%" cy="33%" r="50" fill="green" opacity="0.5"/>
-    <circle class="pad" cx="75%" cy="33%" r="50" fill="red" opacity="0.5"/>
-    <circle class="pad" cx="25%" cy="66%" r="50" fill="#999900" opacity="0.5"/>
-    <circle class="pad" cx="75%" cy="66%" r="50" fill="blue" opacity="0.5"/>
-    <circle class="pad" cx="50%" cy="50%" r="50" fill="darkorange" opacity="0.5"/>
-    <circle cx="25%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
-    <circle cx="75%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
-    <circle cx="25%" cy="66%" r="25" fill="#fff" opacity="0.25"/>
-    <circle cx="75%" cy="66%" r="25" fill="#fff" opacity="0.25"/>    
-    <circle cx="50%" cy="50%" r="25" fill="#fff" opacity="0.25"/>    
+    <circle cx="85%" cy="60%" r="50" fill="white" opacity="0.5"/>
+    <circle cx="15%" cy="60%" r="50" fill="white" opacity="0.5"/>
+    <circle cx="30%" cy="35%" r="50" fill="white" opacity="0.5"/>
+    <circle cx="70%" cy="35%" r="50" fill="white" opacity="0.5"/>
+    <circle cx="50%" cy="75%" r="50" fill="white" opacity="0.5"/>    
+    <circle class="pad" cx="85%" cy="60%" r="50" fill="green" opacity="0.5"/>
+    <circle class="pad" cx="15%" cy="60%" r="50" fill="red" opacity="0.5"/>
+    <circle class="pad" cx="30%" cy="35%" r="50" fill="#999900" opacity="0.5"/>
+    <circle class="pad" cx="70%" cy="35%" r="50" fill="blue" opacity="0.5"/>
+    <circle class="pad" cx="50%" cy="75%" r="50" fill="darkorange" opacity="0.5"/>
+    <circle cx="85%" cy="60%" r="25" fill="#fff" opacity="0.25"/>
+    <circle cx="15%" cy="60%" r="25" fill="#fff" opacity="0.25"/>    
+    <circle cx="70%" cy="35%" r="25" fill="#fff" opacity="0.25"/>
+    <circle cx="30%" cy="35%" r="25" fill="#fff" opacity="0.25"/>
+    <circle cx="50%" cy="75%" r="25" fill="#fff" opacity="0.25"/>    
   </g>
 </svg>
 `;
@@ -26,7 +31,7 @@ export default class Drums extends Instrument {
     this.graphics = this.container.querySelector('g');
     this.noteToDrumMap = { A:0, B:1, C:2, D:2, E:3, F:4, G:4 };   
     
-    this.pads = Array.from(this.graphics.children).slice(1, 6);
+    this.pads = Array.from(this.graphics.children).slice(6, 11);
     this.minRadius = 30;
     this.maxRadius = 50;
         
@@ -52,7 +57,7 @@ export default class Drums extends Instrument {
         this.player.avg = res;
     }, 1000);
     
-    this.shrinkRate = 0.1;
+    this.shrinkRate = 0.3;
     this.growRate = 0.1;
     this.pedalRate = 0.5;
   }
