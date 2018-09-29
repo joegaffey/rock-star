@@ -5,11 +5,11 @@ drumsTemplate.innerHTML = `
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#ccc" height="100%" width="100%" y="0" x="0" />
-    <circle cx="25%" cy="33%" r="50" fill="green" opacity="0.5"/>
-    <circle cx="75%" cy="33%" r="50" fill="red" opacity="0.5"/>
-    <circle cx="25%" cy="66%" r="50" fill="#999900" opacity="0.5"/>
-    <circle cx="75%" cy="66%" r="50" fill="blue" opacity="0.5"/>
-    <circle cx="50%" cy="50%" r="50" fill="darkorange" opacity="0.5"/>
+    <circle class="pad" cx="25%" cy="33%" r="50" fill="green" opacity="0.5"/>
+    <circle class="pad" cx="75%" cy="33%" r="50" fill="red" opacity="0.5"/>
+    <circle class="pad" cx="25%" cy="66%" r="50" fill="#999900" opacity="0.5"/>
+    <circle class="pad" cx="75%" cy="66%" r="50" fill="blue" opacity="0.5"/>
+    <circle class="pad" cx="50%" cy="50%" r="50" fill="darkorange" opacity="0.5"/>
     <circle cx="25%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
     <circle cx="75%" cy="33%" r="25" fill="#fff" opacity="0.25"/>
     <circle cx="25%" cy="66%" r="25" fill="#fff" opacity="0.25"/>
@@ -26,10 +26,35 @@ export default class Drums extends Instrument {
     this.graphics = this.container.querySelector('g');
     this.noteToDrumMap = { A:0, B:1, C:2, D:2, E:3, F:4, G:4 };   
     
-    let playerSelectEls = this.container.querySelectorAll('.dropdown-content > div');
-    playerSelectEls.forEach((select, i) => {
-      select.onclick = () => { alert('Drum support coming soon!'); }
-    });
+    this.pads = Array.from(this.graphics.children).slice(1, 6);
+    this.minRadius = 30;
+    this.maxRadius = 50;
+        
+    this.pads.forEach((pad) => {
+      pad.radius = this.maxRadius;
+    });    
+    
+    setInterval(() => {
+      if(!this.playerControl)
+        return;
+      let lowest = this.maxRadius;
+      this.pads.forEach((pad) => {
+        if(pad.radius < lowest)
+           lowest = pad.radius;
+      });
+      
+      let res = Math.floor((lowest - this.minRadius) * (100 / (this.maxRadius - this.minRadius)));
+      if(res <= 0)
+        this.player.avg = 0;
+      else if(res >= 100)
+        this.player.avg = 100;
+      else
+        this.player.avg = res;
+    }, 1000);
+    
+    this.shrinkRate = 0.1;
+    this.growRate = 0.1;
+    this.pedalRate = 0.5;
   }
 
   initSynth() {    
@@ -85,18 +110,18 @@ export default class Drums extends Instrument {
       'release' : 1,
       'baseUrl' : './assets/'
     }).toMaster();
-
-    // this.synth = new Tone.MembraneSynth().toMaster(); // Test synth
   }
   
   play(mNote) {
     let drumId = this.noteToDrumMap[mNote.name.substring(0,1)];
-    let drum = this.graphics.children[drumId + 1];
-    drum.setAttribute('r', 60);
-    // drum.setAttribute('opacity', 0.60);
+    let drum = this.pads[drumId];
+    
+    if(this.playerControl && drum.radius > this.minRadius)
+      drum.radius -= this.shrinkRate;
+    
+    drum.setAttribute('r', Math.round(drum.radius) + 10);
     setTimeout(() => {
-      drum.setAttribute('r', 50);
-      // drum.setAttribute('opacity', 0.5);
+      drum.setAttribute('r', Math.round(drum.radius));
     }, 50);
   }
   
@@ -104,11 +129,22 @@ export default class Drums extends Instrument {
     return true;
   }
   
-  update(now) {
-    //TBD
-  }
+  update(now) {}
   
   input(input, state) {
-    // TBD
+    if(!state)
+       return;
+    
+    let drum = this.pads[input];
+    
+    if(drum.radius < this.maxRadius && input === 4) //Pedal
+      drum.radius += this.pedalRate;
+    else if(drum.radius < this.maxRadius)
+      drum.radius += this.growRate;
+    
+    drum.setAttribute('r', Math.round(drum.radius) + 10);
+    setTimeout(() => {
+      drum.setAttribute('r', Math.round(drum.radius));
+    }, 50);
   }
 }

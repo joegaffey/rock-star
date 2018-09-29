@@ -6,6 +6,7 @@ export default class Player {
     this.score = 0;
     this.misses = 0;
     this.hits = 0;
+    this.accuracy = 100;
   }
   
   miss() {
@@ -21,9 +22,15 @@ export default class Player {
   }
   
   get avg() {
-    if(this.hits + this.misses === 0)
-      return 100;
-    else 
+    if(this.hits + this.misses > 0)
       return Math.round((100 * this.hits) / (this.hits + this.misses));
+    else 
+      return this.accuracy;
+  }
+  
+  set avg(avg) {
+    console.log(avg)
+    this.accuracy = avg;
+    this.instrument.accuracy = this.accuracy;
   }
 }
