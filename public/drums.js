@@ -6,35 +6,39 @@ drumsTemplate.innerHTML = `
   .base {
     fill: #fff;
     opacity: 0.5;
-    r: 50;
+    r: 40;
   }
   .inner { 
     pointer-events: none; 
     fill: #fff;
     opacity: 0.25;
-    r: 25;
+    r: 15;
+  }
+  canvas {
+    pointer-events: none; 
   }
 </style>
 <svg class="drums" width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <g>
     <rect fill="#ccc" height="100%" width="100%" y="0" x="0" />
-    <circle class="base" cx="85%" cy="60%"/>
-    <circle class="base" cx="15%" cy="60%"/>
-    <circle class="base" cx="30%" cy="35%"/>
-    <circle class="base" cx="70%" cy="35%"/>
-    <circle class="base" cx="50%" cy="75%"/>    
-    <circle class="pad" cx="85%" cy="60%" r="50" fill="green" opacity="0.5"/>
-    <circle class="pad" cx="15%" cy="60%" r="50" fill="red" opacity="0.5"/>
-    <circle class="pad" cx="30%" cy="35%" r="50" fill="#999900" opacity="0.5"/>
-    <circle class="pad" cx="70%" cy="35%" r="50" fill="blue" opacity="0.5"/>
-    <circle class="pad" cx="50%" cy="75%" r="50" fill="darkorange" opacity="0.5"/>
-    <circle class="inner" cx="85%" cy="60%" r="25"/>
-    <circle class="inner" cx="15%" cy="60%" r="25"/>    
-    <circle class="inner" cx="70%" cy="35%" r="25"/>
-    <circle class="inner" cx="30%" cy="35%" r="25"/>
-    <circle class="inner" cx="50%" cy="75%" r="25"/>    
+    <circle class="base" cx="210" cy="360"/>
+    <circle class="base" cx="40" cy="360"/>
+    <circle class="base" cx="80" cy="280"/>
+    <circle class="base" cx="160" cy="280"/>
+    <circle class="base" cx="125" cy="360"/>    
+    <circle class="pad" cx="210" cy="360" r="40" fill="green" opacity="0.5"/>
+    <circle class="pad" cx="40" cy="360" r="40" fill="red" opacity="0.5"/>
+    <circle class="pad" cx="80" cy="280" r="40" fill="#999900" opacity="0.5"/>
+    <circle class="pad" cx="160" cy="280" r="40" fill="blue" opacity="0.5"/>
+    <circle class="pad" cx="125" cy="360" r="40" fill="darkorange" opacity="0.5"/>
+    <circle class="inner" cx="210" cy="360" r="25"/>
+    <circle class="inner" cx="40" cy="360" r="25"/>    
+    <circle class="inner" cx="160" cy="280" r="25"/>
+    <circle class="inner" cx="80" cy="280" r="25"/>
+    <circle class="inner" cx="125" cy="360" r="25"/>    
   </g>
 </svg>
+<canvas style="position: absolute; top: 50px; left: 0;" width="250" height="400">></canvas>
 `;
 
 export default class Drums extends Instrument {    
@@ -46,8 +50,15 @@ export default class Drums extends Instrument {
     
     this.pads = Array.from(this.graphics.children).slice(6, 11);
     this.pads[4].isPedal = true;
-    this.minRadius = 30;
-    this.maxRadius = 50;
+    this.minRadius = 20;
+    this.maxRadius = 40;
+    
+    this.colors = ['green', 'red', '#999900', 'blue', 'darkorange'];
+    
+    this.windowSize = 2; // Time window in seconds
+    this.scale = 200; // Used map note time to graphics - to be tweaked
+    this.mNoteIndex = 0; // Current position in track
+    this.offset = 75;
         
     this.pads.forEach((pad) => {
       pad.radius = this.maxRadius;
@@ -56,27 +67,27 @@ export default class Drums extends Instrument {
       });
     });    
     
+    let difficultyMultiplier = 10;
+    
     setInterval(() => {
       if(!this.playerControl)
         return;
-      let lowest = this.maxRadius;
+      let total = 0;
       this.pads.forEach((pad) => {
-        if(pad.radius < lowest)
-           lowest = pad.radius;
+        total += pad.radius;
       });
-      
-      let res = Math.floor((lowest - this.minRadius) * (100 / (this.maxRadius - this.minRadius)));
-      if(res <= 0)
-        this.player.avg = 0;
-      else if(res >= 100)
-        this.player.avg = 100;
-      else
-        this.player.avg = res;
+      let ratio = (total / 5) / this.maxRadius;
+      let res = Math.floor(ratio * 100);
+      res = 100 - ((100 - res) * difficultyMultiplier);
+      if(res < 0)
+        res = 0;
+      this.player.avg = res;
     }, 1000);
     
-    this.shrinkRate = 0.3;
-    this.growRate = 0.1;
-    this.pedalRate = 0.5;
+    this.shrinkRate = this.growRate = 1;
+    this.pedalRate = 2;
+    
+    this.ctx = this.container.querySelector('canvas').getContext('2d');
   }
 
   initSynth() {    
@@ -151,11 +162,66 @@ export default class Drums extends Instrument {
     return true;
   }
   
-  update(now) {}
+  update(now) {
+    this.ctx.clearRect(0, 0, 250, 400);
+      
+    this.gNotes.forEach((gNote, i) => {
+      let y = (now - gNote.mNote.time) * this.scale - (this.scale * 4);    
+      this.drawNote(y, gNote);
+      
+      // Remove notes outside the render area
+      if(y - gNote.length > 420) {
+        this.gNotes.splice(i, 1);
+      }
+    });
+    
+    // Add new notes within the time window
+    let futureNotes = this.mNotes.slice(this.mNoteIndex);
+    
+    futureNotes.forEach((mNote, i) => {
+      if(mNote.time < now + this.windowSize && mNote.duration > 0) {
+        let pad = this.noteToDrumMap[mNote.name.substring(0,1)]; // First charter of note only
+        if(mNote.time >= 0 && !mNote.added) {
+          this.addNote(pad, -1000, this.colors[pad], mNote);
+          mNote.added = true; // Only add notes once
+        }
+        this.mNoteIndex = i;
+      }
+      if(mNote.time > now + this.windowSize)
+        return;
+      if(mNote.gNote && mNote.gNote.isPlayerNote && (mNote.time - now + 5) < 0.5)
+        mNote.gNote.upComing  = true;
+    });
+  }
+  
+  addNote(pad, y, color, mNote) {
+    let gNote = {};
+    gNote.endY = this.pads[pad].getAttribute('cy');
+    gNote.x = this.pads[pad].getAttribute('cx');
+    gNote.color = color;
+    gNote.pad = pad;
+    if(pad === 2 || pad === 3 )
+      gNote.offset = 0;
+    else
+      gNote.offset = this.offset;    
+    gNote.mNote = mNote;
+    mNote.gNote = gNote;       
+    this.gNotes.push(gNote);   
+  }
+  
+  drawNote(y, gNote) {
+    if(y + this.offset + gNote.offset > gNote.endY)
+      return;
+    this.ctx.beginPath();
+    this.ctx.globalAlpha = 1;
+    this.ctx.fillStyle = gNote.color;
+    this.ctx.arc(gNote.x, y + this.offset + gNote.offset, 4, 0, 6.28);
+    this.ctx.fill(); 
+  }
   
   input(states) {
     states.forEach((state, i) => {
-      if(state)
+      if(state && i < 5)
          this.hitPad(this.pads[i]);
     });
   }
