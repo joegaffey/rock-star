@@ -172,6 +172,14 @@ export default class Instrument {
     throw new Error('You have to implement the "play" method!');
   }
   
+  /**
+   * Called whenever there is controller input fpor this instrument
+   */
+  input(states) {
+    throw new Error('You have to implement the "input" method!');
+  }
+  
+  
   set name(name) {
     this._name = name;
     this.container.querySelector('.name').innerHTML = name;

@@ -91,9 +91,7 @@ class App {
     
     this.settings.players.forEach(player => {
       if(player.instrument) {
-        this.controllers.getInputStates(player).forEach((state, i) => {
-          player.instrument.input(i, state);
-        });
+        player.instrument.input(this.controllers.getInputStates(player));
       }
     });
     requestAnimationFrame(this.animate.bind(this));

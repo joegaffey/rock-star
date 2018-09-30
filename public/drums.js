@@ -153,9 +153,11 @@ export default class Drums extends Instrument {
   
   update(now) {}
   
-  input(input, state) {
-    if(state)
-      this.hitPad(this.pads[input]);
+  input(states) {
+    states.forEach((state, i) => {
+      if(state)
+         this.hitPad(this.pads[i]);
+    });
   }
   
   hitPad(pad) {

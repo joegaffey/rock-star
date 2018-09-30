@@ -53,11 +53,12 @@ export default class Controllers {
       }
     }
     else {
-      joyInput = this.detectAxis(controller);
+      let axis = this.detectAxis(controller);
+      joyInput = axis.index;
       if(joyInput > -1) {
         if(!this.locked) {
-          player.assignedInputs.push({ button: button, isAxis: true, controllerInputId: joyInput});
-          this.buttonEls[button].innerHTML = 'AXIS ' + joyInput;        
+          player.assignedInputs.push({ button: button, isAxis: true, value: axis.value, controllerInputId: joyInput});
+          this.buttonEls[button].innerHTML = 'AXIS ' + joyInput;
           this.locked = true;
           button++;
         }
@@ -87,11 +88,13 @@ export default class Controllers {
     if(!controller.initialAxes)
       controller.initialAxes = pad.axes;
     for(let i in pad.axes) {
-      if(pad.axes[i] != controller.initialAxes[i]) {
-        return i;
+      let value = Math.round(pad.axes[i]);
+      // Test axes against initial values rounded 
+      if(value !== Math.round(controller.initialAxes[i])) { 
+        return {index:i, value: value};
       }
     } 
-    return -1;
+    return {index: -1, value: 0};
   }
   
   detectControllers() {
@@ -113,9 +116,11 @@ export default class Controllers {
     player.assignedInputs.forEach((input, i) => {
       if(input.isButton) 
         result.push(pad.buttons[input.controllerInputId].pressed);
-      else if(input.isAxis)
-        result.push((Math.abs(pad.axes[input.controllerInputId]) === 1)? true : false);
+      else if(input.isAxis) {
+        result.push((Math.round(pad.axes[input.controllerInputId]) === input.value)? true : false);
+      }
     });
+    // console.log(result)        
     return result;
   }
 }
