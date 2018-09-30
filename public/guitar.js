@@ -258,30 +258,35 @@ export default class Guitar extends Instrument {
     } 
   }
   
-  input(input, state) {
-    if(input === 5 || input === 6) {
-      if(state && this.strumReset) {
-        this.strumOn = true;
-      }
-      else
-        this.strumOn = false;
-      if(!state)
-        this.strumReset = true;
-    }
-    else if(input < 5) {
-      this.controls[input].on = state;
-      if(state) {
-        this.controls[input].setAttribute('style', `opacity: 1; outline-width:5px; outline-color:${this.colors[input]};`);
-        this.controls[input].setAttribute('fill', 'transparent');
-        if(this.strumOn)
-          this.controls[input].setAttribute('fill', this.colors[input]);
-      }
-      else {
-        this.controls[input].setAttribute('style', 'opacity: 0.5;');
-        this.controls[input].setAttribute('stroke', 'transparent');
+  handleButton(input, state) {
+    this.controls[input].on = state;
+    if(state) {
+      this.controls[input].setAttribute('style', `opacity: 1; outline-width:5px; outline-color:${this.colors[input]};`);
+      this.controls[input].setAttribute('fill', 'transparent');
+      if(this.strumOn)
         this.controls[input].setAttribute('fill', this.colors[input]);
-      }
     }
+    else {
+      this.controls[input].setAttribute('style', 'opacity: 0.5;');
+      this.controls[input].setAttribute('stroke', 'transparent');
+      this.controls[input].setAttribute('fill', this.colors[input]);
+    }
+  }
+  
+  input(states) {
+    if((states[5] || states[6]) && this.strumReset) {
+      this.strumOn = true;
+      this.strumReset = false;
+    }
+    else if(!(states[5] || states[6])) {
+      this.strumOn = false;
+      this.strumReset = true;
+    }
+    
+    states.forEach((state, i) => {
+      if(i < 5)
+         this.handleButton(i, state)
+    });
   }
 }
 
