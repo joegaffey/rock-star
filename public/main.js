@@ -200,13 +200,29 @@ class App {
       })
       .then(data => {
         data.tracks[0].isPractice = true;
-        data.tracks.push(JSON.parse(JSON.stringify(data.tracks[0])));
-        data.tracks.push(JSON.parse(JSON.stringify(data.tracks[0])));
-        data.tracks.push(JSON.parse(JSON.stringify(data.tracks[0])));
+        let loops = 3;
+        for(let i = 0; i < loops; i++) { 
+          data.tracks[0].notes = data.tracks[0].notes.concat(data.tracks[0].notes); 
+        };
+        
+        let json = JSON.stringify(data.tracks[0]);
+        data.tracks = [];
+        data.tracks.push(JSON.parse(json));  
+        data.tracks.push(JSON.parse(json));  
+        data.tracks.push(JSON.parse(json));
+        data.tracks.push(JSON.parse(json));
+      
+        data.tracks[0].id = 0; data.tracks[0].instrument = 'guitar';   
         data.tracks[1].id = 1; data.tracks[1].instrument = 'guitar'; 
         data.tracks[2].id = 2; data.tracks[2].instrument = 'guitar';
+      
         data.tracks[3].id = 3; data.tracks[3].instrument = 'drums';
         data.tracks[3].isPercussion = true;
+        // Remove whistle notes
+        data.tracks[3].notes.forEach((note) => { 
+          if(note.name === 'C4') note.name = 'D1';  
+          if(note.name === 'B3') note.name = 'Bb3';  
+        });
       
         data.tracks.forEach((track) => {
           let time = 0;
