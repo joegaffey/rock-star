@@ -353,6 +353,7 @@ class App {
       
     this.ui.showPlayIcon();
     this.ui.hideCloseIcon();
+    this.ui.hideAudioControlIcon();
     
     Tone.Transport.stop(); 
     Tone.Transport.cancel();
