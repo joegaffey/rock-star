@@ -58,7 +58,8 @@ class App {
             this.players++;
         });
         this.ui.showCloseIcon();
-        this.sendGameStart(this.players);
+        if(this.currentSong !== 'Practice')
+          this.sendGameStart(this.players);
       }
       else 
         this.isPaused ? this.unPause() : this.pause();
@@ -98,6 +99,8 @@ class App {
   }
 
   sendPlayerStats(stats) {
+    if(this.currentSong === 'Practice')
+        return;
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     var init = {
@@ -110,6 +113,8 @@ class App {
   }
   
   sendGameStart(players) {
+    if(this.currentSong === 'Practice')
+        return;
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     var init = {
@@ -122,6 +127,8 @@ class App {
   }
   
   sendGameEnd() {
+    if(this.currentSong === 'Practice')
+        return;
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     var init = {
@@ -162,6 +169,7 @@ class App {
         instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
       
       if(instrument) {
+        instrument.isPractice = data.tracks[track.id].isPractice;
         instrument.name = data.tracks[track.id].instrument;
         if(!instrument.name)
           instrument.name = track.instrument;
@@ -170,6 +178,40 @@ class App {
         console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
       }
     });
+  }
+
+  practice() {
+    this.ui.showLoader();
+    
+    if(!this.isSongFinished)
+      this.endSongNoDelay();
+    
+    this.currentSong = 'Practice';
+    let song = {};
+    song.tracks = [{id: 0, instrument: 'guitar'}, {id: 1, instrument: 'guitar'}, {id: 2, instrument: 'guitar'}, {id: 3, instrument: 'drums'}];
+    this.ui.hideTitle();
+    
+    console.log('Loading: Practice');  
+    document.querySelector('.songTitle').innerHTML = `Scales (Practice makes perfect)`;
+    
+    fetch(SONG_SERVICE_URL + '/practice.json')
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        data.tracks[0].isPractice = true;
+        data.tracks.push(JSON.parse(JSON.stringify(data.tracks[0])));
+        data.tracks.push(JSON.parse(JSON.stringify(data.tracks[0])));
+        data.tracks.push(JSON.parse(JSON.stringify(data.tracks[0])));
+        data.tracks[1].id = 1; data.tracks[1].instrument = 'guitar'; 
+        data.tracks[2].id = 2; data.tracks[2].instrument = 'guitar';
+        data.tracks[3].id = 3; data.tracks[3].instrument = 'drums';
+        data.tracks[3].isPercussion = true;
+        
+        this.songData = data;
+        this.loadSongData(song, data);
+        this.ui.hideLoader();
+      }); 
   }
 
   loadSong(song) {   

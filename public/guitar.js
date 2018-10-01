@@ -46,10 +46,16 @@ export default class Guitar extends Instrument {
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
-        this.input(i, true);
-        setTimeout(() => { this.input(i, false); }, 300);
+        let states = [false, false, false, false, false];
+        states[i] = true;
+        this.input(states);
+        // this.controls[i].on = true;
         this.strumOn = true;
-        setTimeout(() => { this.strumOn = false; }, 300);
+        setTimeout(() => { 
+          this.input([false, false, false, false, false]); 
+          // this.controls[i].on = false;
+          this.strumOn = false; 
+        }, 300);
       }
     });    
     
@@ -218,7 +224,7 @@ export default class Guitar extends Instrument {
     gNote.isPlaying = false;
     gNote.isError = false;
     mNote.gNote = gNote;       
-    if(this.playerControl && this.backOff < 0 && Math.random() > this.playerNoteRate) {
+    if(this.isPractice || this.playerControl && this.backOff < 0 && Math.random() > this.playerNoteRate) {
       gNote.isPlayerNote = true;
       gNote.circle = 10;
       this.backOff = this.BACK_OFF;
@@ -246,7 +252,7 @@ export default class Guitar extends Instrument {
   error(mNote) {
     mNote.gNote.isError = true;
     let errorNotes = ['A0','B0','C0','D0','E0','F0']
-    this.errorSynth.triggerAttackRelease(errorNotes[Math.floor(Math.random() * 6)], mNote.duration);//Tone.Frequency(mNote.name).transpose(-10), Math.random() * 0.3 + 0.2);    
+    this.errorSynth.triggerAttackRelease(errorNotes[Math.floor(Math.random() * 6)], mNote.duration);
   }
   
   play(mNote) {
