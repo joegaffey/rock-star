@@ -65,6 +65,11 @@ export default class AppUI {
   }
   
   showSongs(songs, app) {
+    let li = this.songListEl.querySelector("li");
+    li.onclick = () => {
+      app.practice();
+      this.songListModal.toggle();
+    };
     songs.forEach((song, i) => {
       let li = document.createElement("li");
       li.setAttribute('class', 'songListItem');
