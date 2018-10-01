@@ -207,6 +207,12 @@ class App {
         data.tracks[2].id = 2; data.tracks[2].instrument = 'guitar';
         data.tracks[3].id = 3; data.tracks[3].instrument = 'drums';
         data.tracks[3].isPercussion = true;
+      
+        data.tracks.forEach((track) => {
+          let time = 0;
+          let delta = 1;
+          track.notes.forEach((note) => { note.time = time += (delta *= 0.98); });
+        });
         
         this.songData = data;
         this.loadSongData(song, data);

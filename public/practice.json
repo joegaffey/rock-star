@@ -1,219 +1,249 @@
 {
-    "header": {
-      "PPQ": 960,
-      "bpm": 120,
-      "name": ""
-    },
-    "startTime": 0,
-    "duration": 57,
-    "tracks": [
-      {
-        "startTime": 0,
-        "duration": 16,
-        "length": 30,
-        "notes": [
-          {
-            "name": "C3",
-            "midi": 48,
-            "time": 0,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "D3",
-            "midi": 50,
-            "time": 0.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "E3",
-            "midi": 52,
-            "time": 1,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "F3",
-            "midi": 53,
-            "time": 1.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "G3",
-            "midi": 55,
-            "time": 2,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "A3",
-            "midi": 57,
-            "time": 2.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "B3",
-            "midi": 59,
-            "time": 3,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "C3",
-            "midi": 48,
-            "time": 4,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "D3",
-            "midi": 50,
-            "time": 4.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "E3",
-            "midi": 52,
-            "time": 5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "F3",
-            "midi": 53,
-            "time": 5.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "G3",
-            "midi": 55,
-            "time": 6,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "A3",
-            "midi": 57,
-            "time": 6.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "B3",
-            "midi": 59,
-            "time": 7,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "C3",
-            "midi": 48,
-            "time": 8,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "D3",
-            "midi": 50,
-            "time": 8.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "E3",
-            "midi": 52,
-            "time": 9,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "F3",
-            "midi": 53,
-            "time": 9.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "G3",
-            "midi": 55,
-            "time": 10,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "A3",
-            "midi": 57,
-            "time": 10.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "B3",
-            "midi": 59,
-            "time": 11,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "C3",
-            "midi": 48,
-            "time": 12,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "D3",
-            "midi": 50,
-            "time": 12.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "E3",
-            "midi": 52,
-            "time": 13,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "F3",
-            "midi": 53,
-            "time": 13.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "G3",
-            "midi": 55,
-            "time": 14,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "A3",
-            "midi": 57,
-            "time": 14.5,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          },
-          {
-            "name": "B3",
-            "midi": 59,
-            "time": 15,
-            "velocity": 0.7874015748031497,
-            "duration": 0.5
-          }
-        ],
-        "controlChanges": {},
-        "id": 0,
-        "name": "C Major",
-        "channelNumber": 0,
-        "isPercussion": false
-      }
-    ]
-  }
+  "header": {
+    "PPQ": 960,
+    "bpm": 120,
+    "name": ""
+  },
+  "startTime": 0,
+  "duration": 32,
+  "tracks": [
+    {
+      "startTime": 0,
+      "duration": 32,
+      "length": 30,
+      "notes": [
+        {
+          "name": "C3",
+          "midi": 48,
+          "time": 0,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "D3",
+          "midi": 50,
+          "time": 1,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "E3",
+          "midi": 52,
+          "time": 2,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "F3",
+          "midi": 53,
+          "time": 3,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "G3",
+          "midi": 55,
+          "time": 4,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "A3",
+          "midi": 57,
+          "time": 5,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "B3",
+          "midi": 59,
+          "time": 6,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C4",
+          "midi": 61,
+          "time": 7,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C3",
+          "midi": 48,
+          "time": 8,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "D3",
+          "midi": 50,
+          "time": 9,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "E3",
+          "midi": 52,
+          "time": 10,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "F3",
+          "midi": 53,
+          "time": 11,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "G3",
+          "midi": 55,
+          "time": 12,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "A3",
+          "midi": 57,
+          "time": 13,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "B3",
+          "midi": 59,
+          "time": 14,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C4",
+          "midi": 61,
+          "time": 15,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C3",
+          "midi": 48,
+          "time": 16,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "D3",
+          "midi": 50,
+          "time": 17,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "E3",
+          "midi": 52,
+          "time": 18,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "F3",
+          "midi": 53,
+          "time": 19,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "G3",
+          "midi": 55,
+          "time": 20,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "A3",
+          "midi": 57,
+          "time": 21,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "B3",
+          "midi": 59,
+          "time": 22,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C4",
+          "midi": 61,
+          "time": 23,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C3",
+          "midi": 48,
+          "time": 24,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "D3",
+          "midi": 50,
+          "time": 25,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "E3",
+          "midi": 52,
+          "time": 26,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "F3",
+          "midi": 53,
+          "time": 27,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "G3",
+          "midi": 55,
+          "time": 28,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "A3",
+          "midi": 57,
+          "time": 29,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "B3",
+          "midi": 59,
+          "time": 30,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        },
+        {
+          "name": "C4",
+          "midi": 61,
+          "time": 31,
+          "velocity": 0.7874015748031497,
+          "duration": 0.5
+        }
+      ],
+      "controlChanges": {
+        
+      },
+      "id": 0,
+      "name": "C Major",
+      "channelNumber": 0,
+      "isPercussion": false
+    }
+  ]
+}
