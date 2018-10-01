@@ -46,7 +46,7 @@ export default class Drums extends Instrument {
     super(parent, settings);
     this.container.appendChild(drumsTemplate.content.cloneNode(true));  
     this.graphics = this.container.querySelector('g');
-    this.noteToDrumMap = { A:0, B:1, C:2, D:2, E:3, F:4, G:4 };   
+    this.noteToDrumMap = { A:0, B:1, C:2, D:2, E:3, F:3, G:4 };   
     
     this.pads = Array.from(this.graphics.children).slice(6, 11);
     this.pads[4].isPedal = true;
@@ -68,6 +68,7 @@ export default class Drums extends Instrument {
     });    
     
     let difficultyMultiplier = 10;
+    this.pedalReset = true;
     
     setInterval(() => {
       if(!this.playerControl)
@@ -220,8 +221,15 @@ export default class Drums extends Instrument {
   }
   
   input(states) {
+    if(states[4] && this.pedalReset) {
+      this.hitPad(this.pads[4]);
+      this.pedalReset = false;
+    }
+    else if(!states[4]) {
+      this.pedalReset = true;
+    }
     states.forEach((state, i) => {
-      if(state && i < 5)
+      if(state && i < 4)
          this.hitPad(this.pads[i]);
     });
   }
