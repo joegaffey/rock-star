@@ -158,12 +158,28 @@ export default class Guitar extends Instrument {
       }
       if(mNote.time > now + this.windowSize)
         return;
-      if(mNote.gNote && mNote.gNote.isPlayerNote && (mNote.time - now + 5) < 0.5)
-        mNote.gNote.upComing  = true;
     });
   }
   
+  play(mNote) {
+    return true;
+  }
+  
   drawPlayerNote(y, gNote) {
+    let windowStart = 230;
+    let windowEnd = 260;
+    
+    if(y > windowStart && y < windowEnd) {
+      gNote.isInWindow = true;
+      this.controls[gNote.string].note = gNote.mNote;
+    }
+    if(gNote.isInWindow && y > windowEnd) {
+      gNote.isInWindow = false;
+      this.controls[gNote.string].note = null;
+      if(this.playerControl && !gNote.isPlaying)
+        this.error(gNote.mNote);
+    }
+    
     this.ctx.beginPath();
     this.ctx.lineWidth = 30;
     this.ctx.lineCap = "round";
@@ -180,7 +196,7 @@ export default class Guitar extends Instrument {
     this.ctx.fill();
     
     if(this.playerControl && gNote.isPlayerNote) {
-      if(gNote.upComing) {
+      if(gNote.isInWindow) {
         this.ctx.fillStyle = gNote.color;
         this.ctx.lineWidth = 3;
         this.ctx.globalAlpha = 1;
@@ -188,7 +204,7 @@ export default class Guitar extends Instrument {
         this.ctx.arc(gNote.x, y + this.offset, 15, 0, 2 * Math.PI);
         this.ctx.stroke();
       }
-      else {
+      else if(y < windowStart) {
         gNote.circle = Math.abs(250 - y);
         this.ctx.lineWidth = 3;
         let opacity = 5 / gNote.circle;
@@ -232,36 +248,11 @@ export default class Guitar extends Instrument {
     this.gNotes.push(gNote);   
   }
   
-  playCheck(mNote) {
-    if(!this.playerControl)
-      return true;
-    
-    if(this.controls[mNote.gNote.string].on && this.strumOn) {
-      this.player.hit();
-      this.strumReset = false;
-      return true;
-    }
-    else {
-      this.error(mNote);
-      this.player.miss();
-      this.strumReset = false;
-      return false;
-    }
-  }
-  
   error(mNote) {
+    this.player.miss();
     mNote.gNote.isError = true;
     let errorNotes = ['A0','B0','C0','D0','E0','F0']
     this.errorSynth.triggerAttackRelease(errorNotes[Math.floor(Math.random() * 6)], mNote.duration);
-  }
-  
-  play(mNote) {
-    if(mNote.gNote)
-      mNote.gNote.isPlaying = true;
-    else {
-      console.log('No note graphics...');
-      console.log(mNote);
-    } 
   }
   
   handleButton(input, state) {
@@ -279,8 +270,22 @@ export default class Guitar extends Instrument {
     }
   }
   
+  handleStrum() {
+    this.controls.forEach((control) => {
+      if(control.on && control.note && control.note.gNote.isInWindow) {
+        control.note.gNote.isInWindow = false;
+        control.note.gNote.isPlaying = true;
+        this.player.hit();
+        this.synth.triggerAttackRelease(control.note.name, control.note.duration, Tone.now(), control.note.velocity);
+        control.note = null;
+      }
+    });
+  }
+  
   input(states) {
     if((states[5] || states[6]) && this.strumReset) {
+      this.strumOn = true;
+      this.handleStrum();
       this.strumOn = true;
       this.strumReset = false;
     }

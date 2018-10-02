@@ -290,12 +290,9 @@ class App {
       let midiPart = new Tone.Part((time, note) => {
         note.ready = true;
         
-        if(note.gNote && note.gNote.isPlayerNote)
-          note.ready = inst.playCheck(note);
-        if(note.ready) {
-          inst.play(note);
+        if(note.gNote && !note.gNote.isPlayerNote)
           inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
-        }
+        inst.play(note);
         
         currentNote++;
         if(currentNote >= midiPart.length)

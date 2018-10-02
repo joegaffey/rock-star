@@ -159,10 +159,6 @@ export default class Drums extends Instrument {
     }, 50);
   }
   
-  playCheck(gNote) {
-    return true;
-  }
-  
   update(now) {
     this.ctx.clearRect(0, 0, 250, 400);
       
