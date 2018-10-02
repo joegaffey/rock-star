@@ -288,6 +288,23 @@ li {
 
 /******************** Song List Dialog ************************/
 
+.songList {
+  overflow-y: auto;
+  max-height: 75vh;
+}
+
+.songList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.songList::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+.songList::-webkit-scrollbar-track {
+  background: #888;
+}
+
 .songList, .controllerList {
   padding-left: 0px;
   margin: 0 -10px -10px -10px;
