@@ -52,8 +52,17 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-app.get("/songs/:id", function (request, response) {
-  sendMessage('song', JSON.stringify({id: request.params.id}));
+app.get("/songs/:id", function (request, response) {  
+  let songs;
+  require('fs').readFile('songs.json', 'utf8', function (err, data) {
+    if(err) 
+      console.log(err);
+    songs = JSON.parse(data);
+    let message = {id: request.params.id, title: songs[request.params.id - 1].title};
+    console.log(message)
+    sendMessage('song', JSON.stringify(message));
+  });
+  
   songStats[request.params.id]++;
   response.sendFile(__dirname + '/songs/s' +  request.params.id + '.json');
 });

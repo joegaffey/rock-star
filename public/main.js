@@ -68,6 +68,8 @@ class App {
     requestAnimationFrame(this.animate.bind(this));
     
     setInterval(() => {
+      if(this.players === 0)
+        return;
       var stats = [];
       let gameOver = true; 
       this.settings.players.forEach(player => {
@@ -113,8 +115,8 @@ class App {
   }
   
   sendGameStart(players) {
-    if(this.currentSong === 'Practice')
-        return;
+    if(this.currentSong === 'Practice' || this.players === 0)
+      return;
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     var init = {
@@ -127,7 +129,7 @@ class App {
   }
   
   sendGameEnd() {
-    if(this.currentSong === 'Practice')
+    if(this.currentSong === 'Practice' || this.players === 0)
         return;
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -289,6 +291,7 @@ class App {
       instrument.initSynth();
       this.totalTracks++;
       let currentNote = 0;
+      instrument.isPlaying = true;
       let midiPart = new Tone.Part((time, note) => {
         note.ready = true;
         
@@ -333,7 +336,6 @@ class App {
   
   trackFinished() {
     this.finishedTracks++;
-    console.log(this.totalTracks + ' ' + this.finishedTracks)
     if(this.finishedTracks >= this.totalTracks)
       this.endSong();
   }
