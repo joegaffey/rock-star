@@ -77,7 +77,7 @@ export default class Guitar extends Instrument {
     this.ctx = this.graphics.getContext('2d');
   }
    
-  initSynth() {    
+  initSynth(callback) {    
     this.errorSynth = new Tone.Sampler({
       'B0': 'buzzer.mp3'
     },{
@@ -114,6 +114,10 @@ export default class Guitar extends Instrument {
     let instrument = 'guitar-electric'; 
     if(this.name === 'bass')
       instrument = 'bass-electric';
+    
+    Tone.Buffer.on('load', () => {
+      callback.call();
+    });
     
     this.synth = SampleLibrary.load({
       instruments: instrument,
@@ -167,6 +171,7 @@ export default class Guitar extends Instrument {
   }
   
   play(mNote) {
+    mNote.gNote.isPlaying = true;
     return true;
   }
   

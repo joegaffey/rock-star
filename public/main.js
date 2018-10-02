@@ -271,24 +271,21 @@ class App {
     
     Tone.Transport.start('2.5', '0');     
     
+    this.loadingSynths = 0;
+    
     console.log('Starting instrument(s)');
     this.startInstruments();
     
     console.log('Starting ' + this.bgTracks.length + ' background track(s)');
-    this.startBackgroundTracks();
-        
-    Tone.Transport.on('start', () => {
-      this.ui.showPauseIcon();
-      this.ui.hideLoader();
-      this.isAudioStarted = true;
-    });    
+    this.startBackgroundTracks(); 
   }
   
   startInstruments() {
     this.instruments.forEach((instrument) => {
       if(instrument.player)
          instrument.player.reset();
-      instrument.initSynth();
+      this.loadingSynths++;
+      instrument.initSynth(this.onSynthLoad.bind(this));
       this.totalTracks++;
       let currentNote = 0;
       instrument.isPlaying = true;
@@ -307,11 +304,24 @@ class App {
     });
   }
   
+  onSynthLoad() {
+    this.loadingSynths--;
+    if(this.loadingSynths === 0) {
+      Tone.Transport.on('start', () => {
+        this.ui.showPauseIcon();
+        this.ui.hideLoader();
+        this.isAudioStarted = true;
+      });   
+    }
+    console.log('Loaded synth ' + this.loadingSynths + 1);
+  }
+  
   startBackgroundTracks() {
     this.bgTracks.forEach((track, i) => {
       this.totalTracks++;
       console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
       
+      this.loadingSynths++;
       let synth = SampleLibrary.load({
         instruments: track.synth,
         minify: true
