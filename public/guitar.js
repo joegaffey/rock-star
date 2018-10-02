@@ -59,14 +59,19 @@ export default class Guitar extends Instrument {
       }
     });    
     
-    this.backOff = this.BACK_OFF = 50;
     this.playerNoteRate = 0.8;
+    this.backOff = this.BACK_OFF = 40;
     
     this.difficulyTimer = setInterval(() => {
-      if(this.playerNoteRate > 0.1)
-        this.playerNoteRate -= 0.05;
+      if(!this.isPlaying)
+        return;
+      if(this.playerNoteRate > 0.2)
+        this.playerNoteRate -= 0.02;
       if(this.BACK_OFF > 10)
-         this.BACK_OFF -= 1;
+         this.BACK_OFF -= 0.25;
+      
+      // console.log(this.playerNoteRate);
+      // console.log(this.BACK_OFF);
     }, 1000);
     
     this.ctx = this.graphics.getContext('2d');
@@ -74,7 +79,7 @@ export default class Guitar extends Instrument {
    
   initSynth() {    
     this.errorSynth = new Tone.Sampler({
-      'B0'  : 'buzzer.mp3'
+      'B0': 'buzzer.mp3'
     },{
       attack: 0,
       release: 0,
