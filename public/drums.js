@@ -71,7 +71,7 @@ export default class Drums extends Instrument {
     this.pedalReset = true;
     
     setInterval(() => {
-      if(!this.playerControl)
+      if(!this.playerControl || this.finished)
         return;
       let total = 0;
       this.pads.forEach((pad) => {
@@ -85,8 +85,8 @@ export default class Drums extends Instrument {
       this.player.avg = res;
     }, 1000);
     
-    this.shrinkRate = this.growRate = 1;
-    this.pedalRate = 2;
+    this.shrinkRate = this.growRate = 2.5;
+    this.pedalRate = this.growRate * 2;
     
     this.ctx = this.container.querySelector('canvas').getContext('2d');
   }
@@ -153,10 +153,12 @@ export default class Drums extends Instrument {
     if(this.playerControl && pad.radius > this.minRadius)
       pad.radius -= this.shrinkRate;
     
-    pad.setAttribute('r', Math.round(pad.radius) + 10);
-    setTimeout(() => {
-      pad.setAttribute('r', Math.round(pad.radius));
-    }, 50);
+    if(!this.playerControl) {
+      pad.setAttribute('r', Math.round(pad.radius) + 10);
+      setTimeout(() => {
+        pad.setAttribute('r', Math.round(pad.radius));
+      }, 50);
+    }
   }
   
   update(now) {
@@ -173,11 +175,12 @@ export default class Drums extends Instrument {
     });
     
     // Add new notes within the time window
-    let futureNotes = this.mNotes.slice(this.mNoteIndex);
+    let futureNotes = this.mNotes.slice(this.mNoteIndex);    
     
+    // Add new notes within the time window
     futureNotes.forEach((mNote, i) => {
-      if(mNote.time < now + this.windowSize && mNote.duration > 0) {
-        let pad = this.noteToDrumMap[mNote.name.substring(0,1)]; // First charter of note only
+      let pad = this.noteToDrumMap[mNote.name.substring(0,1)]; // First character of note only
+      if(mNote.time < now + this.windowSize && mNote.duration > 0) {        
         if(mNote.time >= 0 && !mNote.added) {
           this.addNote(pad, -1000, this.colors[pad], mNote);
           mNote.added = true; // Only add notes once
@@ -186,8 +189,6 @@ export default class Drums extends Instrument {
       }
       if(mNote.time > now + this.windowSize)
         return;
-      if(mNote.gNote && mNote.gNote.isPlayerNote && (mNote.time - now + 5) < 0.5)
-        mNote.gNote.upComing  = true;
     });
   }
   
@@ -243,7 +244,7 @@ export default class Drums extends Instrument {
   hitPad(pad) {
     if(pad.radius < this.maxRadius && pad.isPedal)
       pad.radius += this.pedalRate;
-    else if(pad.radius < this.maxRadius)
+    else if(pad.radius < this.maxRadius) 
       pad.radius += this.growRate;
     
     pad.setAttribute('r', Math.round(pad.radius) + 10);
