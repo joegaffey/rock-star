@@ -253,6 +253,12 @@ export default class Guitar extends Instrument {
     mNote.gNote.isError = true;
     let errorNotes = ['A0','B0','C0','D0','E0','F0']
     this.errorSynth.triggerAttackRelease(errorNotes[Math.floor(Math.random() * 6)], mNote.duration);
+    this.playError(mNote.duration);
+  }
+  
+  playError(duration) {
+    let errorNotes = ['A0','B0','C0','D0','E0','F0']
+    this.errorSynth.triggerAttackRelease(errorNotes[Math.floor(Math.random() * 6)], duration);
   }
   
   handleButton(input, state) {
@@ -278,6 +284,10 @@ export default class Guitar extends Instrument {
         this.player.hit();
         this.synth.triggerAttackRelease(control.note.name, control.note.duration, Tone.now(), control.note.velocity);
         control.note = null;
+      }
+      else if(control.on && !control.note) {
+        this.player.miss();
+        this.playError(0.5);
       }
     });
   }
