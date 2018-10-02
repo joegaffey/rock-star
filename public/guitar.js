@@ -168,7 +168,8 @@ export default class Guitar extends Instrument {
   }
   
   play(mNote) {
-    mNote.gNote.isPlaying = true;
+    if(!this.playerControl)
+      mNote.gNote.isPlaying = true;
     return true;
   }
   
