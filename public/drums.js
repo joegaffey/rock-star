@@ -91,7 +91,7 @@ export default class Drums extends Instrument {
     this.ctx = this.container.querySelector('canvas').getContext('2d');
   }
 
-  initSynth() {    
+  initSynth(callback) {    
     this.synth = new Tone.Sampler({
       'B0'  : 'Acoustic Bass Drum.wav',
       'C1'  : 'Bass Drum 1.wav',
@@ -142,6 +142,7 @@ export default class Drums extends Instrument {
       'A4'  : 'Open Triangle.wav'
     },{
       'release' : 1,
+      'onload': callback.call(),
       'baseUrl' : './assets/'
     }).toMaster();
   }

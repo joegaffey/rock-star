@@ -60,7 +60,8 @@
       {
         "id":"2",
         "instrument": "trumpet",
-        "synth": "saxophone"
+        "synth": "saxophone",
+        "isBackground": true
       },
       {
         "id":"3",
@@ -153,12 +154,14 @@
       {
         "id":"2",
         "instrument": "piano",
-        "synth": "piano"
+        "synth": "piano",
+        "isBackground": true
       },
       {
         "id":"3",
         "instrument": "pipe",
-        "synth": "flute"
+        "synth": "flute",
+        "isBackground": true
       },
       {
         "id": "4",
@@ -167,17 +170,18 @@
       {
         "id":"5",
         "instrument": "piano",
-        "synth": "piano"
+        "isBackground": true
       },
       {
         "id":"6",
         "instrument": "piano",
-        "synth": "piano"
+        "isBackground": true
       },
       {
         "id":"7",
         "instrument": "pipe",
-        "synth": "flute"
+        "synth": "flute",
+        "isBackground": true
       },
       {
         "id": "8",
@@ -246,17 +250,20 @@
       {
         "id": "12",
         "instrument": "reed",
-        "synth": "saxophone"        
+        "synth": "saxophone",
+        "isBackground": true        
       },
       {
         "id": "13",
         "instrument": "reed",
-        "synth": "saxophone"
+        "synth": "saxophone",
+        "isBackground": true
       },
       {
         "id": "14",
         "instrument": "reed",
-        "synth": "saxophone"
+        "synth": "saxophone",
+        "isBackground": true
       }
     ]
   },
@@ -349,7 +356,7 @@
       {
         "id":"2",
         "instrument": "piano",
-        "synth": "piano"
+        "isBackground": true
       }
     ]
   },
