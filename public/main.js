@@ -269,24 +269,42 @@ class App {
     Tone.context = new Tone.Context();
     Tone.Transport.bpm.value = this.songData.header.bpm;
     
-    Tone.Transport.start('2.5', '0');     
-    
-    this.loadingSynths = 0;
-    
-    console.log('Starting instrument(s)');
-    this.startInstruments();
-    
-    console.log('Starting ' + this.bgTracks.length + ' background track(s)');
-    this.startBackgroundTracks(); 
+    this.loadingSynths = 0;    
+    this.loadInstruments();
+    this.loadBackgroundTracks(); 
   }
   
-  startInstruments() {
+  loadInstruments() {
+    console.log('Loading ' + this.instruments.length + ' instrument(s)');
     this.instruments.forEach((instrument) => {
       if(instrument.player)
          instrument.player.reset();
       this.loadingSynths++;
       instrument.initSynth(this.onSynthLoad.bind(this));
       this.totalTracks++;
+    });
+  }
+  
+  loadBackgroundTracks() {
+    console.log('Loading ' + this.bgTracks.length + ' background track(s)');
+    this.bgTracks.forEach((track, i) => {
+      this.totalTracks++;
+      console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
+      
+      this.loadingSynths++;
+      let synth = SampleLibrary.load({
+        instruments: track.synth,
+        onload: () => {this.onSynthLoad()},
+        minify: true
+      });
+      track.synth = synth;
+      synth.toMaster();    
+    });
+  }
+  
+  startInstruments() {
+    console.log('Starting ' + this.instruments.length + ' instrument(s)');
+    this.instruments.forEach((instrument) => {
       let currentNote = 0;
       instrument.isPlaying = true;
       let midiPart = new Tone.Part((time, note) => {
@@ -304,44 +322,39 @@ class App {
     });
   }
   
+  startBackgroundTracks() {
+    console.log('Starting ' + this.bgTracks.length + ' background track(s)');
+    this.bgTracks.forEach((track) => {
+      let currentNote = 0;
+        let midiPart = new Tone.Part((time, note) => {
+          try {
+            track.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+          }
+          catch(e) {
+            console.log('Error on note:');
+            console.log(note);
+            console.error(e);
+          }
+          currentNote++;
+          if(currentNote >= midiPart.length)
+            this.trackFinished();
+        }, track.notes).start(+2.5);  
+    });
+  }
+  
   onSynthLoad() {
+    console.log('Loaded synth ' + this.loadingSynths);
     this.loadingSynths--;
     if(this.loadingSynths === 0) {
       Tone.Transport.on('start', () => {
         this.ui.showPauseIcon();
         this.ui.hideLoader();
         this.isAudioStarted = true;
-      });   
+      });  
+      this.startBackgroundTracks();
+      this.startInstruments();
+      Tone.Transport.start('2.5', '0'); 
     }
-    console.log('Loaded synth ' + this.loadingSynths + 1);
-  }
-  
-  startBackgroundTracks() {
-    this.bgTracks.forEach((track, i) => {
-      this.totalTracks++;
-      console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
-      
-      this.loadingSynths++;
-      let synth = SampleLibrary.load({
-        instruments: track.synth,
-        minify: true
-      });
-      synth.toMaster();
-      let currentNote = 0;
-      let midiPart = new Tone.Part((time, note) => {
-        try {
-          synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
-        }
-        catch(e) {
-          console.log('Error on note:');
-          console.log(note);
-          console.error(e);
-        }
-        currentNote++;
-        if(currentNote >= midiPart.length)
-          this.trackFinished();
-      }, track.notes).start(+2.5);      
-    });
   }
   
   trackFinished() {
