@@ -1,20 +1,24 @@
 [
   {
     "id": "1",
-    "title": "Nothing Else Matters",
-    "artist": "Metallica",
-    "duration": 391.95642374999863,
+    "title": "Boys are back in Town",
+    "artist": "Thin Lizzy",
+    "duration": 121.213456,
     "tracks": [
       {
-        "id": "2",
+        "id": "4",
         "instrument": "guitar"
       },
       {
-        "id": "8",
+        "id": "3",
+        "instrument": "guitar"
+      },
+      {
+        "id": "5",
         "instrument": "drums"
       },
       {
-        "id": "9",
+        "id": "1",
         "instrument": "bass"
       }
     ]
@@ -56,8 +60,7 @@
       {
         "id":"2",
         "instrument": "trumpet",
-        "synth": "saxophone",
-        "isBackground": true
+        "synth": "saxophone"
       },
       {
         "id":"3",
@@ -150,14 +153,12 @@
       {
         "id":"2",
         "instrument": "piano",
-        "synth": "piano",
-        "isBackground": true
+        "synth": "piano"
       },
       {
         "id":"3",
         "instrument": "pipe",
-        "synth": "flute",
-        "isBackground": true
+        "synth": "flute"
       },
       {
         "id": "4",
@@ -166,18 +167,17 @@
       {
         "id":"5",
         "instrument": "piano",
-        "isBackground": true
+        "synth": "piano"
       },
       {
         "id":"6",
         "instrument": "piano",
-        "isBackground": true
+        "synth": "piano"
       },
       {
         "id":"7",
         "instrument": "pipe",
-        "synth": "flute",
-        "isBackground": true
+        "synth": "flute"
       },
       {
         "id": "8",
@@ -246,20 +246,17 @@
       {
         "id": "12",
         "instrument": "reed",
-        "synth": "saxophone",
-        "isBackground": true        
+        "synth": "saxophone"        
       },
       {
         "id": "13",
         "instrument": "reed",
-        "synth": "saxophone",
-        "isBackground": true
+        "synth": "saxophone"
       },
       {
         "id": "14",
         "instrument": "reed",
-        "synth": "saxophone",
-        "isBackground": true
+        "synth": "saxophone"
       }
     ]
   },
@@ -352,8 +349,173 @@
       {
         "id":"2",
         "instrument": "piano",
-        "isBackground": true
+        "synth": "piano"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "title": "Beat It",
+    "artist": "Michael Jackson",
+    "duration": 121,
+    "tracks": [
+      {
+        "id":"10",
+        "instrument": "drums"
+      },
+      {
+        "id":"4",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "bass"
+      },
+      {
+        "id":"6",
+        "instrument": "guitar"
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "title": "I bet that you look good on the dancefloor",
+    "artist": "Arctic Monkeys",
+    "duration": 185,
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "bass"
+      },
+      {
+        "id":"4",
+        "instrument": "drums"
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "title": "Sugar We're Going Down",
+    "artist": "Fall Out Boy",
+    "duration": 185,
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "bass"
+      },
+      {
+        "id":"6",
+        "instrument": "drums"
+      }
+    ]
+      },
+  {
+    "id": "15",
+    "title": "All along the watchtower",
+    "artist": "Jimi Hendrix",
+    "duration": 239.9941575520913,
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "guitar"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "bass"
+      },
+      {
+        "id":"6",
+        "instrument": "drums"
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "title": "Debaser",
+    "artist": "The Pixies",
+    "duration": 166.95647999999915,
+    "tracks": [
+      {
+        "id":"1",
+        "instrument": "bass"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"3",
+        "instrument": "drums"
+      },
+      {
+        "id":"4",
+        "instrument": "guitar"
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "title": "Times Like These",
+    "artist": "The Foo Fighters",
+    "duration": 263.95647999999915,
+    "tracks": [
+      {
+        "id":"3",
+        "instrument": "bass"
+      },
+      {
+        "id":"2",
+        "instrument": "guitar"
+      },
+      {
+        "id":"4",
+        "instrument": "drums"
+      },
+      {
+        "id":"1",
+        "instrument": "guitar"
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "title": "Nothing Else Matters",
+    "artist": "Metallica",
+    "duration": 391.95642374999863,
+    "tracks": [
+      {
+        "id": "2",
+        "instrument": "guitar"
+      },
+      {
+        "id": "8",
+        "instrument": "drums"
+      },
+      {
+        "id": "9",
+        "instrument": "bass"
       }
     ]
   }
+
 ]
