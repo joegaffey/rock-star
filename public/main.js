@@ -67,21 +67,21 @@ class App {
     
     requestAnimationFrame(this.animate.bind(this));
     
-    let updateTimer = setInterval(() => {
+    setInterval(() => {
       var stats = [];
       let gameOver = true; 
       this.settings.players.forEach(player => {
-        if(player.instrument)
-          stats.push(player.avg);
+        if(player.instrument) {
+          stats.push(player.avg);          
+        }
         if(player.instrument && !player.instrument.finished)        
           gameOver = false;
       });
-      if(!this.isSongFinished)
-        this.sendPlayerStats(stats);  
-      if(!this.isSongFinished && this.players > 0 && gameOver) {
+      if(!this.isSongFinished && gameOver) {
         this.endSongNoDelay();
-        clearInterval(updateTimer);
       }
+      else if(!this.isSongFinished)
+        this.sendPlayerStats(stats);
     }, 1000);
   }
 
@@ -100,7 +100,7 @@ class App {
 
   sendPlayerStats(stats) {
     if(this.currentSong === 'Practice')
-        return;
+      return;
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     var init = {
@@ -333,6 +333,7 @@ class App {
   
   trackFinished() {
     this.finishedTracks++;
+    console.log(this.totalTracks + ' ' + this.finishedTracks)
     if(this.finishedTracks >= this.totalTracks)
       this.endSong();
   }
@@ -346,8 +347,10 @@ class App {
   endSongNoDelay() {    
     console.log('Ending song');
     this.settings.players.forEach(player => {
-      if(player.instrument)
-       player.instrument.endSong();
+      if(player.instrument) {
+        player.instrument.endSong();
+        player.instrument = null;
+      }
     });
       
     this.ui.showPlayIcon();

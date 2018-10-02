@@ -100,7 +100,7 @@ export default class Instrument {
           window.dispatchEvent(new CustomEvent('PlayerChange', {detail: {sender: this, before: this.playerDropdownEl.innerHTML, after:select.innerHTML}}));
           this.playerControl = true;
           this.player = players[i - 1];
-          this.player.instrument = this;          
+          this.player.instrument = this;
         }
         this.playerDropdownEl.innerHTML = select.innerHTML;
       };
