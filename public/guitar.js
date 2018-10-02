@@ -59,14 +59,14 @@ export default class Guitar extends Instrument {
       }
     });    
     
-    this.backOff = this.BACK_OFF = 60;
+    this.backOff = this.BACK_OFF = 50;
     this.playerNoteRate = 0.8;
     
     this.difficulyTimer = setInterval(() => {
-      this.playerNoteRate -= 0.01;
-      this.BACK_OFF -= 0.5;
-      if(this.playerNoteRate < 0.1)
-         clearInterval(this.difficulyTimer);
+      if(this.playerNoteRate > 0.1)
+        this.playerNoteRate -= 0.05;
+      if(this.BACK_OFF > 10)
+         this.BACK_OFF -= 1;
     }, 1000);
     
     this.ctx = this.graphics.getContext('2d');
