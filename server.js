@@ -69,9 +69,9 @@ app.get("/samples*", function (req, res) {
 let playerStats = new Array(4).fill(0);
 
 app.put('/metrics/players', function(req, res) {
-  // console.log(req.body);
   sendMessage('stats', JSON.stringify({ playerAccurracy: req.body }));
   playerStats = req.body;
+  console.log(playerStats);
   res.send(playerStats);
 });
 

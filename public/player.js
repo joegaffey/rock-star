@@ -3,6 +3,10 @@ import Instrument from './instrument.js';
 export default class Player {
   
   constructor() {
+    this.reset();
+  }
+  
+  reset() {
     this.score = 0;
     this.misses = 0;
     this.hits = 0;

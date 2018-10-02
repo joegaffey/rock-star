@@ -197,7 +197,7 @@ export default class Drums extends Instrument {
     gNote.x = this.pads[pad].getAttribute('cx');
     gNote.color = color;
     gNote.pad = pad;
-    if(pad === 2 || pad === 3 )
+    if(pad === 2 || pad === 3)
       gNote.offset = 0;
     else
       gNote.offset = this.offset;    
@@ -207,13 +207,23 @@ export default class Drums extends Instrument {
   }
   
   drawNote(y, gNote) {
-    if(y + this.offset + gNote.offset > gNote.endY)
-      return;
-    this.ctx.beginPath();
-    this.ctx.globalAlpha = 1;
-    this.ctx.fillStyle = gNote.color;
-    this.ctx.arc(gNote.x, y + this.offset + gNote.offset, 4, 0, 6.28);
-    this.ctx.fill(); 
+    let drawY = y + this.offset + gNote.offset;
+    if(drawY < gNote.endY) {
+      if(drawY < gNote.endY - 25) {
+        this.ctx.beginPath();
+        this.ctx.globalAlpha = 1;
+        this.ctx.fillStyle = gNote.color;
+        this.ctx.arc(gNote.x, drawY, 4, 0, 6.28);
+        this.ctx.fill();
+      }
+      if(drawY > gNote.endY - 25) {
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeStyle = gNote.color;
+        this.ctx.arc(gNote.x, drawY, 15, 0, 2 * Math.PI);
+        this.ctx.stroke();
+      }
+    }
   }
   
   input(states) {
