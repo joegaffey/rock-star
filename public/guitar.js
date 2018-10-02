@@ -115,12 +115,9 @@ export default class Guitar extends Instrument {
     if(this.name === 'bass')
       instrument = 'bass-electric';
     
-    Tone.Buffer.on('load', () => {
-      callback.call();
-    });
-    
     this.synth = SampleLibrary.load({
       instruments: instrument,
+      onload: () => {callback.call()},
       minify: true
     });
     this.synth.chain(
