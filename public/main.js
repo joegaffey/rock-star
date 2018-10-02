@@ -283,22 +283,24 @@ class App {
   }
   
   startInstruments() {
-    this.instruments.forEach((inst) => {
-      inst.initSynth();
+    this.instruments.forEach((instrument) => {
+      if(instrument.player)
+         instrument.player.reset();
+      instrument.initSynth();
       this.totalTracks++;
       let currentNote = 0;
       let midiPart = new Tone.Part((time, note) => {
         note.ready = true;
         
         if(note.gNote && !note.gNote.isPlayerNote)
-          inst.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
-        inst.play(note);
+          instrument.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+        instrument.play(note);
         
         currentNote++;
         if(currentNote >= midiPart.length)
           this.trackFinished();
         
-      }, inst.mNotes).start(+2.5);
+      }, instrument.mNotes).start(+2.5);
     });
   }
   
@@ -357,7 +359,7 @@ class App {
     Tone.context.close();
     
     this.instruments = [];
-    this.bgTracks = []; 
+    this.bgTracks = [];
     
     this.isPaused = false;
     this.isAudioStarted = false;
