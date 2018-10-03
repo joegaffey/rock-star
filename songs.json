@@ -344,23 +344,6 @@
     ]
   },
   {
-    "id": "11",
-    "title": "Test Track",
-    "artist": "Joe Gaffey",
-    "duration": 5,
-    "tracks": [
-      {
-        "id":"1",
-        "instrument": "bass"
-      },
-      {
-        "id":"2",
-        "instrument": "piano",
-        "isBackground": true
-      }
-    ]
-  },
-  {
     "id": "12",
     "title": "Beat It",
     "artist": "Michael Jackson",
@@ -413,30 +396,6 @@
     "title": "Sugar We're Going Down",
     "artist": "Fall Out Boy",
     "duration": 185,
-    "tracks": [
-      {
-        "id":"1",
-        "instrument": "guitar"
-      },
-      {
-        "id":"2",
-        "instrument": "guitar"
-      },
-      {
-        "id":"3",
-        "instrument": "bass"
-      },
-      {
-        "id":"6",
-        "instrument": "drums"
-      }
-    ]
-      },
-  {
-    "id": "15",
-    "title": "All along the watchtower",
-    "artist": "Jimi Hendrix",
-    "duration": 239.9941575520913,
     "tracks": [
       {
         "id":"1",
