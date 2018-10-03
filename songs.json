@@ -65,7 +65,9 @@
       },
       {
         "id":"3",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "4",
@@ -85,11 +87,15 @@
     "tracks": [
       {
         "id":"2",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-acoustic",
+        "isBackground": true
       },
       {
         "id":"3",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "4",
@@ -129,71 +135,20 @@
       },
       {
         "id": "5",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "6",
         "instrument": "guitar"
+        
       },
       {
         "id": "7",
-        "instrument": "guitar"
-      }
-    ]
-  },
-  {
-    "id": "6",
-    "title": "Freebird",
-    "artist": "Lynyrd Skynyrd",
-    "duration": 461.99999999999994,
-    "tracks": [
-      {
-        "id":"1",
-        "instrument": "drums"
-      },
-      {
-        "id":"2",
-        "instrument": "piano",
-        "synth": "piano",
+        "instrument": "guitar",
+        "synth": "guitar-electric",
         "isBackground": true
-      },
-      {
-        "id":"3",
-        "instrument": "pipe",
-        "synth": "flute",
-        "isBackground": true
-      },
-      {
-        "id": "4",
-        "instrument": "guitar"
-      },
-      {
-        "id":"5",
-        "instrument": "piano",
-        "isBackground": true
-      },
-      {
-        "id":"6",
-        "instrument": "piano",
-        "isBackground": true
-      },
-      {
-        "id":"7",
-        "instrument": "pipe",
-        "synth": "flute",
-        "isBackground": true
-      },
-      {
-        "id": "8",
-        "instrument": "guitar"
-      },
-      {
-        "id": "9",
-        "instrument": "bass"
-      },
-      {
-        "id": "10",
-        "instrument": "drums"
       }
     ]
   },
@@ -201,7 +156,7 @@
     "id": "7",
     "title": "More than a Feeling",
     "artist": "Boston",
-    "duration": 201.29303249999953,
+    "duration": 134.86599949999993,
     "tracks": [
       {
         "id":"1",
@@ -209,11 +164,15 @@
       },
       {
         "id":"2",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id":"3",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "4",
@@ -225,27 +184,31 @@
       },
       {
         "id":"6",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id":"7",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "8",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "9",
         "instrument": "drums"
       },
       {
-        "id": "10",
-        "instrument": "drums"
-      },
-      {
         "id": "11",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id": "12",
@@ -279,7 +242,9 @@
       },
       {
         "id":"2",
-        "instrument": "guitar"
+        "instrument": "guitar",
+        "synth": "guitar-electric",
+        "isBackground": true
       },
       {
         "id":"3",
@@ -291,7 +256,9 @@
       },     
       {
         "id":"5",
-        "instrument": "bass"
+        "instrument": "bass",
+        "synth": "bass",
+        "isBackground": true
       },
       {
         "id":"6",
@@ -462,26 +429,5 @@
         "instrument": "guitar"
       }
     ]
-  },
-  {
-    "id": "18",
-    "title": "Nothing Else Matters",
-    "artist": "Metallica",
-    "duration": 391.95642374999863,
-    "tracks": [
-      {
-        "id": "2",
-        "instrument": "guitar"
-      },
-      {
-        "id": "8",
-        "instrument": "drums"
-      },
-      {
-        "id": "9",
-        "instrument": "bass"
-      }
-    ]
   }
-
 ]
