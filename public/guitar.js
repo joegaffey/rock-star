@@ -83,7 +83,7 @@ export default class Guitar extends Instrument {
       release: 0,
       baseUrl: './assets/'
     }).toMaster();
-    this.errorSynth.volume.value = 10;
+    this.errorSynth.volume.value = -5;
     
     this.sound = presets.rock;      
     
@@ -303,7 +303,7 @@ export default class Guitar extends Instrument {
       return;
     if((states[5] || states[6]) && this.strumReset) {
       this.strumOn = true;
-      if(this.isPlaying)
+      if(this.isPlaying && !this.finished)
         this.handleStrum();
       this.strumOn = true;
       this.strumReset = false;
