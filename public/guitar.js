@@ -46,16 +46,14 @@ export default class Guitar extends Instrument {
     
     this.controls.forEach((control, i) => {
       control.onclick = () => {
-        let states = [false, false, false, false, false];
+        let states = [false, false, false, false, false, false];
         states[i] = true;
         this.input(states);
-        // this.controls[i].on = true;
-        this.strumOn = true;
+        states[5] = true;
+        this.input(states);
         setTimeout(() => { 
-          this.input([false, false, false, false, false]); 
-          // this.controls[i].on = false;
-          this.strumOn = false; 
-        }, 300);
+          this.input([false, false, false, false, false, false]); 
+        }, 100);
       }
     });    
     
@@ -301,9 +299,12 @@ export default class Guitar extends Instrument {
   }
   
   input(states) {
+    if(states.length === 0)
+      return;
     if((states[5] || states[6]) && this.strumReset) {
       this.strumOn = true;
-      this.handleStrum();
+      if(this.isPlaying)
+        this.handleStrum();
       this.strumOn = true;
       this.strumReset = false;
     }
