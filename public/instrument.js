@@ -94,10 +94,11 @@ export default class Instrument {
       select.onclick = () => {
         if(select.innerHTML === 'Computer') {
           this.playerControl = false;
+          this.player.instrument = null;
           this.player = null;
         }
         else {
-          window.dispatchEvent(new CustomEvent('PlayerChange', {detail: {sender: this, before: this.playerDropdownEl.innerHTML, after:select.innerHTML}}));
+          window.dispatchEvent(new CustomEvent('PlayerChange', {detail: {sender: this, before: this.playerDropdownEl.innerHTML, after: select.innerHTML}}));
           this.playerControl = true;
           this.player = players[i - 1];
           this.player.instrument = this;
@@ -109,8 +110,16 @@ export default class Instrument {
     window.addEventListener('PlayerChange', e => {
       if(e.detail.sender !== this && this.playerDropdownEl.innerHTML === e.detail.after) {
         this.playerDropdownEl.innerHTML = e.detail.before;
-        if(e.detail.before === 'Computer')
+        if(e.detail.before === 'Computer') {
           this.playerControl = false;
+          this.player.instrument = null;
+          this.player = null;
+        }
+        else {
+          this.player = e.detail.sender.player;
+          this.player.instrument = this;
+          this.playerControl = true;
+        }
       }
     });
     
