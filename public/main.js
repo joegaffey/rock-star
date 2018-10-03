@@ -375,6 +375,7 @@ class App {
       if(player.instrument) {
         player.instrument.endSong();
         player.instrument = null;
+        player.reset();
       }
     });
       

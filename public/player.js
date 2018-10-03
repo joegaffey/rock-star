@@ -34,6 +34,7 @@ export default class Player {
   
   set avg(avg) {
     this.accuracy = avg;
-    this.instrument.accuracy = this.accuracy;
+    if(this.instrument)
+      this.instrument.accuracy = this.accuracy;
   }
 }
