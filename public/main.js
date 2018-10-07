@@ -4,9 +4,6 @@ import Settings from './settings.js';
 import Controllers from './controllers.js';
 // import Keyboard from './keyboard.js';
 import AppUI from './appui.js';
-
-const SONG_SERVICE_URL = '';
-const STATS_SERVICE_URL = '';
   
 class App {
   
@@ -34,7 +31,7 @@ class App {
   
   init() {
     this.ui.showLoader();
-    fetch(SONG_SERVICE_URL + '/songs')
+    fetch('songs.json')
       .then(response => {
         return response.json();
       })
@@ -68,20 +65,14 @@ class App {
     setInterval(() => {
       if(this.players === 0)
         return;
-      var stats = [];
       let gameOver = true; 
       this.settings.players.forEach(player => {
-        if(player.instrument) {
-          stats.push(player.avg);          
-        }
         if(player.instrument && !player.instrument.finished)        
           gameOver = false;
       });
       if(!this.isSongFinished && gameOver) {
         this.endSongNoDelay();
       }
-      else if(!this.isSongFinished)
-        this.sendPlayerStats(stats);
     }, 1000);
   }
 
@@ -96,42 +87,6 @@ class App {
       }
     });
     requestAnimationFrame(this.animate.bind(this));
-  }
-
-  sendPlayerStats(stats) {
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    var init = {
-      method: 'PUT',
-      body: JSON.stringify(stats),
-      headers: headers
-    };
-    var request = new Request(STATS_SERVICE_URL + '/metrics/players', init);  
-    fetch(request);
-  }
-  
-  sendGameStart(players) {
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    var init = {
-      method: 'POST',
-      body: JSON.stringify({playerCount: players}),
-      headers: headers
-    };
-    var request = new Request(STATS_SERVICE_URL + '/games', init);  
-    fetch(request);
-  }
-  
-  sendGameEnd() {
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    var init = {
-      method: 'PUT',
-      body: JSON.stringify({ action: 'end' }),
-      headers: headers
-    };
-    var request = new Request(STATS_SERVICE_URL + '/games', init);  
-    fetch(request);
   }
 
   updateInstruments(now) {
@@ -152,7 +107,7 @@ class App {
     data.tracks.forEach((track) => {
       let instrument = null;
       
-      if(track.instrumentFamily === 'guitar' || track.instrument === 'bass')
+      if(track.instrumentFamily === 'guitar' || track.instrumentFamily === 'bass')
         instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
       else if(track.instrumentFamily === 'drums')
         instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
@@ -165,6 +120,7 @@ class App {
       
       if(instrument) {
         instrument.name = track.instrument;
+        instrument.instrumentFamily = track.instrumentFamily;
         instrument.mNotes = track.notes;
         this.instruments.push(instrument);
         console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
@@ -328,8 +284,6 @@ class App {
     this.isPaused = false;
     this.isAudioStarted = false;
     this.isSongFinished = true;
-    
-    this.sendGameEnd();
   }
 
   pause() {
