@@ -1,12 +1,10 @@
 const express = require('express');
 const request = require('request');  
 const assets = require("./assets");
-const bodyParser = require('body-parser')
 
 const app = express();
 app.use("/assets", assets);
 app.use(express.static('public'));
-app.use(bodyParser.json());   
 
 const samplePath = process.env.samples || 'https://nbrosowsky.github.io/tonejs-instruments';
 
