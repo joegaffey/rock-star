@@ -65,20 +65,10 @@ export default class AppUI {
   }
   
   showSongs(songs, app) {
-    let li = this.songListEl.querySelector("li");
-    li.onclick = () => {
-      app.practice();
-      this.songListModal.toggle();
-    };
     songs.forEach((song, i) => {
       let li = document.createElement("li");
       li.setAttribute('class', 'songListItem');
-      let instruments = 0;
-      song.tracks.forEach((track) => {
-        if(!track.isBackground)
-          instruments++;
-      });
-      li.innerHTML = `${song.artist} - ${song.title} (${this.secondsToMinutesAndSeconds(song.duration)}) - ${instruments} instruments`;
+      li.innerHTML = `${song.artist} - ${song.title} (${this.secondsToMinutesAndSeconds(song.duration)})`;
       li.onclick = () => {
         app.loadSong(song);
         this.songListModal.toggle();
