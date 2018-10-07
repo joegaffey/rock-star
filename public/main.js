@@ -250,15 +250,11 @@ class App {
     console.log('Loading: ' + song.title);  
     document.querySelector('.songTitle').innerHTML = `${song.title} (${song.artist})`;
     
-    fetch(SONG_SERVICE_URL + '/songs/' + song.id)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        this.songData = data;
-        this.loadSongData(song, data);
-        this.ui.hideLoader();
-      });  
+    MidiConvert.load(song.url, data => {
+      this.songData = data;
+      this.loadSongData(song, data);
+      this.ui.hideLoader();        
+    });
   }
 
   startAudio() {
