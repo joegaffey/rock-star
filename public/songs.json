@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Iron Man",
+    "artist": "Black Sabbath",
+    "url": "./assets/IronMan.mid",
+    "duration": 339.17630100001566
+  },
+  {
+    "title": "Enter Sandman",
+    "artist": "Metallica",
+    "url": "./assets/EnterSandman.mid",
+    "duration": 324.3896599999999
+  },
+  {
+    "title": "More than a Feeling",
+    "artist": "Boston",
+    "url": "./assets/MoreThanAFeeling.mid",
+    "duration": 134.86599949999993
+  },
+  {
+    "title": "Walk this way",
+    "artist": "Aerosmith",
+    "duration": 196.36379999999963,
+    "url": "./assets/WalkThisWay.mid"
+  },
+  {
+    "title": "Seven Nation Army",
+    "artist": "White Stripes",
+    "url": "./assets/SevenNationArmy.mid",
+    "duration": 226
+  },
+  {
+    "title": "Bomb Track",
+    "artist": "Rage Against the Machine",
+    "url": "./assets/Bombtrack.mid",
+    "duration": 251.19999999999916
+  },
+  {
+    "title": "Beat It",
+    "artist": "Michael Jackson",
+    "url": "./assets/BeatIt.mid",
+    "duration": 121
+  },
+  {
+    "title": "I bet that you look good on the dancefloor",
+    "artist": "Arctic Monkeys",
+    "url": "./assets/Ibetyoulookgoodonthedancefloor.mid",
+    "duration": 185
+  },
+  {
+    "title": "Sugar We're Going Down",
+    "artist": "Fall Out Boy",
+    "url": "./assets/SugarWereGoingDown.mid",
+    "duration": 185
+  },
+  {
+    "title": "Debaser",
+    "artist": "The Pixies",
+    "url": "./assets/Debaser.mid",
+    "duration": 166.95647999999915
+  },
+  {
+    "title": "Times Like These",
+    "artist": "The Foo Fighters",
+    "url": "./assets/TimesLikeThese.mid",
+    "duration": 263.95647999999915
+  }
+]

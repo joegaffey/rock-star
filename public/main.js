@@ -2,11 +2,7 @@ import Guitar from './guitar.js';
 import Drums from './drums.js';
 import Settings from './settings.js';
 import Controllers from './controllers.js';
-// import Keyboard from './keyboard.js';
 import AppUI from './appui.js';
-
-const SONG_SERVICE_URL = '';
-const STATS_SERVICE_URL = '';
   
 class App {
   
@@ -34,7 +30,7 @@ class App {
   
   init() {
     this.ui.showLoader();
-    fetch(SONG_SERVICE_URL + '/songs')
+    fetch('songs.json')
       .then(response => {
         return response.json();
       })
@@ -58,8 +54,6 @@ class App {
             this.players++;
         });
         this.ui.showCloseIcon();
-        if(this.currentSong !== 'Practice')
-          this.sendGameStart(this.players);
       }
       else 
         this.isPaused ? this.unPause() : this.pause();
@@ -70,20 +64,14 @@ class App {
     setInterval(() => {
       if(this.players === 0)
         return;
-      var stats = [];
       let gameOver = true; 
       this.settings.players.forEach(player => {
-        if(player.instrument) {
-          stats.push(player.avg);          
-        }
         if(player.instrument && !player.instrument.finished)        
           gameOver = false;
       });
       if(!this.isSongFinished && gameOver) {
         this.endSongNoDelay();
       }
-      else if(!this.isSongFinished)
-        this.sendPlayerStats(stats);
     }, 1000);
   }
 
@@ -100,48 +88,6 @@ class App {
     requestAnimationFrame(this.animate.bind(this));
   }
 
-  sendPlayerStats(stats) {
-    if(this.currentSong === 'Practice')
-      return;
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    var init = {
-      method: 'PUT',
-      body: JSON.stringify(stats),
-      headers: headers
-    };
-    var request = new Request(STATS_SERVICE_URL + '/metrics/players', init);  
-    fetch(request);
-  }
-  
-  sendGameStart(players) {
-    if(this.currentSong === 'Practice' || this.players === 0)
-      return;
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    var init = {
-      method: 'POST',
-      body: JSON.stringify({playerCount: players}),
-      headers: headers
-    };
-    var request = new Request(STATS_SERVICE_URL + '/games', init);  
-    fetch(request);
-  }
-  
-  sendGameEnd() {
-    if(this.currentSong === 'Practice' || this.players === 0)
-        return;
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    var init = {
-      method: 'PUT',
-      body: JSON.stringify({ action: 'end' }),
-      headers: headers
-    };
-    var request = new Request(STATS_SERVICE_URL + '/games', init);  
-    fetch(request);
-  }
-
   updateInstruments(now) {
     this.instruments.forEach((inst) => {
       if(inst.update)
@@ -155,89 +101,37 @@ class App {
     this.ui.clearInstruments();
     
     this.instruments = [];
-    this.bgTracks = [];          
-
-    song.tracks.forEach((track) => {
+    this.bgTracks = [];         
+    
+    data.tracks.forEach((track) => {
       let instrument = null;
       
-      if(track.isBackground) {
-        let bgTrack = data.tracks[track.id];
-        bgTrack.synth = track.synth || track.instrument;
-        this.bgTracks.push(bgTrack);
-      }
-      else if(track.instrument === 'guitar' || track.instrument === 'bass')
+      if(track.instrumentFamily === 'guitar' || track.instrumentFamily === 'bass')
         instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
-      else if(track.instrument === 'drums')
+      else if(track.instrumentFamily === 'drums')
         instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
+      else {
+        let bgTrack = data.tracks[track.id];
+        bgTrack.synth = this.familyToSynth(track.instrumentFamily);
+        if(bgTrack.synth)
+          this.bgTracks.push(bgTrack);
+      }
       
       if(instrument) {
-        instrument.isPractice = data.tracks[track.id].isPractice;
-        instrument.name = data.tracks[track.id].instrument;
-        if(!instrument.name)
-          instrument.name = track.instrument;
-        instrument.mNotes = data.tracks[track.id].notes;
+        instrument.name = track.instrument;
+        instrument.instrumentFamily = track.instrumentFamily;
+        instrument.mNotes = track.notes;
         this.instruments.push(instrument);
         console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
       }
     });
   }
-
-  practice() {
-    this.ui.showLoader();
-    
-    if(!this.isSongFinished)
-      this.endSongNoDelay();
-    
-    this.currentSong = 'Practice';
-    let song = {};
-    song.tracks = [{id: 0, instrument: 'guitar'}, {id: 1, instrument: 'guitar'}, {id: 2, instrument: 'guitar'}, {id: 3, instrument: 'drums'}];
-    this.ui.hideTitle();
-    
-    console.log('Loading: Practice');  
-    document.querySelector('.songTitle').innerHTML = `Scales (Practice makes perfect)`;
-    
-    fetch(SONG_SERVICE_URL + '/practice.json')
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        data.tracks[0].isPractice = true;
-        let loops = 3;
-        for(let i = 0; i < loops; i++) { 
-          data.tracks[0].notes = data.tracks[0].notes.concat(data.tracks[0].notes); 
-        };
-        
-        let json = JSON.stringify(data.tracks[0]);
-        data.tracks = [];
-        data.tracks.push(JSON.parse(json));  
-        data.tracks.push(JSON.parse(json));  
-        data.tracks.push(JSON.parse(json));
-        data.tracks.push(JSON.parse(json));
-      
-        data.tracks[0].id = 0; data.tracks[0].instrument = 'guitar';   
-        data.tracks[1].id = 1; data.tracks[1].instrument = 'guitar'; 
-        data.tracks[2].id = 2; data.tracks[2].instrument = 'guitar';
-      
-        data.tracks[3].id = 3; data.tracks[3].instrument = 'drums';
-        data.tracks[3].isPercussion = true;
-        // Remove whistle notes
-        data.tracks[3].notes.forEach((note) => { 
-          if(note.name === 'C4') note.name = 'D1';  
-          if(note.name === 'B3') note.name = 'Bb3';  
-        });
-      
-        data.tracks.forEach((track) => {
-          let time = 0;
-          let delta = 1;
-          track.notes.forEach((note) => { note.time = time += (delta *= 0.98); });
-        });
-        
-        this.songData = data;
-        this.loadSongData(song, data);
-        this.ui.hideLoader();
-      }); 
+  
+  familyToSynth(family) {
+    const familyToSynthMap = {"reed": "saxophone", "piano": "piano", "pipe": "flute" }
+    return familyToSynthMap[family];
   }
-
+  
   loadSong(song) {   
     this.ui.showLoader();
     
@@ -389,8 +283,6 @@ class App {
     this.isPaused = false;
     this.isAudioStarted = false;
     this.isSongFinished = true;
-    
-    this.sendGameEnd();
   }
 
   pause() {

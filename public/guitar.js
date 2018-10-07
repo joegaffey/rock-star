@@ -110,8 +110,8 @@ export default class Guitar extends Instrument {
     this.chorus.depth = this.sound.chorusDepth;
     
     let instrument = 'guitar-electric'; 
-    if(this.name === 'bass')
-      instrument = 'bass-electric';
+    // if(this.instrumentFamily === 'bass')
+    //   instrument = 'bass-electric';
     
     this.synth = SampleLibrary.load({
       instruments: instrument,
