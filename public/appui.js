@@ -76,8 +76,7 @@ export default class AppUI {
       li.onclick = () => {
         app.loadSong(song);
         this.songListModal.hide();
-        // this.instrumentListModal.show();
-        // app.getSongData(song.url, this.showInstrumentList.bind(this));
+        app.getSongData(song.url, this.showInstrumentList.bind(this));
       };
       this.songListEl.appendChild(li);
     });
@@ -85,12 +84,22 @@ export default class AppUI {
   
   showInstrumentList(data) {
     let supportedInstruments = ['guitar', 'bass', 'drums'];
+    let maxEnd = 0;
+    data.tracks.forEach((track) => {
+      track.notes.forEach(note => {
+        if(note.time > maxEnd);
+          maxEnd = note.time;
+      });
+    });
+    
+    this.instrumentListEl.innerHTML = '';
     
     data.tracks.forEach((track, i) => {
       if(supportedInstruments.includes(track.instrumentFamily)) {
         let li = document.createElement("li");
         li.setAttribute('class', 'instrumentListItem');
-        li.innerHTML = `<select>
+        li.innerHTML = `<!--
+                        <select>
                           <option>Unassigned</option>
                           <option>Computer</option>
                           <option>Player 1</option>
@@ -98,15 +107,23 @@ export default class AppUI {
                           <option>Player 3</option>
                           <option>Player 4</option>
                         </select>
+                        -->
                         ${track.instrumentFamily} - ${track.instrument}
                         <br/>
                         <canvas class="barChart" width=300 height=30></canvas>`;
-        console.log(li.querySelector('.barChart'))
+        let values = new Array(100).fill(0);
+        track.notes.forEach(note => {
+          values[Math.round(note.time / maxEnd * 100)] += 2;
+        });
         let canvas = li.querySelector('.barChart');
-        new BarChart(canvas, [10,20,30,40,50,60,70,80], 'red');
+        new BarChart(canvas, values, '#ccc');
+        li.onclick = () => {
+          alert('Instrument selection coming soon!');
+        };
         this.instrumentListEl.appendChild(li);
       }
     });
+    this.instrumentListModal.show();
   }
   
   secondsToMinutesAndSeconds(duration) {
