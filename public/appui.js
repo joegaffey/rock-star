@@ -1,4 +1,5 @@
 import Modal from './modal.js';
+import BarChart from './barchart.js';
 
 export default class AppUI {
   
@@ -8,8 +9,11 @@ export default class AppUI {
     this.instrumentsEl = document.querySelector('.instruments');
     this.songsEl = document.querySelector('.songs');  
     this.songListEl = document.querySelector('.songList');
+    this.instrumentListEl = document.querySelector('.instrumentList');
     this.audioControlsEl = document.querySelector('.audioControl');
     this.closeControlsEl = document.querySelector('.closeControl');
+    
+    this.instrumentListModal = new Modal(document.querySelector('.instrumentListModal'));
     
     this.settingsModal = new Modal(document.querySelector('.settingsModal'));
     const settingsIconEl = document.querySelector('.settingsIcon');
@@ -71,9 +75,37 @@ export default class AppUI {
       li.innerHTML = `${song.artist} - ${song.title} (${this.secondsToMinutesAndSeconds(song.duration)})`;
       li.onclick = () => {
         app.loadSong(song);
-        this.songListModal.toggle();
+        this.songListModal.hide();
+        // this.instrumentListModal.show();
+        // app.getSongData(song.url, this.showInstrumentList.bind(this));
       };
       this.songListEl.appendChild(li);
+    });
+  }
+  
+  showInstrumentList(data) {
+    let supportedInstruments = ['guitar', 'bass', 'drums'];
+    
+    data.tracks.forEach((track, i) => {
+      if(supportedInstruments.includes(track.instrumentFamily)) {
+        let li = document.createElement("li");
+        li.setAttribute('class', 'instrumentListItem');
+        li.innerHTML = `<select>
+                          <option>Unassigned</option>
+                          <option>Computer</option>
+                          <option>Player 1</option>
+                          <option>Player 2</option>
+                          <option>Player 3</option>
+                          <option>Player 4</option>
+                        </select>
+                        ${track.instrumentFamily} - ${track.instrument}
+                        <br/>
+                        <canvas class="barChart" width=300 height=30></canvas>`;
+        console.log(li.querySelector('.barChart'))
+        let canvas = li.querySelector('.barChart');
+        new BarChart(canvas, [10,20,30,40,50,60,70,80], 'red');
+        this.instrumentListEl.appendChild(li);
+      }
     });
   }
   
