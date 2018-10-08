@@ -43,14 +43,6 @@ li {
   pointer-events: none;
 }
 
-/* .background > canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-} */
-
 .footer {
   position: fixed;
   bottom: 0;
@@ -209,16 +201,8 @@ li {
   transition: font-size, top, left 10000ms ease-in;
 }
 
-/* .instruments > *:hover {
-  border-color: maroon;
-} */
 
 /******************** Guitar ************************/
-
-/* @keyframes notePulse {
-  0%   { r: 3; }
-  100% { r: 20; }
-} */
 
 .control {
   outline-offset: -5px;
@@ -240,8 +224,6 @@ li {
   stroke-linecap: round;
   stroke-width: 30;
   pointer-events: none;
-/*   filter: blur(4px); */
-/*   filter: url(filters.svg#glow); */
 }
 
 
@@ -286,29 +268,31 @@ li {
 }
 
 
-/******************** Song List Dialog ************************/
+/******************** Scrollable List  ************************/
 
-.songList {
+.scollList {
   overflow-y: auto;
   max-height: 75vh;
 }
 
-.songList::-webkit-scrollbar {
+.scollList::-webkit-scrollbar {
   width: 8px;
 }
 
-.songList::-webkit-scrollbar-thumb {
+.scollList::-webkit-scrollbar-thumb {
   background: #444;
 }
 
-.songList::-webkit-scrollbar-track {
+.scollList::-webkit-scrollbar-track {
   background: #888;
 }
 
-.songList, .controllerList {
+.scollList {
   padding-left: 0px;
   margin: 0 -10px -10px -10px;
 }
+
+/******************** Song List Dialog ************************/
 
 .songListItem, .ctrlId {
   margin: 8px;
@@ -320,6 +304,25 @@ li {
 
 .songListItem:hover, .ctrlId:hover {
   background-color: #222;
+}
+
+/******************** Instrument List Dialog ************************/
+
+.instrumentList {
+  padding-left: 0px;
+  margin: 0 -10px -10px -10px;
+}
+
+.instrumentListItem {
+  margin: 8px;
+  background-color: #333;
+  cursor: pointer;
+  padding: 4px 8px 4px 8px;
+  list-style-type: none;
+  text-transform: capitalize;
+}
+
+.instrumentListItem, select {
 }
 
 /******************** Controllers Dialog ************************/

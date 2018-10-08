@@ -150,6 +150,12 @@ class App {
       this.ui.hideLoader();        
     });
   }
+  
+  getSongData(url, callback) {
+    MidiConvert.load(url, data => {
+      callback(data);
+    });
+  }
 
   startAudio() {
     this.ui.showLoader();
