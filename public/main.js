@@ -3,6 +3,7 @@ import Drums from './drums.js';
 import Settings from './settings.js';
 import Controllers from './controllers.js';
 import AppUI from './appui.js';
+import Synths from './synths.js';
   
 class App {
   
@@ -13,7 +14,7 @@ class App {
     this.isAudioStarted = false;
     this.isSongFinished = true;
     
-    this.ui = new AppUI();
+    this.ui = new AppUI(this);
     this.ui.closeControlsEl.onclick = () => { 
       this.ui.hideCloseIcon();
       this.ui.hideAudioControlIcon();
@@ -96,44 +97,8 @@ class App {
   }
   
   loadSongData(song, data) {
-    this.ui.showPlayIcon();
-    this.ui.showAudioControlIcon();  
-    this.ui.clearInstruments();
-    
-    this.instruments = [];
-    this.bgTracks = [];         
-    
-    data.tracks.forEach((track) => {
-      let instrument = null;
-      
-      if(track.instrumentFamily === 'guitar' || track.instrumentFamily === 'bass')
-        instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
-      else if(track.instrumentFamily === 'drums')
-        instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
-      else {
-        let bgTrack = data.tracks[track.id];
-        bgTrack.synth = this.familyToSynth(track.instrumentFamily);
-        if(bgTrack.synth)
-          this.bgTracks.push(bgTrack);
-      }
-      
-      if(instrument) {
-        instrument.name = track.instrument;
-        instrument.instrumentFamily = track.instrumentFamily;
-        instrument.mNotes = track.notes;
-        this.instruments.push(instrument);
-        console.log(track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
-      }
-    });
-  }
-  
-  familyToSynth(family) {
-    const familyToSynthMap = {"reed": "saxophone", "piano": "piano", "pipe": "flute" }
-    return familyToSynthMap[family];
-  }
-  
-  loadSong(song) {   
     this.ui.showLoader();
+    this.songData = data;
     
     if(!this.isSongFinished)
       this.endSongNoDelay();
@@ -144,8 +109,55 @@ class App {
     console.log('Loading: ' + song.title);  
     document.querySelector('.songTitle').innerHTML = `${song.title} (${song.artist})`;
     
+    this.ui.showPlayIcon();
+    this.ui.showAudioControlIcon();  
+    this.ui.clearInstruments();
+    
+    this.instruments = [];
+    this.bgTracks = [];         
+    
+    data.tracks.forEach((track, i) => {
+      let instrument = null;
+      if(data.selectedTracks.includes(track.id)) { //TBD -  ['drums', 'guitar', 'bass'].includes(track.instrumentFamily)
+        if(track.instrumentFamily === 'guitar' || track.instrumentFamily === 'bass')
+          instrument = new Guitar(this.ui.instrumentsEl, this.settings.players);
+        else if(track.instrumentFamily === 'drums')
+          instrument = new Drums(this.ui.instrumentsEl, this.settings.players);
+      }
+      else if(track.instrumentFamily) {
+        track.synth = this.familyToSynth(track.instrumentFamily);
+        if(track.synth) {
+          this.bgTracks.push(track);
+          console.log('Background ' + track.instrument + ' track: ' + track.id + ' - ' + track.notes.length + ' notes');
+        }
+      }
+      
+      if(instrument) {
+        instrument.name = track.instrument;
+        instrument.instrumentFamily = track.instrumentFamily;
+        instrument.mNotes = track.notes;
+        this.instruments.push(instrument);
+        console.log('Instrument ' + track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
+      }
+    });
+    
+    this.ui.hideLoader();
+  }
+  
+  familyToSynth(family) {
+    const familyToSynthMap = {"drums": "drums", 
+                              "bass": "guitar", 
+                              "guitar": "guitar", 
+                              "reed": "saxophone", 
+                              "piano": "piano", 
+                              "pipe": "flute" };
+    return familyToSynthMap[family];
+  }
+  
+  loadSong(song) {   
+    this.ui.showLoader();
+    
     MidiConvert.load(song.url, data => {
-      this.songData = data;
       this.loadSongData(song, data);
       this.ui.hideLoader();        
     });
@@ -174,9 +186,12 @@ class App {
     console.log('Loading ' + this.instruments.length + ' instrument(s)');
     this.instruments.forEach((instrument) => {
       if(instrument.player)
-         instrument.player.reset();
+        instrument.player.reset();
+      console.log('Loading instrument ' + instrument.name + '. ' + instrument.mNotes.length + ' notes.')
       this.loadingSynths++;
-      instrument.initSynth(this.onSynthLoad.bind(this));
+      instrument.initSynth(() => { 
+        this.onSynthLoad();
+      });
       this.totalTracks++;
     });
   }
@@ -184,17 +199,35 @@ class App {
   loadBackgroundTracks() {
     console.log('Loading ' + this.bgTracks.length + ' background track(s)');
     this.bgTracks.forEach((track, i) => {
-      this.totalTracks++;
-      console.log(track.instrument + ' ' + track.notes.length + ' notes. Synth: ' + track.synth)
       
-      this.loadingSynths++;
-      let synth = SampleLibrary.load({
-        instruments: track.synth,
-        onload: () => {this.onSynthLoad()},
-        minify: true
-      });
-      track.synth = synth;
-      synth.toMaster();    
+      if(track.notes.length > 0) {
+        this.totalTracks++;
+        console.log('Loading  background ' + track.instrument + '. ' + track.notes.length + ' notes. Synth: ' + track.synth)
+      
+        this.loadingSynths++;
+        if(['drums', 'guitar', 'bass'].includes(track.synth)) {
+          if(track.synth === 'drums')
+            track.synth = new Synths().drums(() => { this.onSynthLoad(); });
+          else if(['guitar', 'bass'].includes(track.synth)) {
+             track.synth = SampleLibrary.load({
+                instruments: 'guitar-electric',
+                onload: () => { this.onSynthLoad(); },
+                minify: true
+              }).toMaster();
+              // @TODO Why is this not working?
+              // track.synth = new Synths().guitar(() => { this.onSynthLoad(); });  
+          }            
+        }
+        else {
+          let synth = SampleLibrary.load({
+            instruments: track.synth,
+            onload: () => { this.onSynthLoad(); },
+            minify: true
+          });
+          track.synth = synth;
+          synth.toMaster();    
+        }
+      }
     });
   }
   
@@ -239,7 +272,7 @@ class App {
   }
   
   onSynthLoad() {
-    console.log('Loaded synth ' + this.loadingSynths);
+    console.log('Loaded synth #' + this.loadingSynths);
     this.loadingSynths--;
     if(this.loadingSynths === 0) {
       Tone.Transport.on('start', () => {

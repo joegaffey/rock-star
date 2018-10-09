@@ -38,7 +38,7 @@ export default class Settings {
         </li>`).join('')}
       </ul>
       <button class="dialogButton" id="buttonSettingsCancel">Cancel</button>
-      <button class="dialogButton" id="buttonSettingsOk">Ok</button>
+      <button class="dialogButton" id="buttonSettingsOk">Save</button>
     `;    
     
     this.settingsEl.querySelector('#buttonSettingsCancel').onclick = (e) => { this.onCancel(); };

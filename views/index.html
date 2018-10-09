@@ -11,8 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/style.css">
   </head>
-  <body>
-    
+  <body>    
     <div class="modal loaderModal">
       <svg class="loader" width="250" height="30" viewbox="0 0 250 30" xmlns="http://www.w3.org/2000/svg">
         <line y2="15" x2="235" y1="15" x1="15" stroke-width="30" stroke="var(--loader-color)" stroke-linecap="var(--loader-linecap)"/>
@@ -63,18 +62,19 @@
     <div class="modal songListModal">
       <div class="dialog">
         <h2 class="modalTitle">Pick a song</h2>
-          <ul class="scollList songList"></ul>
+        <ul class="scollList songList"></ul>
       </div>
     </div>    
     
     <div class="modal instrumentListModal">
       <div class="dialog">
         <h2 class="modalTitle">Select instrument(s)</h2>
-          <ul class="scollList instrumentList"></ul>
+        <ul class="scollList instrumentList"></ul>
+        <button class="dialogButton" id="buttonInstrumentCancel">Cancel</button>
+        <button class="dialogButton" id="buttonInstrumentOk" style="float:right;">Ok</button>
       </div>
     </div>   
     
-<!--     <script src="https://tonejs.github.io/build/Tone.min.js"></script> -->
     <script src="./lib/tone.js"></script>
     <script src="./lib/Tonejs-Instruments.js"></script>
     <script src="./lib/MidiConvert.js"></script>
