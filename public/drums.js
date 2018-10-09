@@ -1,4 +1,5 @@
 import Instrument from './instrument.js';
+import Synths from './synths.js';
 
 const drumsTemplate = document.createElement('template');
 drumsTemplate.innerHTML = `
@@ -92,59 +93,7 @@ export default class Drums extends Instrument {
   }
 
   initSynth(callback) {    
-    this.synth = new Tone.Sampler({
-      'B0'  : 'Acoustic Bass Drum.wav',
-      'C1'  : 'Bass Drum 1.wav',
-      'C#1' : 'Side Stick.wav',
-      'D1'  : 'Acoustic Snare.wav',
-      'Eb1' : 'Hand Clap.wav',
-      'E1'  : 'Electric Snare.wav',
-      'F1'  : 'Low Floor Tom.wav',
-      'F#1' : 'Closed Hi Hat.wav',
-      'G1'  : 'High Floor Tom.wav',
-      'Ab1' : 'Pedal Hi-Hat.wav',
-      'A1'  : 'Low Tom.wav',
-      'Bb1' : 'Open Hi-Hat.wav',
-      'B1'  : 'Low-Mid Tom.wav',
-      'C2'  : 'Hi Mid Tom.wav',
-      'C#2' : 'Crash Cymbal 1.wav',
-      'D2'  : 'High Tom.wav',
-      'Eb2' : 'Ride Cymbal 1.wav',
-      'E2'  : 'Chinese Cymbal.wav',
-      'F2'  : 'Ride Bell.wav',
-      'F#2' : 'Tambourine.wav',
-      'G2'  : 'Splash Cymbal.wav',
-      'Ab2' : 'Cowbell.wav',
-      'A2'  : 'Crash Cymbal 2.wav',
-      'Bb2' : 'Vibraslap.wav',
-      'B2'  : 'Ride Cymbal 2.wav',
-      'C3'  : 'Hi Bongo.wav',
-      'C#3' : 'Low Bongo.wav',
-      'D3'  : 'Mute Hi Conga.wav',
-      'Eb3' : 'Open Hi Conga.wav',
-      'E3'  : 'Low Conga.wav',
-      'F3'  : 'High Timbale.wav',
-      'F#3' : 'Low Timbale.wav',
-      'G3'  : 'High Agogo.wav',
-      'Ab3' : 'Low Agogo.wav',
-      'A3'  : 'Cabasa.wav',
-      'Bb3' : 'Maracas.wav',
-      'B3'  : 'Short Whistle.wav',
-      'C4'  : 'Long Whistle.wav',
-      'C#4' : 'Short Guiro.wav',
-      'D4'  : 'Long Guiro.wav',
-      'Eb4' : 'Claves.wav',
-      'E4'  : 'Hi Wood Block.wav',
-      'F4'  : 'Low Wood Block.wav',
-      'F#4' : 'Mute Cuica.wav',
-      'G4'  : 'Open Cuica.wav',
-      'Ab4' : 'Mute Triangle.wav',
-      'A4'  : 'Open Triangle.wav'
-    },{
-      'release' : 1,
-      'onload': callback.call(),
-      'baseUrl' : './assets/'
-    }).toMaster();
+    return this.synth = new Synths().drums(callback);
   }
   
   play(mNote) {

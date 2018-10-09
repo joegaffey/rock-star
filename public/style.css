@@ -30,6 +30,19 @@ li {
   list-style-type: square;
 }
 
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 /******************** Animated background ************************/
 
 .background {
@@ -250,8 +263,7 @@ li {
 }
 
 .dialogButton {
-  margin: 10px;
-  width: 80px;
+  width: 120px;
   float: left;
 }
 
@@ -310,7 +322,7 @@ li {
 
 .instrumentList {
   padding-left: 0px;
-  margin: 0 -10px -10px -10px;
+  margin: 0 -10px 10px -10px;
 }
 
 .instrumentListItem {
@@ -322,8 +334,10 @@ li {
   text-transform: capitalize;
 }
 
-.instrumentListItem, select {
+.instrumentSelected {
+  background-color: #338;
 }
+
 
 /******************** Controllers Dialog ************************/
 

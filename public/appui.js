@@ -3,7 +3,8 @@ import BarChart from './barchart.js';
 
 export default class AppUI {
   
-  constructor() {
+  constructor(app) {
+    this.app = app;
     this.loaderModalEl = document.querySelector('.loaderModal');
     this.settingsEl = document.querySelector('.settingsEl');
     this.instrumentsEl = document.querySelector('.instruments');
@@ -14,6 +15,11 @@ export default class AppUI {
     this.closeControlsEl = document.querySelector('.closeControl');
     
     this.instrumentListModal = new Modal(document.querySelector('.instrumentListModal'));
+    const buttonInstrumentCancel = document.querySelector('#buttonInstrumentCancel');
+    buttonInstrumentCancel.onclick = () => { 
+      this.instrumentListModal.toggle(); 
+    };
+    this.instrumentListModal.okButton = document.querySelector('#buttonInstrumentOk');
     
     this.settingsModal = new Modal(document.querySelector('.settingsModal'));
     const settingsIconEl = document.querySelector('.settingsIcon');
@@ -74,17 +80,16 @@ export default class AppUI {
       li.setAttribute('class', 'songListItem');
       li.innerHTML = `${song.artist} - ${song.title} (${this.secondsToMinutesAndSeconds(song.duration)})`;
       li.onclick = () => {
-        app.loadSong(song);
         this.songListModal.hide();
-        app.getSongData(song.url, this.showInstrumentList.bind(this));
+        this.song = song;
+        this.app.getSongData(song.url, this.showInstrumentList.bind(this));
       };
       this.songListEl.appendChild(li);
     });
   }
   
   showInstrumentList(data) {
-    let supportedInstruments = ['guitar', 'bass', 'drums'];
-    let maxEnd = 0;
+    let maxEnd = 0;    
     data.tracks.forEach((track) => {
       track.notes.forEach(note => {
         if(note.time > maxEnd);
@@ -93,22 +98,13 @@ export default class AppUI {
     });
     
     this.instrumentListEl.innerHTML = '';
+    let supportedInstruments = ['guitar', 'bass', 'drums'];
     
     data.tracks.forEach((track, i) => {
-      if(supportedInstruments.includes(track.instrumentFamily)) {
+      if(track.notes.length > 0 && supportedInstruments.includes(track.instrumentFamily)) {
         let li = document.createElement("li");
         li.setAttribute('class', 'instrumentListItem');
-        li.innerHTML = `<!--
-                        <select>
-                          <option>Unassigned</option>
-                          <option>Computer</option>
-                          <option>Player 1</option>
-                          <option>Player 2</option>
-                          <option>Player 3</option>
-                          <option>Player 4</option>
-                        </select>
-                        -->
-                        ${track.instrumentFamily} - ${track.instrument}
+        li.innerHTML = `${track.instrumentFamily} - ${track.instrument}
                         <br/>
                         <canvas class="barChart" width=300 height=30></canvas>`;
         let values = new Array(100).fill(0);
@@ -118,11 +114,26 @@ export default class AppUI {
         let canvas = li.querySelector('.barChart');
         new BarChart(canvas, values, '#ccc');
         li.onclick = () => {
-          alert('Instrument selection coming soon!');
+          li.classList.toggle('instrumentSelected');     
+          if(li.trackId)
+            li.trackId = null;
+          else 
+            li.trackId = track.id;
         };
         this.instrumentListEl.appendChild(li);
       }
     });
+    
+    this.instrumentListModal.okButton.onclick = () => {
+      data.selectedTracks = [];
+      Array.from(this.instrumentListEl.children).forEach((li, i) => {
+        if(li.trackId)
+          data.selectedTracks.push(li.trackId);
+      });
+      this.app.loadSongData(this.song, data);
+      this.instrumentListModal.hide(); 
+    };
+    
     this.instrumentListModal.show();
   }
   
