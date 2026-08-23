@@ -102,9 +102,10 @@ export default class AppUI {
     
     data.tracks.forEach((track, i) => {
       if(track.notes.length > 0 && supportedInstruments.includes(track.instrumentFamily)) {
+        let instrument = track.instrument || track.instrumentFamily || 'unknown';
         let li = document.createElement("li");
         li.setAttribute('class', 'instrumentListItem');
-        li.innerHTML = `${track.instrumentFamily} - ${track.instrument}
+        li.innerHTML = `${track.instrumentFamily} - ${instrument}
                         <br/>
                         <canvas class="barChart" width=300 height=30></canvas>`;
         let values = new Array(100).fill(0);

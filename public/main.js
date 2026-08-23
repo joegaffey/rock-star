@@ -117,6 +117,7 @@ class App {
     this.bgTracks = [];         
     
     data.tracks.forEach((track, i) => {
+      let instrumentName = track.instrument || track.instrumentFamily || 'unknown';
       let instrument = null;
       if(data.selectedTracks.includes(track.id)) { //TBD -  ['drums', 'guitar', 'bass'].includes(track.instrumentFamily)
         if(track.instrumentFamily === 'guitar' || track.instrumentFamily === 'bass')
@@ -128,16 +129,16 @@ class App {
         track.synth = this.familyToSynth(track.instrumentFamily);
         if(track.synth) {
           this.bgTracks.push(track);
-          console.log('Background ' + track.instrument + ' track: ' + track.id + ' - ' + track.notes.length + ' notes');
+          console.log('Background ' + instrumentName + ' track: ' + track.id + ' - ' + track.notes.length + ' notes');
         }
       }
       
       if(instrument) {
-        instrument.name = track.instrument;
+        instrument.name = instrumentName;
         instrument.instrumentFamily = track.instrumentFamily;
         instrument.mNotes = track.notes;
         this.instruments.push(instrument);
-        console.log('Instrument ' + track.instrument + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
+        console.log('Instrument ' + instrumentName + ' track: ' + track.id + ' - ' + instrument.mNotes.length + ' notes');
       }
     });
     
@@ -202,7 +203,7 @@ class App {
       
       if(track.notes.length > 0) {
         this.totalTracks++;
-        console.log('Loading  background ' + track.instrument + '. ' + track.notes.length + ' notes. Synth: ' + track.synth)
+        console.log('Loading  background ' + (track.instrument || track.instrumentFamily) + '. ' + track.notes.length + ' notes. Synth: ' + track.synth)
       
         this.loadingSynths++;
         if(['drums', 'guitar', 'bass'].includes(track.synth)) {
